@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SnapphaneScoutDistriktBookingApp.Views.UpdateInfoPopUpPage"
-             Title="UpdateInfoPopUpPage">
+             x:Class="SnapphaneScoutDistriktBookingApp.Views.Booking.BookingSelectDate"
+             Title="BookingSelectDate">
     <VerticalStackLayout>
         <Label 
-            Text=""
+            Text="Placeholder för datum"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Editor AutoSize="TextChanges" Text="{Binding Info}" Placeholder="Skriv infotexten här"></Editor>
-        <Button Text="Uppdatera" Command="{Binding UpdateInfoCommand}" ></Button>
+        <Button 
+            x:Name="GoToBookingCustomerInfo"
+            Text="Nästa steg"
+            Clicked="OnChangeToBookingCustomerInfo"/>
     </VerticalStackLayout>
 </ContentPage>

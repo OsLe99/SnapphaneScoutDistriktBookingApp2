@@ -77,7 +77,7 @@ namespace SnapphaneScoutDistriktBookingApp.Data
 
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress(fromEmail, "Snapphane Scoutdistrikt");
-            var subject = "Bokning av" + costumer.BookingType;
+            var subject = "Bokningsbekräftelse av " + costumer.BookingType;
             var to = new EmailAddress(toEmail, "Mottagare");
             string plainTextContent = $"Tack för bokning! Du har bokat datumen: {costumer.StartDate} till den {costumer.EndDate}. {bokningsNummer}"; //info //Namn
             string infoString = plainTextContent.Replace("\t", "<br>");

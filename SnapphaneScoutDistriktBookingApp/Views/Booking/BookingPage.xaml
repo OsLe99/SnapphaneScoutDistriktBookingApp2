@@ -4,9 +4,58 @@
              x:Class="SnapphaneScoutDistriktBookingApp.BookingPage"
              Title="Bokningssida"
              >
-    
 
-    <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25"
+            VerticalOptions="Center"
+            HorizontalOptions="Center">
+            <Label 
+                Text="Vad vill du boka?"
+                Style="{StaticResource Headline}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            <Grid
+                ColumnDefinitions="*, *"
+                RowDefinitions="auto, auto"
+                Padding="10"
+                RowSpacing="20"
+                ColumnSpacing="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" >
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    x:Name="BookCanoe"
+                    Text="Kanot"
+                    Clicked="OnChangeToMoreInfo">
+                </Button>
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    x:Name="BookLeanTo"
+                    Text="Vindskydd"
+                    Clicked="OnChangeToMoreInfo">
+                </Button>
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    x:Name="BookGrounds"
+                    Text="Lägerområde"
+                    Clicked="OnChangeToMoreInfo">
+                </Button>
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    x:Name="BookCabin"
+                    Text="Stugan"
+                    Clicked="OnChangeToMoreInfo">
+                </Button>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+    <!--<VerticalStackLayout>
         <HorizontalStackLayout Spacing="10">
             <Label x:Name="Lediga_kanoter" Text="{Binding CanoesAvailable, StringFormat='Kanoter lediga: {0}'}" ></Label>
             <Label x:Name="Lediga_stugor" Text="{Binding CabinAvailable, StringFormat='Stugor lediga: {0}'}" ></Label>
@@ -125,6 +174,6 @@
             Text="Placera bokning"
             Clicked="OnConformation"
             ></Button>
-    </VerticalStackLayout>
+    </VerticalStackLayout>-->
     
 </ContentPage>

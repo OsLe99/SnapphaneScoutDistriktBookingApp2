@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SnapphaneScoutDistriktBookingApp.Views.Booking.BookingCustomerInfo"
+             Title="BookingCustomerInfo">
+    <VerticalStackLayout>
+        <Label 
+            Text="Placeholder för användarens info"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry
+            x:Name="myName"
+            Placeholder="För och efternamn"
+            Keyboard="Chat" />
+        <Entry
+            x:Name="myPhone"
+            Placeholder="Telefonnummer"
+            Keyboard="Numeric" />
+        <Entry
+            x:Name="myEmail"
+            Placeholder="Email"
+            Keyboard="Email"
+            TextTransform="None" />
+
+    <HorizontalStackLayout>
+            <Label
+                x:Name="statusLabel"
+                Text="Scoutmedlem" />
+            <CheckBox
+                x:Name="myCheckBox"
+                IsChecked="False"
+                CheckedChanged="OnCheckChange" />
+
+        </HorizontalStackLayout>
+        
+        <Label
+            x:Name="hiddenLabel"
+            IsVisible="False"
+            Text="Scoutkårens namn" HorizontalTextAlignment="Center" />
+        <Entry
+            x:Name="orgNameInput"
+            Placeholder="Scoutkår"
+            IsVisible="False" />
+        <Button
+            x:Name="GoToBookingConfirmation"
+            Text="Lägg beställning"
+            Clicked="OnChangeToBookingConfirmation" />
+    </VerticalStackLayout>
+</ContentPage>
