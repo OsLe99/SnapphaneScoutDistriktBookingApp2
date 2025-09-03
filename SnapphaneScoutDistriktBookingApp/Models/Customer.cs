@@ -14,7 +14,7 @@ namespace SnapphaneScoutDistriktBookingApp.Models
 {
     public class Customer : ObservableObject, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         [Flags]
         public enum TypeOfBooking
         {
@@ -26,9 +26,13 @@ namespace SnapphaneScoutDistriktBookingApp.Models
         }
         [BsonId]
         public ObjectId Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Phone { get; set; }
+        [Required, EmailAddress]
         public string Email { get; set; }
+        [Required]
         public bool IsOrg { get; set; }
         public string? OrgName { get; set; }
         public DateTime StartDate { get; set; }
