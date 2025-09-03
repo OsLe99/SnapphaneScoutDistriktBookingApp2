@@ -5,7 +5,6 @@ using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Syncfusion.Maui.Calendar;
 using SnapphaneScoutDistriktBookingApp.Data;
 using MongoDB.Driver;
 using SnapphaneScoutDistriktBookingApp.ViewModels;
@@ -21,10 +20,28 @@ public partial class BookingPage : ContentPage
 		InitializeComponent();
 		BindingContext = new BookingViewModel();
     }
-
-	private async void OnChangeToMoreInfo(object sender, EventArgs e)
+    private async void OnChangeToMoreInfo(object sender, EventArgs e)
 	{
-		await Navigation.PushAsync(new BookingExtraInfo());
+        var newCustomer = (BindingContext as BookingViewModel)?.Customer;
+        if (sender is Button button && button.Text is string type)
+        {
+            switch (type)
+			{
+				case "Kanot":
+					newCustomer.BookingType |= Models.Customer.TypeOfBooking.Canoe;
+					break;
+				case "Stugan":
+					newCustomer.BookingType |= Models.Customer.TypeOfBooking.Cabin;
+					break;
+				case "Vindskydd":
+					newCustomer.BookingType |= Models.Customer.TypeOfBooking.LeanTo;
+					break;
+				case "Lägerområde":
+					newCustomer.BookingType |= Models.Customer.TypeOfBooking.CampGrounds;
+					break;
+            }
+        }
+        await Navigation.PushAsync(new BookingExtraInfo(newCustomer));
 	}
   //  private void OnCheckChange(object sender, CheckedChangedEventArgs e)
   //  {

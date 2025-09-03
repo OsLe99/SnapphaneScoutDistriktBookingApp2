@@ -3,14 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SnapphaneScoutDistriktBookingApp.Views.Booking.BookingConfirmation"
              Title="BookingConfirmation">
-    <VerticalStackLayout>
-        <Label 
-            Text="Placeholder för att visa bokningsdetaljer"
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label 
+            Text="Bokningsdetaljer"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Button
-            x:Name="ConfirmBooking"
-            Text="Skapa bokning"
-            Clicked="OnConfirmBookingClicked"/>
-    </VerticalStackLayout>
+            <Grid
+                ColumnDefinitions="*, *"
+                RowDefinitions="auto, auto, auto, auto, auto, auto, auto, auto, auto"
+                Padding="10"
+                RowSpacing="20"
+                ColumnSpacing="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <Label Text="Typ av bokning:" Grid.Row="0" Grid.Column="0" />
+                <Label Text="{Binding BookingType}" Grid.Row="0" Grid.Column="1" />
+
+                <Label Text="Antal:" Grid.Row="1" Grid.Column="0" />
+                <Label Text="{Binding AmountOf}" Grid.Row="1" Grid.Column="1" />
+
+                <Label Text="Namn:" Grid.Row="2" Grid.Column="0" />
+                <Label Text="{Binding Name}" Grid.Row="2" Grid.Column="1" />
+
+                <Label Text="Telefon:" Grid.Row="3" Grid.Column="0" />
+                <Label Text="{Binding Phone}" Grid.Row="3" Grid.Column="1" />
+
+                <Label Text="Email:" Grid.Row="4" Grid.Column="0" />
+                <Label Text="{Binding Email}" Grid.Row="4" Grid.Column="1" />
+
+                <Label Text="Scoutkår:" Grid.Row="5" Grid.Column="0" />
+                <Label Text="{Binding OrgName}" Grid.Row="5" Grid.Column="1" />
+
+                <Label Text="Startdatum:" Grid.Row="6" Grid.Column="0" />
+                <Label Text="{Binding StartDate, StringFormat='{0:yyyy-MM-dd}'}" Grid.Row="6" Grid.Column="1" />
+
+                <Label Text="Slutdatum:" Grid.Row="7" Grid.Column="0" />
+                <Label Text="{Binding EndDate, StringFormat='{0:yyyy-MM-dd}'}" Grid.Row="7" Grid.Column="1" />
+
+                <Button x:Name="ConfirmBooking" Text="Skapa bokning" Clicked="OnConfirmBookingClicked" Grid.Row="8" Grid.Column="0"/>
+            </Grid>
+                <!--<Label Text="Typ av bokning:" />
+            <Label Text="{Binding BookingType}" />
+
+            <Label Text="Namn:" />
+            <Label Text="{Binding Name}" />
+
+            <Label Text="Telefon:" />
+            <Label Text="{Binding Phone}" />
+
+            <Label Text="Email:" />
+            <Label Text="{Binding Email}" />
+
+            <Label Text="Scoutkår:" />
+            <Label Text="{Binding OrgName}" />
+
+            <Label Text="Startdatum:" />
+            <Label Text="{Binding StartDate, StringFormat='{0:yyyy-MM-dd}'}" />
+
+            <Label Text="Slutdatum:" />
+            <Label Text="{Binding EndDate, StringFormat='{0:yyyy-MM-dd}'}" />-->
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

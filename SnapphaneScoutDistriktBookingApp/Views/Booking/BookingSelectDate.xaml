@@ -8,6 +8,12 @@
             Text="Placeholder för datum"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <DatePicker
+            x:Name="StartDatePicker"
+            Date="{Binding StartDate, Mode=TwoWay}" />
+        <DatePicker 
+            x:Name="EndDatePicker" 
+            Date="{Binding EndDate, Mode=TwoWay}" />
         <Button 
             x:Name="GoToBookingCustomerInfo"
             Text="Nästa steg"

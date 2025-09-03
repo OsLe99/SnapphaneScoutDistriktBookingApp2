@@ -10,17 +10,17 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace SnapphaneScoutDistriktBookingApp.Models
 {
-    internal class Customer : INotifyPropertyChanged
+    public class Customer : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         [Flags]
         public enum TypeOfBooking
         {
             None = 0,
-            Kanot = 1,
-            Lägerplats = 2,
-            Vindskydd = 3,
-            Stuga = 4
+            Canoe = 1,
+            CampGrounds = 2,
+            LeanTo = 3,
+            Cabin = 4
         }
         [BsonId]
         public ObjectId Id { get; set; }

@@ -1,16 +1,19 @@
+using SnapphaneScoutDistriktBookingApp.Models;
 namespace SnapphaneScoutDistriktBookingApp.Views.Booking;
 
 public partial class BookingCustomerInfo : ContentPage
 {
-    private Models.Customer.TypeOfBooking bookingtype = Models.Customer.TypeOfBooking.None;
-    public BookingCustomerInfo()
+    private Customer _customer;
+    public BookingCustomerInfo(Customer customer)
     {
         InitializeComponent();
+        _customer = customer;
     }
 
     private async void OnChangeToBookingConfirmation(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new BookingConfirmation());
+        SaveCustomerInfo(_customer);
+        await Navigation.PushAsync(new BookingConfirmation(_customer));
     }
 
     private void OnCheckChange(object sender, CheckedChangedEventArgs e)
@@ -28,17 +31,13 @@ public partial class BookingCustomerInfo : ContentPage
         }
     }
 
-    private async void SaveCustomerInfo()
+    private async void SaveCustomerInfo(Customer customer)
     {
-        var newCustomer = new Models.Customer()
-        {
-            Name = myName.Text,
-            Phone = myPhone.Text,
-            Email = myEmail.Text,
-            IsOrg = myCheckBox.IsChecked,
-            OrgName = (myCheckBox.IsChecked == true ? orgNameInput.Text : ""),
-            BookingType = bookingtype,
-            IsConfirmed = false
-        };
+        customer.Name = myName.Text;
+        customer.Phone = myPhone.Text;
+        customer.Email = myEmail.Text;
+        customer.IsOrg = myCheckBox.IsChecked;
+        customer.OrgName = (myCheckBox.IsChecked == true ? orgNameInput.Text : "");
+        customer.IsConfirmed = false;
     }
 }

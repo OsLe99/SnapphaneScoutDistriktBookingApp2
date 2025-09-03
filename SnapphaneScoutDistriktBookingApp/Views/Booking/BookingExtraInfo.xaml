@@ -8,6 +8,12 @@
             Text="Placeholder för extra val"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Label
+            x:Name="infoLabel"
+            Text=""/>
+        <Entry
+            x:Name="numberInput"
+            Text="" />
         <Button
             x:Name="GoToStep3"
             Text="Nästa steg"

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MongoDB.Driver;
+using SnapphaneScoutDistriktBookingApp.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,10 +13,12 @@ using System.Windows.Input;
 
 namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
-    class BookingViewModel : ContentPage
+    public class BookingViewModel
     {
-        //public event PropertyChangedEventHandler? PropertyChanged;
-        
+        public Customer Customer { get; set; } = new Customer();
+        //---------------------------------------------------------------------------------------- Old code for checking available canoes, cabins, lean-tos, and campgrounds
+
+
         //private string _canoesAvailable;
         //public string CanoesAvailable { get { return _canoesAvailable; }
         //    set
@@ -80,19 +83,19 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         //    var bookingCollection = await Data.DB.BookingCollection().Find(Builders<Models.Customer>.Filter.Where(x => x.StartDate <= end && x.EndDate >= start)).ToListAsync();
         //    int[] totalSum = new int[4];
         //    totalSum[0] = bookingCollection.Sum(x => x.NumberOfCanoes.GetValueOrDefault());
-            
+
         //    totalSum[1] = bookingCollection.Sum(x => x.NumberOfCabin.GetValueOrDefault());
-            
+
         //    totalSum[2] = bookingCollection.Sum(x => x.NumberOfLeanTo.GetValueOrDefault());
-            
+
         //    totalSum[3] = bookingCollection.Sum(x => x.NumberOfCampground.GetValueOrDefault());
-            
+
         //    return totalSum;
         //}
 
-        ////----------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------
 
-        
+
         //private DateTime _newStartDate = DateTime.Today;
         //public DateTime NewStartDate { get { return _newStartDate; } 
         //    set
@@ -115,15 +118,6 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         //        LoadViableNumbers();
         //    }
         //}
-
-
-        
-
-
-
-
-
-
 
         //public ICommand SelectStartDateCommand => new AsyncRelayCommand(async () => await SelectStartDate());
         //public ICommand SelectEndDateCommand => new AsyncRelayCommand(async () => await SelectEndDate());
@@ -172,6 +166,6 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         //    return datePicker.Date;
 
-        //}
-    }
+            //}
+        }
 }

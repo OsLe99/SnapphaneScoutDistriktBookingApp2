@@ -31,7 +31,7 @@
                 IsChecked="False"
                 CheckedChanged="OnCheckChange" />
 
-        </HorizontalStackLayout>
+    </HorizontalStackLayout>
         
         <Label
             x:Name="hiddenLabel"

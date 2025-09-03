@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SnapphaneScoutDistriktBookingApp.ViewModels;
 
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -16,7 +17,8 @@ namespace SnapphaneScoutDistriktBookingApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("Deutsch.ttf", "OldGerman");
-                });
+                })
+                .Services.AddSingleton<BookingViewModel>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
