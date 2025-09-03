@@ -18,10 +18,13 @@
                 HorizontalOptions="Center"
                 VerticalOptions="Center">
                 <Label Text="Typ av bokning:" Grid.Row="0" Grid.Column="0" />
-                <Label Text="{Binding BookingType}" Grid.Row="0" Grid.Column="1" />
+                <Label Text="{Binding TypeOfBooking_Swedish}" Grid.Row="0" Grid.Column="1" />
 
                 <Label Text="Antal:" Grid.Row="1" Grid.Column="0" />
-                <Label Text="{Binding AmountOf}" Grid.Row="1" Grid.Column="1" />
+                <Label Text="{Binding NumberOfCanoes}" Grid.Row="1" Grid.Column="1" />
+                <Label Text="{Binding NumberOfLeanTos}" Grid.Row="1" Grid.Column="1" />
+                <Label Text="{Binding NumberOfCampGrounds}" Grid.Row="1" Grid.Column="1" />
+                <Label Text="{Binding NumberOfCabins}" Grid.Row="1" Grid.Column="1" />
 
                 <Label Text="Namn:" Grid.Row="2" Grid.Column="0" />
                 <Label Text="{Binding Name}" Grid.Row="2" Grid.Column="1" />

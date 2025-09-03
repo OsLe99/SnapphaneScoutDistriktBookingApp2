@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace SnapphaneScoutDistriktBookingApp.Models
 {
-    public class Customer : INotifyPropertyChanged
+    public class Customer : ObservableObject, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         [Flags]
         public enum TypeOfBooking
         {
@@ -32,6 +34,17 @@ namespace SnapphaneScoutDistriktBookingApp.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public TypeOfBooking BookingType { get; set; }
+        public string TypeOfBooking_Swedish =>
+            BookingTranslations.ContainsKey(BookingType)
+            ? BookingTranslations[BookingType] : "Okänd";
+        private static readonly Dictionary<TypeOfBooking, string> BookingTranslations = new()
+        {
+            { TypeOfBooking.None, "Ingen" },
+            { TypeOfBooking.Canoe, "Kanot" },
+            { TypeOfBooking.CampGrounds, "Lägerområde" },
+            { TypeOfBooking.LeanTo, "Vindskydd" },
+            { TypeOfBooking.Cabin, "Stuga" }
+        };
         public int? NumberOfCanoes { get; set; }
         public int? NumberOfCabin { get; set; }
         public int? NumberOfLeanTo { get; set; }

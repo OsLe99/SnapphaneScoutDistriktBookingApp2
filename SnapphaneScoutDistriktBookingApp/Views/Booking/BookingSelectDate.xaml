@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
              x:Class="SnapphaneScoutDistriktBookingApp.Views.Booking.BookingSelectDate"
              Title="BookingSelectDate">
     <VerticalStackLayout>
@@ -10,10 +11,12 @@
             HorizontalOptions="Center" />
         <DatePicker
             x:Name="StartDatePicker"
-            Date="{Binding StartDate, Mode=TwoWay}" />
+            Date="{Binding StartDate, Mode=TwoWay}" 
+            MinimumDate="{x:Static sys:DateTime.Today}"/>
         <DatePicker 
             x:Name="EndDatePicker" 
-            Date="{Binding EndDate, Mode=TwoWay}" />
+            Date="{Binding EndDate, Mode=TwoWay}" 
+            MinimumDate="{x:Static sys:DateTime.Today}"/>
         <Button 
             x:Name="GoToBookingCustomerInfo"
             Text="Nästa steg"

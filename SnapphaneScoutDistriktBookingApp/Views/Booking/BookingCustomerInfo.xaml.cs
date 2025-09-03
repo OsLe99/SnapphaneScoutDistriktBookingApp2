@@ -8,11 +8,11 @@ public partial class BookingCustomerInfo : ContentPage
     {
         InitializeComponent();
         _customer = customer;
+        BindingContext = _customer;
     }
 
     private async void OnChangeToBookingConfirmation(object sender, EventArgs e)
     {
-        SaveCustomerInfo(_customer);
         await Navigation.PushAsync(new BookingConfirmation(_customer));
     }
 
@@ -29,15 +29,5 @@ public partial class BookingCustomerInfo : ContentPage
             hiddenLabel.IsVisible = false;
             orgNameInput.IsVisible = false;
         }
-    }
-
-    private async void SaveCustomerInfo(Customer customer)
-    {
-        customer.Name = myName.Text;
-        customer.Phone = myPhone.Text;
-        customer.Email = myEmail.Text;
-        customer.IsOrg = myCheckBox.IsChecked;
-        customer.OrgName = (myCheckBox.IsChecked == true ? orgNameInput.Text : "");
-        customer.IsConfirmed = false;
     }
 }

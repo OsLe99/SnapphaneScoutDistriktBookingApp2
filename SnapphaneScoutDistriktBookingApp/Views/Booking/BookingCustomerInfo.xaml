@@ -11,14 +11,17 @@
         <Entry
             x:Name="myName"
             Placeholder="För och efternamn"
+            Text="{Binding Name}"
             Keyboard="Chat" />
         <Entry
             x:Name="myPhone"
             Placeholder="Telefonnummer"
+            Text="{Binding Phone}"
             Keyboard="Numeric" />
         <Entry
             x:Name="myEmail"
             Placeholder="Email"
+            Text="{Binding Email}"
             Keyboard="Email"
             TextTransform="None" />
 
@@ -40,10 +43,11 @@
         <Entry
             x:Name="orgNameInput"
             Placeholder="Scoutkår"
+            Text="{Binding OrgName}"
             IsVisible="False" />
         <Button
             x:Name="GoToBookingConfirmation"
-            Text="Lägg beställning"
+            Text="Lägg bokning"
             Clicked="OnChangeToBookingConfirmation" />
     </VerticalStackLayout>
 </ContentPage>
