@@ -45,7 +45,7 @@
                     Grid.Column="0"
                     x:Name="BokaKanot"
                     Text="Boka"
-                    Clicked="OnChangeToCanoe"
+                    Clicked="OnChangeToBookingSelect"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                 ></Button>

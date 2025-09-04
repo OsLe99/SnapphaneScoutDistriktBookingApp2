@@ -46,26 +46,6 @@
 
                 <Button x:Name="ConfirmBooking" Text="Skapa bokning" Clicked="OnConfirmBookingClicked" Grid.Row="8" Grid.Column="0"/>
             </Grid>
-                <!--<Label Text="Typ av bokning:" />
-            <Label Text="{Binding BookingType}" />
-
-            <Label Text="Namn:" />
-            <Label Text="{Binding Name}" />
-
-            <Label Text="Telefon:" />
-            <Label Text="{Binding Phone}" />
-
-            <Label Text="Email:" />
-            <Label Text="{Binding Email}" />
-
-            <Label Text="Scoutkår:" />
-            <Label Text="{Binding OrgName}" />
-
-            <Label Text="Startdatum:" />
-            <Label Text="{Binding StartDate, StringFormat='{0:yyyy-MM-dd}'}" />
-
-            <Label Text="Slutdatum:" />
-            <Label Text="{Binding EndDate, StringFormat='{0:yyyy-MM-dd}'}" />-->
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
