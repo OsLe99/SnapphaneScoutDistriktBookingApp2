@@ -1,12 +1,16 @@
+using SnapphaneScoutDistriktBookingApp.Services;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System.Threading.Tasks;
 
 namespace SnapphaneScoutDistriktBookingApp.Views;
 
 public partial class AddContactPopUpPage : ContentPage
 {
-	public AddContactPopUpPage()
+	private readonly IDbService _db = new DbService();
+	public AddContactPopUpPage(IDbService db)
 	{
 		InitializeComponent();
+		_db = db;
 	}
 
     private async void OnClickedPopPopUp(object sender, EventArgs e)
@@ -20,7 +24,8 @@ public partial class AddContactPopUpPage : ContentPage
 			Email = email,
 			PhoneNumber = phone
 		};
-		await Data.DB.ContactCollection().InsertOneAsync(contact);
+
+		await _db.ContactCollection().InsertOneAsync(contact);
 		await Navigation.PopAsync();
     }
 }

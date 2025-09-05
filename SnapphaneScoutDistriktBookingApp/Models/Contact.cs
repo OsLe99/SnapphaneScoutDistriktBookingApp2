@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SnapphaneScoutDistriktBookingApp.Models
 {
-    class Contact
+    public class Contact
     {
         [BsonId]
         public ObjectId Id { get; set; }

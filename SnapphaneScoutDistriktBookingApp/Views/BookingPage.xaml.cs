@@ -6,21 +6,28 @@ using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Syncfusion.Maui.Calendar;
-using SnapphaneScoutDistriktBookingApp.Data;
 using MongoDB.Driver;
 using SnapphaneScoutDistriktBookingApp.ViewModels;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+using SnapphaneScoutDistriktBookingApp.Services;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 
 namespace SnapphaneScoutDistriktBookingApp;
 
 public partial class BookingPage : ContentPage
 {
-    public BookingPage()
-	{
+    private readonly IUserSessionService _userSession;
+    private readonly IDbService _db;
+    private readonly IEmailService _emailService;
+    public BookingPage(IUserSessionService userSession, IDbService db, IEmailService emailService)
+    {
 		InitializeComponent();
-		BindingContext = new BookingViewModel();
-        myName.Text = UserSession.Instance.UserName;
-        myEmail.Text = UserSession.Instance.UserEmail;
+        _userSession = userSession;
+        _db = db;
+        _emailService = emailService;
+        BindingContext = new BookingViewModel(db);
+        myName.Text = _userSession.UserName;
+        myEmail.Text = _userSession.UserEmail;
     }
     private void OnCheckChange(object sender, CheckedChangedEventArgs e)
     {
@@ -60,7 +67,7 @@ public partial class BookingPage : ContentPage
 		}
 
 		
-		var custumer = new Models.Customer()
+		var customer = new Models.Customer()
 		{
 			Name = myName.Text,
 			Phone = myPhone.Text,
@@ -76,8 +83,9 @@ public partial class BookingPage : ContentPage
 			NumberOfLeanTo = int.TryParse(Vindskydd.Text, out int result3) ? result3 : null,
             IsConfirmed = false
 		};
-		await Data.DB.BookingCollection().InsertOneAsync(custumer);
-		API.SendEmail("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", "emil.berg@campusnykoping.se", custumer.Email, custumer);
+
+		await _db.BookingCollection().InsertOneAsync(customer);
+        await _emailService.SendEmail("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", "emil.berg@campusnykoping.se", customer.Email, customer);
         var popup = new ContentPage
         {
             Content = new VerticalStackLayout

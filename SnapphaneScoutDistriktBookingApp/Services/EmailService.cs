@@ -7,12 +7,13 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 
-namespace SnapphaneScoutDistriktBookingApp.Data
+namespace SnapphaneScoutDistriktBookingApp.Services
 {
-    class API
+    public class EmailService : IEmailService
     {
-        public static async Task SendEmail(string apiKey, string fromEmail, string toEmail, Models.Customer costumer)
+        public async Task SendEmail(string apiKey, string fromEmail, string toEmail, Models.Customer costumer)
         {
             toEmail = "oscar.lejon@campusnykoping.se";
             string bokningsNummer = "";
@@ -52,7 +53,7 @@ namespace SnapphaneScoutDistriktBookingApp.Data
 
 
 
-        public static async Task SendEmailConformation(string apiKey, string fromEmail, string toEmail, Models.Customer costumer)
+        public async Task SendEmailConfirmation(string apiKey, string fromEmail, string toEmail, Models.Customer costumer)
         {
             string bokningsNummer = "";
             if (costumer.NumberOfCanoes != null)

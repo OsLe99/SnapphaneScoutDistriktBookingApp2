@@ -1,23 +1,24 @@
-﻿
-
-
-using SnapphaneScoutDistriktBookingApp.Data;
+﻿using SnapphaneScoutDistriktBookingApp.Services;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System.Threading.Tasks;
 
 namespace SnapphaneScoutDistriktBookingApp
 {
     public partial class MainPage : ContentPage
     {
-
-        public MainPage()
+        private readonly IUserSessionService _userSession;
+        private readonly IAdminService _adminService;
+        private readonly IDbService _db;
+        private readonly IEmailService _emailService;
+        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService)
         {
             InitializeComponent();
+            _userSession = userSession;
+            _adminService = adminService;
+            _emailService = emailService;
+            _db = db;
+            BindingContext = _userSession;
             OnAppearing();
-            
-            BindingContext = UserSession.Instance;
-            
-            
-            
         }
         bool pageStarted = false;
         protected override async void OnAppearing()
@@ -30,7 +31,7 @@ namespace SnapphaneScoutDistriktBookingApp
                 await CheckUserSession();
             }
 
-            if (Data.UserSession.Instance.IsAdmin == false)
+            if (_userSession.IsAdmin == false)
             {
                 AdminSidan.IsVisible = false;
             }
@@ -38,24 +39,23 @@ namespace SnapphaneScoutDistriktBookingApp
             {
                 AdminSidan.IsVisible = true;
             }
-
         }
 
         private async void OnChangeToCanoe(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BookingPage());
+            await Navigation.PushAsync(new BookingPage(_userSession, _db, _emailService));
         }
 
 
-        private async Task CheckUserSession()
+        public async Task CheckUserSession()
         {
-            if (!Data.UserSession.Instance.IsUserSet())
+            if (!_userSession.IsUserSet())
             {
-                await Navigation.PushAsync(new Views.LoginPage());
+                await Navigation.PushAsync(new Views.LoginPage(_userSession, _adminService));
             }
         }
 
-        private async void OnResetUser(object sender, EventArgs e)
+        public async void OnResetUser(object sender, EventArgs e)
         {
             bool confirm = await DisplayAlert("Ändra användare", "Är du säker på att du vill ändra användare?", "Ja", "Nej");
             if (!confirm)
@@ -63,7 +63,7 @@ namespace SnapphaneScoutDistriktBookingApp
                 return;
             }
 
-            Data.UserSession.Instance.ResetUser();
+            _userSession.ResetUser();
 
             await DisplayAlert("Användarinformation återställd", "Nuvarande sparad användare är borttagen.", "OK");
             await CheckUserSession();
@@ -71,8 +71,7 @@ namespace SnapphaneScoutDistriktBookingApp
 
         private async void OnClickedGoToAdminPage(object sender, EventArgs e)
         {
-            
-            await Navigation.PushAsync(new Views.AdminPage());
+            await Navigation.PushAsync(new Views.AdminPage(_db, _emailService));
         }
 
         private async void OnClickedGoToInfoPage(object sender, EventArgs e)
