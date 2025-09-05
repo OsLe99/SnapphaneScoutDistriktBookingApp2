@@ -88,10 +88,5 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
             
         }
-
-
-
-
-
     }
 }

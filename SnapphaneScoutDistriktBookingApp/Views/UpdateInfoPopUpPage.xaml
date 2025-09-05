@@ -5,7 +5,7 @@
              Title="UpdateInfoPopUpPage">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text=""
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <Editor AutoSize="TextChanges" Text="{Binding Info}" Placeholder="Skriv infotexten här"></Editor>

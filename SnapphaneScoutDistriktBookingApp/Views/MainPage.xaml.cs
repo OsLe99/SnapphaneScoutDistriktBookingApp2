@@ -1,7 +1,4 @@
-﻿
-
-
-using SnapphaneScoutDistriktBookingApp.Data;
+﻿using SnapphaneScoutDistriktBookingApp.Data;
 using System.Threading.Tasks;
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -15,9 +12,6 @@ namespace SnapphaneScoutDistriktBookingApp
             OnAppearing();
             
             BindingContext = UserSession.Instance;
-            
-            
-            
         }
         bool pageStarted = false;
         protected override async void OnAppearing()
@@ -41,7 +35,7 @@ namespace SnapphaneScoutDistriktBookingApp
 
         }
 
-        private async void OnChangeToCanoe(object sender, EventArgs e)
+        private async void OnChangeToBookingSelect(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new BookingPage());
         }

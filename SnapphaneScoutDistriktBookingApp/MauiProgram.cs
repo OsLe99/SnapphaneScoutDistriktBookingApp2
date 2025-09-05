@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SnapphaneScoutDistriktBookingApp.ViewModels;
 
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -8,7 +9,7 @@ namespace SnapphaneScoutDistriktBookingApp
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
-            
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>

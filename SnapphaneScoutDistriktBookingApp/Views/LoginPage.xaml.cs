@@ -58,8 +58,8 @@ public partial class LoginPage : ContentPage
                              if (isAdmin)
                              {
                                  await DisplayAlert("Inloggning", "Admin inloggning lyckades!", "OK");
-                                 await Navigation.PopModalAsync(); // Close modal on success
-                                 
+                                 await Shell.Current.GoToAsync("//MainPage");
+
                              }
                              else
                              {
@@ -71,6 +71,10 @@ public partial class LoginPage : ContentPage
                 }
             };
             await Navigation.PushModalAsync(popupPassword);
+        }
+        else
+        {
+            await Shell.Current.GoToAsync("//MainPage");
         }
     }
 }
