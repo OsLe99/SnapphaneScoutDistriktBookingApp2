@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SnapphaneScoutDistriktBookingApp.Models
 {
-    public class Customer : ObservableObject, INotifyPropertyChanged
+    public class Customer : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         [Flags]
@@ -54,14 +54,7 @@ namespace SnapphaneScoutDistriktBookingApp.Models
         public int? NumberOfLeanTo { get; set; }
         public int? NumberOfCampground { get; set; }
         private bool _isConfirmed;
-        public bool IsConfirmed { get { return _isConfirmed; }
-        set
-            {
-                _isConfirmed = value;
-                OnPropertyChanged();
-                _ = Data.DB.UpdateCheckBoxDatabaseAsync(this);
-            }
-        }
+        public bool IsConfirmed { get; set; }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

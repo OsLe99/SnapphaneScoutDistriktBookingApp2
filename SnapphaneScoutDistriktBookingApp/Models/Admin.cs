@@ -8,7 +8,7 @@ using MongoDB.Bson;
 
 namespace SnapphaneScoutDistriktBookingApp.Models
 {
-    class Admin
+    public class Admin
     {
         public ObjectId Id { get; set; }
         [Required]

@@ -1,4 +1,6 @@
 ﻿using MongoDB.Driver;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using SnapphaneScoutDistriktBookingApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +15,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
     class AdminPageViewModel : INotifyPropertyChanged
     {
+        private readonly IDbService _db = new DbService();
         public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<Models.Customer> _bookings;
         public ObservableCollection<Models.Customer> Bookings { get { return _bookings; }
@@ -37,7 +40,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         }
         private async Task<List<Models.Customer>> GetAllBookingsFromDB()
         {
-            List<Models.Customer> bookings = await Data.DB.BookingCollection().Find(_ => true).ToListAsync();
+            List<Models.Customer> bookings = await _db.BookingCollection().Find(_ => true).ToListAsync();
             return bookings;
         }
         private async Task LoadAllBookingsAsync()
