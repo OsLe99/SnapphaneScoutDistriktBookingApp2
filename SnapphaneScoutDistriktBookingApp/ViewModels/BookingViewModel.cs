@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MongoDB.Driver;
-using SnapphaneScoutDistriktBookingApp.Models;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,9 +15,23 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
     public class BookingViewModel
     {
-        public Customer Customer { get; set; } = new Customer();
-        //---------------------------------------------------------------------------------------- Old code for checking available canoes, cabins, lean-tos, and campgrounds
+        private readonly IDbService _db;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
+        public BookingViewModel(IDbService db)
+        {
+            _db = db;
+        }
+        
+        private string _canoesAvailable;
+        public string CanoesAvailable { get { return _canoesAvailable; }
+            set
+            {
+                _canoesAvailable = value;
+                OnPropertyChanged();
+                //LoadViableNumbers();
+            }
+        }
 
         //private string _canoesAvailable;
         //public string CanoesAvailable { get { return _canoesAvailable; }
@@ -76,22 +90,23 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         //    CampGroundAvailable = numbers[3].ToString();
         //}
 
-        //public async Task<int[]> ViableCanoesInt()
-        //{
-        //    DateTime start = NewStartDate;
-        //    DateTime end = NewEndDate;
-        //    var bookingCollection = await Data.DB.BookingCollection().Find(Builders<Models.Customer>.Filter.Where(x => x.StartDate <= end && x.EndDate >= start)).ToListAsync();
-        //    int[] totalSum = new int[4];
-        //    totalSum[0] = bookingCollection.Sum(x => x.NumberOfCanoes.GetValueOrDefault());
+        public async Task<int[]> ViableCanoesInt()
+        {
+            DateTime start = NewStartDate;
+            DateTime end = NewEndDate;
 
-        //    totalSum[1] = bookingCollection.Sum(x => x.NumberOfCabin.GetValueOrDefault());
-
-        //    totalSum[2] = bookingCollection.Sum(x => x.NumberOfLeanTo.GetValueOrDefault());
-
-        //    totalSum[3] = bookingCollection.Sum(x => x.NumberOfCampground.GetValueOrDefault());
-
-        //    return totalSum;
-        //}
+            var bookingCollection = await _db.BookingCollection().Find(Builders<Models.Customer>.Filter.Where(x => x.StartDate <= end && x.EndDate >= start)).ToListAsync();
+            int[] totalSum = new int[4];
+            totalSum[0] = bookingCollection.Sum(x => x.NumberOfCanoes.GetValueOrDefault());
+            
+            totalSum[1] = bookingCollection.Sum(x => x.NumberOfCabin.GetValueOrDefault());
+            
+            totalSum[2] = bookingCollection.Sum(x => x.NumberOfLeanTo.GetValueOrDefault());
+            
+            totalSum[3] = bookingCollection.Sum(x => x.NumberOfCampground.GetValueOrDefault());
+            
+            return totalSum;
+        }
 
         //----------------------------------------------------------------------------------------
 

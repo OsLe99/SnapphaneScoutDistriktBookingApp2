@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using SnapphaneScoutDistriktBookingApp.ViewModels;
 using System.Threading.Tasks;
 
@@ -6,10 +7,14 @@ namespace SnapphaneScoutDistriktBookingApp.Views;
 
 public partial class AdminPage : ContentPage
 {
-	public AdminPage()
-	{
-		InitializeComponent();
-		BindingContext = new ViewModels.AdminPageViewModel();
+    private readonly IDbService _db;
+    private readonly IEmailService _emailService;
+    public AdminPage(IDbService db, IEmailService emailService)
+    {
+        InitializeComponent();
+        _db = db;
+        _emailService = emailService;
+        BindingContext = new ViewModels.AdminPageViewModel();
 	}
 
     private async void OnBookingSelected(object sender, SelectedItemChangedEventArgs e)
@@ -27,7 +32,7 @@ public partial class AdminPage : ContentPage
 
     private async void OnClickedAddContact(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new Views.AddContactPopUpPage());
+        await Navigation.PushAsync(new Views.AddContactPopUpPage(_db));
     }
 
     private async void OnClickedChangeInfo(object sender, EventArgs e)
@@ -41,10 +46,11 @@ public partial class AdminPage : ContentPage
         {
             if (e.Value)
             {
-                Data.API.SendEmailConformation("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", "emil.berg@campusnykoping.se", costumer.Email, costumer);
+                await _emailService.SendEmailConfirmation("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", "emil.berg@campusnykoping.se", costumer.Email, costumer);
                 var filter = Builders<Models.Customer>.Filter.Eq(x => x.Id, costumer.Id);
                 var update = Builders<Models.Customer>.Update.Set(x => x.EmailConformation, true);
-                await Data.DB.BookingCollection().UpdateOneAsync(filter, update);
+
+                await _db.BookingCollection().UpdateOneAsync(filter, update);
                 Task.Delay(2000);
 
             }

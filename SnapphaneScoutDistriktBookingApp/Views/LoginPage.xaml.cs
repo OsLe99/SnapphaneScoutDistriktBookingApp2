@@ -1,18 +1,23 @@
-using SnapphaneScoutDistriktBookingApp.Data;
+using SnapphaneScoutDistriktBookingApp.Services;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System.Diagnostics;
 
 namespace SnapphaneScoutDistriktBookingApp.Views;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage()
+    private readonly IUserSessionService _userSession;
+    private readonly IAdminService _adminService;
+    public LoginPage(IUserSessionService userSession, IAdminService adminService)
 	{
 		InitializeComponent();
-	}
+        _userSession = userSession;
+        _adminService = adminService;
+    }
     private async void OnLoginClicked(object sender, EventArgs e)
     {
-        string userName = NameEntry.Text?.Trim();
-        string userEmail = EmailEntry.Text?.Trim();
+        string userName = NameEntry.Text.Trim();
+        string userEmail = EmailEntry.Text.Trim();
 
         if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(userEmail))
         {
@@ -20,13 +25,13 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        Data.UserSession.Instance.SetUser(userName, userEmail);
+        _userSession.SetUser(userName, userEmail);
 
-        await DisplayAlert("Välkommen!", $"Hej, {Data.UserSession.Instance.UserName}!", "OK");
+        await DisplayAlert("Välkommen!", $"Hej, {_userSession.UserName}!", "OK");
 
-        bool isAdmin = await AdminService.CheckIfAdminAsync(
-            Data.UserSession.Instance.UserName,
-            Data.UserSession.Instance.UserEmail
+        bool isAdmin = await _adminService.CheckIfAdminAsync(
+            _userSession.UserName,
+            _userSession.UserEmail
             );
 
         if (isAdmin == true)
@@ -49,9 +54,9 @@ public partial class LoginPage : ContentPage
                          Text = "OK",
                          Command = new Command(async () =>
                          {
-                             bool isAdmin = await AdminService.TryLoginAdminAsync(
-                                 Data.UserSession.Instance.UserName,
-                                 Data.UserSession.Instance.UserEmail,
+                             bool isAdmin = await _adminService.TryLoginAdminAsync(
+                                 _userSession.UserName,
+                                 _userSession.UserEmail,
                                  passwordEntry.Text
                              );
 

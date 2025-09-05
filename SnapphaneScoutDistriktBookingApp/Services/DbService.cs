@@ -3,47 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SnapphaneScoutDistriktBookingApp.Models;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using MongoDB.Driver;
 
-namespace SnapphaneScoutDistriktBookingApp.Data
+namespace SnapphaneScoutDistriktBookingApp.Services
 {
-    class DB
+    public class DbService : IDbService
     {
-        
-        private static MongoClient GetClient()
+        private readonly MongoClient _client;
+        public DbService()
         {
             const string connectionUri = "mongodb+srv://dbAdmin:DBadmin00@hultetbooking.h5urq.mongodb.net/?retryWrites=true&w=majority&appName=HultetBooking";
             var settings = MongoClientSettings.FromConnectionString(connectionUri);
             settings.ServerApi = new ServerApi(ServerApiVersion.V1);
             var client = new MongoClient(settings);
-            return client;
+            _client = new MongoClient(settings);
         }
-
-        public static IMongoCollection<Models.Customer> BookingCollection()
+        public IMongoCollection<Customer> BookingCollection()
         {
-            var client = GetClient();
-
-            var database = client.GetDatabase("bookingsDB");
-            var bookingCollection = database.GetCollection<Models.Customer>("bookings");
-            return bookingCollection;
+            var database = _client.GetDatabase("bookingsDB");
+            return database.GetCollection<Customer>("bookings");
         }
-        public static IMongoCollection<Models.Contact> ContactCollection()
+        public IMongoCollection<Models.Contact> ContactCollection()
         {
-            var client = GetClient();
-
-            var database = client.GetDatabase("contactsDB");
-            var contactCollection = database.GetCollection<Models.Contact>("contacts");
-            return contactCollection;
+            var database = _client.GetDatabase("contactsDB");
+            return database.GetCollection<Models.Contact>("contacts");
         }
-        public static IMongoCollection<Models.Info> InfoCollection()
+        public IMongoCollection<Models.Info> InfoCollection()
         {
-            var client = GetClient();
-
-            var database = client.GetDatabase("infoDB");
+            var database = _client.GetDatabase("infoDB");
             var infoCollection = database.GetCollection<Models.Info>("infostring");
             return infoCollection;
         }
-        public static async Task UpdateCheckBoxDatabaseAsync(Models.Customer costumer)
+        public async Task UpdateCheckBoxDatabaseAsync(Models.Customer costumer)
         {
             try
             {
@@ -57,14 +50,13 @@ namespace SnapphaneScoutDistriktBookingApp.Data
                 Console.WriteLine($"Fel vid uppdatering: {ex.Message}");
             }
         }
-        public static IMongoCollection<Models.Admin> AdminUserCollection()
+        public IMongoCollection<Models.Admin> AdminUserCollection()
         {
-            var client = GetClient();
-            var database = client.GetDatabase("adminUsers");
+            var database = _client.GetDatabase("adminUsers");
             return database.GetCollection<Models.Admin>("adminUsers");
         }
 
-        public static async Task<bool> RegisterAdminAsync(string userName, string userEmail, string password)
+        public async Task<bool> RegisterAdminAsync(string userName, string userEmail, string password)
         {
             var collection = AdminUserCollection();
 
@@ -88,6 +80,10 @@ namespace SnapphaneScoutDistriktBookingApp.Data
             return true;
         }
 
+        //            {
+        //        _isConfirmed = value;
+        //        OnPropertyChanged();
+        //_ = Services.DB.UpdateCheckBoxDatabaseAsync(this); }
     }
 }
 
