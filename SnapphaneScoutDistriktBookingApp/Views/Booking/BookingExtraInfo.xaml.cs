@@ -2,15 +2,18 @@ using SnapphaneScoutDistriktBookingApp.Views.Booking;
 using Microsoft.Maui.Controls;
 using SnapphaneScoutDistriktBookingApp.Models;
 using SnapphaneScoutDistriktBookingApp.ViewModels;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 namespace SnapphaneScoutDistriktBookingApp.Views;
 
 public partial class BookingExtraInfo : ContentPage
 {
     private Customer _customer;
-    public BookingExtraInfo(Customer customer)
+    private IBookingService _bookingService;
+    public BookingExtraInfo(Customer customer, IBookingService bookingService)
     {
         InitializeComponent();
         _customer = customer;
+        _bookingService = bookingService;
 
         switch (customer.BookingType)
         {
@@ -57,6 +60,6 @@ public partial class BookingExtraInfo : ContentPage
     private async void OnChangeToBookingDate(object sender, EventArgs e)
 	{
         SaveNumberInputToCustomer();
-		await Navigation.PushAsync(new BookingSelectDate(_customer));
+		await Navigation.PushAsync(new BookingSelectDate(_customer, _bookingService));
     }
 }

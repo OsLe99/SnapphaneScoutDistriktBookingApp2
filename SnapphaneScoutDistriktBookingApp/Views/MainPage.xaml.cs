@@ -10,13 +10,15 @@ namespace SnapphaneScoutDistriktBookingApp
         private readonly IAdminService _adminService;
         private readonly IDbService _db;
         private readonly IEmailService _emailService;
-        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService)
+        private readonly IBookingService _bookingService;
+        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService)
         {
             InitializeComponent();
             _userSession = userSession;
             _adminService = adminService;
             _emailService = emailService;
             _db = db;
+            _bookingService = bookingService;
             BindingContext = _userSession;
             OnAppearing();
         }
@@ -43,7 +45,7 @@ namespace SnapphaneScoutDistriktBookingApp
 
         private async void OnChangeToBookingSelect(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BookingPage(_userSession, _db, _emailService));
+            await Navigation.PushAsync(new BookingPage(_userSession, _bookingService));
         }
 
 

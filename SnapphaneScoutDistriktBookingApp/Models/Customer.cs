@@ -30,7 +30,8 @@ namespace SnapphaneScoutDistriktBookingApp.Models
         public string Name { get; set; }
         [Required]
         public string Phone { get; set; }
-        [Required, EmailAddress]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         public bool IsOrg { get; set; }

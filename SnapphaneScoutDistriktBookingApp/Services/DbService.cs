@@ -80,6 +80,8 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             return true;
         }
 
+
+        // Uppdatera ifall bokning är bekräftad
         //            {
         //        _isConfirmed = value;
         //        OnPropertyChanged();
