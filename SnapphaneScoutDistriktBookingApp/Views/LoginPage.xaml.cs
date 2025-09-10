@@ -16,7 +16,7 @@ public partial class LoginPage : ContentPage
         _adminService = adminService;
         _dbService = dbService;
     }
-    private async void OnLoginClicked(object sender, EventArgs e)
+    private async void OnLoginClickedAsync(object sender, EventArgs e)
     {
         string userName = NameEntry.Text.Trim();
         string userEmail = EmailEntry.Text.Trim();

@@ -57,7 +57,7 @@ public partial class BookingExtraInfo : ContentPage
         }
     }
 
-    private async void OnChangeToBookingDate(object sender, EventArgs e)
+    private async void OnChangeToBookingDateAsync(object sender, EventArgs e)
 	{
         SaveNumberInputToCustomer();
 		await Navigation.PushAsync(new BookingSelectDate(_customer, _bookingService));

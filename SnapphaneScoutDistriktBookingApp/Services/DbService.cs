@@ -89,7 +89,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         #endregion
 
         #region CRUD info
-        public async Task<Models.Info> UpdateInfo(Models.Info info, string Id) // Bättre metod namn + Async
+        public async Task<Models.Info> UpdateInfoAsync(Models.Info info, string Id)
         {
             await InfoCollection().ReplaceOneAsync(filter: Builders<Models.Info>.Filter.Eq(x => x.Id, "unique_id"),
                 replacement: info, options: new ReplaceOptions { IsUpsert = true });

@@ -29,28 +29,28 @@
                     Grid.Column="0"
                     x:Name="BookCanoe"
                     Text="Kanot"
-                    Clicked="OnChangeToMoreInfo">
+                    Clicked="OnChangeToMoreInfoAsync">
                 </Button>
                 <Button
                     Grid.Row="0"
                     Grid.Column="1"
                     x:Name="BookLeanTo"
                     Text="Vindskydd"
-                    Clicked="OnChangeToMoreInfo">
+                    Clicked="OnChangeToMoreInfoAsync">
                 </Button>
                 <Button
                     Grid.Row="1"
                     Grid.Column="0"
                     x:Name="BookCampGrounds"
                     Text="Lägerområde"
-                    Clicked="OnChangeToMoreInfo">
+                    Clicked="OnChangeToMoreInfoAsync">
                 </Button>
                 <Button
                     Grid.Row="1"
                     Grid.Column="1"
                     x:Name="BookCabin"
                     Text="Stugan"
-                    Clicked="OnChangeToMoreInfo">
+                    Clicked="OnChangeToMoreInfoAsync">
                 </Button>
             </Grid>
         </VerticalStackLayout>

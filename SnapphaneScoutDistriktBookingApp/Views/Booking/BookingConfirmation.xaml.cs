@@ -16,7 +16,7 @@ public partial class BookingConfirmation : ContentPage, INotifyPropertyChanged
         BindingContext = _customer;
     }
 
-    private async void OnConfirmBookingClicked(object sender, EventArgs e)
+    private async void OnConfirmBookingClickedAsync(object sender, EventArgs e)
 	{
         await _bookingService.AddBookingAsync(_customer);
         await Shell.Current.GoToAsync("//MainPage");

@@ -17,7 +17,7 @@ public partial class BookingSelectDate : ContentPage
         BindingContext = _customer;
     }
 
-    private async void OnChangeToBookingCustomerInfo(object sender, EventArgs e)
+    private async void OnChangeToBookingCustomerInfoAsync(object sender, EventArgs e)
     {
         _customer.StartDate = StartDatePicker.Date;
         _customer.EndDate = EndDatePicker.Date;

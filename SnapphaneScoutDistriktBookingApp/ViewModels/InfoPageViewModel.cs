@@ -71,7 +71,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
                 Id = "unique_id",
                 InfoString = Info
             };
-            await _db.UpdateInfo(info, info.Id);
+            await _db.UpdateInfoAsync(info, info.Id);
             //await _db.InfoCollection().ReplaceOneAsync(filter: Builders<Models.Info>.Filter.Eq(x => x.Id, "unique_id"),
             //    replacement: info, options: new ReplaceOptions { IsUpsert = true });
 

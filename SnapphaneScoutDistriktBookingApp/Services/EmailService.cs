@@ -13,7 +13,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class EmailService : IEmailService
     {
-        public async Task SendEmail(string apiKey, string fromEmail, string toEmail, Models.Customer customer)
+        public async Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Models.Customer customer)
         {
             toEmail = "oscar.lejon@campusnykoping.se";
             string bokningsNummer = "";
@@ -53,7 +53,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
 
 
-        public async Task SendEmailConfirmation(string apiKey, string fromEmail, string toEmail, Models.Customer customer)
+        public async Task SendEmailConfirmationAsync(string apiKey, string fromEmail, string toEmail, Models.Customer customer)
         {
             string bokningsNummer = "";
             if (customer.NumberOfCanoes != null)

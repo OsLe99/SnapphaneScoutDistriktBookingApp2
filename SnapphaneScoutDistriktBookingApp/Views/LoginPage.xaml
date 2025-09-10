@@ -10,6 +10,6 @@
         <Label Text="Email" FontSize="18"/>
         <Entry x:Name="EmailEntry" Placeholder="Din email" Keyboard="Email"/>
 
-        <Button Text="Spara information" Clicked="OnLoginClicked"/>
+        <Button Text="Spara information" Clicked="OnLoginClickedAsync"/>
     </VerticalStackLayout>
 </ContentPage>

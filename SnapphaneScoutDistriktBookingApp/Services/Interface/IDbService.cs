@@ -22,7 +22,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
         Task<ObservableCollection<Customer>> LoadAllNewBookingsAsync(ObservableCollection<Customer> bookings);
         Task<Customer> AddCustomerAsync(Customer customer);
         Task<Customer> FindBookingByIdAsync(Customer customer);
-        Task<Models.Info> UpdateInfo(Models.Info info, string Id);
+        Task<Models.Info> UpdateInfoAsync(Models.Info info, string Id);
         Task<List<Models.Info>> GetAllInfoAsync();
     }
 }

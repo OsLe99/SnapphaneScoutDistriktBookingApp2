@@ -16,7 +16,7 @@ public partial class BookingCustomerInfo : ContentPage
         BindingContext = _customer;
     }
 
-    private async void OnChangeToBookingConfirmation(object sender, EventArgs e)
+    private async void OnChangeToBookingConfirmationAsync(object sender, EventArgs e)
     {
         var errors = _validateBookingService.ValidateBookingDetails(_customer);
 

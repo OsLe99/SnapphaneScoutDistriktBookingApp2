@@ -26,7 +26,7 @@ public partial class BookingPage : ContentPage
         BindingContext = new Models.Customer();
 
     }
-    private async void OnChangeToMoreInfo(object sender, EventArgs e)
+    private async void OnChangeToMoreInfoAsync(object sender, EventArgs e)
 	{
         var newCustomer = (BindingContext as Models.Customer);
         if (sender is Button button && button.Text is string type)
