@@ -33,19 +33,18 @@ namespace SnapphaneScoutDistriktBookingApp
 
             if (_userSession.IsAdmin == false)
             {
-                AdminSidan.IsVisible = false;
+                AdminPage.IsVisible = false;
             }
             else
             {
-                AdminSidan.IsVisible = true;
+                AdminPage.IsVisible = true;
             }
         }
 
         private async void OnChangeToBookingSelect(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BookingPage(_userSession, _db, _emailService));
+            await Navigation.PushAsync(new BookingPage());
         }
-
 
         public async Task CheckUserSession()
         {

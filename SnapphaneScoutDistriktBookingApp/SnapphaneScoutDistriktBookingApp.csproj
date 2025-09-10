@@ -61,6 +61,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Resources\Styles\LightMode.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\AddContactPopUpPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
