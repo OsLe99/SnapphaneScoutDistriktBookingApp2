@@ -30,36 +30,13 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         public AdminPageViewModel()
         {
             Bookings = new ObservableCollection<Models.Customer>();
-            ListAllBookingsCommand = new Command(async () => await LoadAllBookingsAsync());
-            ListAllNewBookingsCommand = new Command(async () => await LoadAllNewBookingsAsync());
+            ListAllBookingsCommand = new Command(async () => await _db.LoadAllBookingsAsync(Bookings));
+            ListAllNewBookingsCommand = new Command(async () => await _db.LoadAllNewBookingsAsync(Bookings));
 
         }
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        private async Task<List<Models.Customer>> GetAllBookingsFromDB()
-        {
-            List<Models.Customer> bookings = await _db.BookingCollection().Find(_ => true).ToListAsync();
-            return bookings;
-        }
-        private async Task LoadAllBookingsAsync()
-        {
-            var data = await GetAllBookingsFromDB();
-            foreach(var booking in data)
-            {
-                Bookings.Add(booking);
-            }
-        }
-        private async Task LoadAllNewBookingsAsync()
-        {
-            var data = await GetAllBookingsFromDB();
-            var newData = data.Where(x => x.StartDate.Date >= DateTime.Today).ToList();
-            Bookings.Clear();
-            foreach(var newBookings in newData)
-            {
-                Bookings.Add(newBookings);
-            }
         }
     }
 }

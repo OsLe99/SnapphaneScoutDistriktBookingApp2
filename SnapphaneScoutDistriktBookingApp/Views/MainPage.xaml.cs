@@ -53,7 +53,7 @@ namespace SnapphaneScoutDistriktBookingApp
         {
             if (!_userSession.IsUserSet())
             {
-                await Navigation.PushAsync(new Views.LoginPage(_userSession, _adminService));
+                await Navigation.PushAsync(new Views.LoginPage(_userSession, _adminService, _db));
             }
         }
 

@@ -8,11 +8,13 @@ public partial class LoginPage : ContentPage
 {
     private readonly IUserSessionService _userSession;
     private readonly IAdminService _adminService;
-    public LoginPage(IUserSessionService userSession, IAdminService adminService)
+    private readonly IDbService _dbService;
+    public LoginPage(IUserSessionService userSession, IAdminService adminService, IDbService dbService)
 	{
 		InitializeComponent();
         _userSession = userSession;
         _adminService = adminService;
+        _dbService = dbService;
     }
     private async void OnLoginClicked(object sender, EventArgs e)
     {
@@ -29,10 +31,7 @@ public partial class LoginPage : ContentPage
 
         await DisplayAlert("Välkommen!", $"Hej, {_userSession.UserName}!", "OK");
 
-        bool isAdmin = await _adminService.CheckIfAdminAsync(
-            _userSession.UserName,
-            _userSession.UserEmail
-            );
+        bool isAdmin = await _dbService.CheckIfAdminAsync(_userSession.UserName, _userSession.UserEmail);
 
         if (isAdmin == true)
         {
@@ -63,6 +62,7 @@ public partial class LoginPage : ContentPage
                              if (isAdmin)
                              {
                                  await DisplayAlert("Inloggning", "Admin inloggning lyckades!", "OK");
+                                 Preferences.Set("IsAdmin", true);
                                  await Shell.Current.GoToAsync("//MainPage");
 
                              }

@@ -42,17 +42,17 @@ public partial class AdminPage : ContentPage
 
     private async void OnCheckBoxConformationSendEmail(object sender, CheckedChangedEventArgs e)
     {
-        if(sender is CheckBox checkBox && checkBox.BindingContext is Models.Customer costumer && costumer.EmailConformation == false)
+        if(sender is CheckBox checkBox && checkBox.BindingContext is Models.Customer customer && customer.EmailConformation == false)
         {
             if (e.Value)
             {
-                await _emailService.SendEmailConfirmation("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", "emil.berg@campusnykoping.se", costumer.Email, costumer);
-                var filter = Builders<Models.Customer>.Filter.Eq(x => x.Id, costumer.Id);
-                var update = Builders<Models.Customer>.Update.Set(x => x.EmailConformation, true);
-
-                await _db.BookingCollection().UpdateOneAsync(filter, update);
-                Task.Delay(2000);
-
+                await _emailService.SendEmailConfirmation("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", "emil.berg@campusnykoping.se", customer.Email, customer);
+                await _db.UpdateCheckBoxDatabaseAsync(customer);
+                // Uppdatera ifall bokning är bekräftad
+                //            {
+                //        _isConfirmed = value;
+                //        OnPropertyChanged();
+                //_ = Services.DB.UpdateCheckBoxDatabaseAsync(this); }
             }
         }
         

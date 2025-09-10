@@ -8,6 +8,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
     public interface IBookingService
     {
-        Task AddBookingAsync(Models.Customer customer);
+        Task<Models.Customer> AddBookingAsync(Models.Customer customer);
+        Task<Models.Customer> FindAddedBookingByIdAsync(Models.Customer customer);
     }
 }

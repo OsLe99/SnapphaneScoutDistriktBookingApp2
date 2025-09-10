@@ -24,8 +24,7 @@ public partial class AddContactPopUpPage : ContentPage
 			Email = email,
 			PhoneNumber = phone
 		};
-
-		await _db.ContactCollection().InsertOneAsync(contact);
+		await _db.AddContactAsync(contact);
 		await Navigation.PopAsync();
     }
 }

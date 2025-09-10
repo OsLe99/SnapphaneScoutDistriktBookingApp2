@@ -16,6 +16,8 @@
 
 //public partial class BookingPage : ContentPage
 //{
+      // BookingPage används ej längre då bokningar sker i flera steg
+
 //    private readonly IUserSessionService _userSession;
 //    private readonly IDbService _db;
 //    private readonly IEmailService _emailService;

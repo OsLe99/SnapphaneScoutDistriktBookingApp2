@@ -1,4 +1,6 @@
-﻿using SnapphaneScoutDistriktBookingApp.Services.Interface;
+﻿using MongoDB;
+using MongoDB.Driver;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +21,20 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             _emailService = emailService;
         }
 
-        public async Task AddBookingAsync(Models.Customer customer)
+        public async Task<Models.Customer> AddBookingAsync(Models.Customer customer)
         {
             // Add the booking to the database
-            await _db.BookingCollection().InsertOneAsync(customer);
+            await _db.AddCustomerAsync(customer);
             await _emailService.SendEmail("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", "emil.berg@campusnykoping.se", customer.Email, customer);
+            var newBooking = await FindAddedBookingByIdAsync(customer);
+            return newBooking;
         }
 
-        //public async Task UpdateBookingAsync(Models.Customer customer)
-        //{
-        //    var collection = _db.BookingCollection();
-        //}
+        // Find placed booking based on Id and return
+        public async Task<Models.Customer> FindAddedBookingByIdAsync(Models.Customer customer)
+        {
+            var newBooking = await _db.FindBookingByIdAsync(customer);
+            return newBooking;
+        }
     }
 }
