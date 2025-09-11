@@ -5,11 +5,11 @@
              x:Class="SnapphaneScoutDistriktBookingApp.App">
     <Application.Resources>
         <ResourceDictionary>
-            <!--<ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>-->
+            </ResourceDictionary.MergedDictionaries>
             <!-- Define color resources --><!--
             <Color x:Key="TextColor">White</Color>
             <Color x:Key="ButtonBackgroundColor">#007BFF</Color>
