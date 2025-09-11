@@ -10,13 +10,15 @@ namespace SnapphaneScoutDistriktBookingApp
         private readonly IAdminService _adminService;
         private readonly IDbService _db;
         private readonly IEmailService _emailService;
-        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService)
+        private readonly IBookingService _bookingService;
+        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService)
         {
             InitializeComponent();
             _userSession = userSession;
             _adminService = adminService;
             _emailService = emailService;
             _db = db;
+            _bookingService = bookingService;
             BindingContext = _userSession;
             OnAppearing();
         }
@@ -28,7 +30,7 @@ namespace SnapphaneScoutDistriktBookingApp
             if (!pageStarted)
             {
                 pageStarted = true;
-                await CheckUserSession();
+                await CheckUserSessionAsync();
             }
 
             if (_userSession.IsAdmin == false)
@@ -41,21 +43,21 @@ namespace SnapphaneScoutDistriktBookingApp
             }
         }
 
-        private async void OnChangeToBookingSelect(object sender, EventArgs e)
+        private async void OnChangeToBookingSelectAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BookingPage(_userSession, _db, _emailService));
+            await Navigation.PushAsync(new BookingPage(_userSession, _bookingService));
         }
 
 
-        public async Task CheckUserSession()
+        public async Task CheckUserSessionAsync()
         {
             if (!_userSession.IsUserSet())
             {
-                await Navigation.PushAsync(new Views.LoginPage(_userSession, _adminService));
+                await Navigation.PushAsync(new Views.LoginPage(_userSession, _adminService, _db));
             }
         }
 
-        public async void OnResetUser(object sender, EventArgs e)
+        public async void OnResetUserAsync(object sender, EventArgs e)
         {
             bool confirm = await DisplayAlert("Ändra användare", "Är du säker på att du vill ändra användare?", "Ja", "Nej");
             if (!confirm)
@@ -66,15 +68,15 @@ namespace SnapphaneScoutDistriktBookingApp
             _userSession.ResetUser();
 
             await DisplayAlert("Användarinformation återställd", "Nuvarande sparad användare är borttagen.", "OK");
-            await CheckUserSession();
+            await CheckUserSessionAsync();
         }
 
-        private async void OnClickedGoToAdminPage(object sender, EventArgs e)
+        private async void OnClickedGoToAdminPageAsync(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Views.AdminPage(_db, _emailService));
         }
 
-        private async void OnClickedGoToInfoPage(object sender, EventArgs e)
+        private async void OnClickedGoToInfoPageAsync(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Views.InfoPage());
         }

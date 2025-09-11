@@ -48,6 +48,6 @@
         <Button
             x:Name="GoToBookingConfirmation"
             Text="Lägg bokning"
-            Clicked="OnChangeToBookingConfirmation" />
+            Clicked="OnChangeToBookingConfirmationAsync" />
     </VerticalStackLayout>
 </ContentPage>

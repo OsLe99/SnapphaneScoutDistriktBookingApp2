@@ -1,17 +1,26 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Maui.ApplicationModel.Communication;
+using MongoDB.Driver;
+using SnapphaneScoutDistriktBookingApp.Models;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SnapphaneScoutDistriktBookingApp.Models;
-using SnapphaneScoutDistriktBookingApp.Services.Interface;
-using MongoDB.Driver;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class DbService : IDbService
     {
+        #region variables
         private readonly MongoClient _client;
+        private readonly IEmailService _emailService;
+
+        #endregion
+
+        #region ctor
         public DbService()
         {
             const string connectionUri = "mongodb+srv://dbAdmin:DBadmin00@hultetbooking.h5urq.mongodb.net/?retryWrites=true&w=majority&appName=HultetBooking";
@@ -19,44 +28,78 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             settings.ServerApi = new ServerApi(ServerApiVersion.V1);
             var client = new MongoClient(settings);
             _client = new MongoClient(settings);
+            _emailService = new EmailService();
         }
-        public IMongoCollection<Customer> BookingCollection()
+        #endregion
+
+        #region private methods
+        private IMongoCollection<Customer> BookingCollection()
         {
             var database = _client.GetDatabase("bookingsDB");
             return database.GetCollection<Customer>("bookings");
         }
-        public IMongoCollection<Models.Contact> ContactCollection()
+        private IMongoCollection<Models.Contact> ContactCollection()
         {
             var database = _client.GetDatabase("contactsDB");
             return database.GetCollection<Models.Contact>("contacts");
         }
-        public IMongoCollection<Models.Info> InfoCollection()
+        private IMongoCollection<Models.Info> InfoCollection()
         {
             var database = _client.GetDatabase("infoDB");
             var infoCollection = database.GetCollection<Models.Info>("infostring");
             return infoCollection;
         }
-        public async Task UpdateCheckBoxDatabaseAsync(Models.Customer costumer)
-        {
-            try
-            {
-                var collection = BookingCollection();
-                var filter = Builders<Models.Customer>.Filter.Eq(x => x.Id, costumer.Id);
-                var update = Builders<Models.Customer>.Update.Set(x => x.IsConfirmed, costumer.IsConfirmed);
-                await collection.UpdateOneAsync(filter, update);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Fel vid uppdatering: {ex.Message}");
-            }
-        }
-        public IMongoCollection<Models.Admin> AdminUserCollection()
+        private IMongoCollection<Models.Admin> AdminUserCollection()
         {
             var database = _client.GetDatabase("adminUsers");
             return database.GetCollection<Models.Admin>("adminUsers");
         }
+        #endregion
 
-        public async Task<bool> RegisterAdminAsync(string userName, string userEmail, string password)
+        #region CRUD customer
+        public async Task<Customer> AddCustomerAsync(Customer customer)
+        {
+            await BookingCollection().InsertOneAsync(customer);
+            return customer;
+        }
+        public async Task UpdateCheckBoxDatabaseAsync(Models.Customer customer) // UpdateConfirmedCustomer
+        {
+            try
+            {
+                var collection = BookingCollection();
+                var filter = Builders<Models.Customer>.Filter.Eq(x => x.Id, customer.Id);
+                var update = Builders<Models.Customer>.Update.Set(x => x.IsConfirmed, customer.IsConfirmed);
+                await collection.UpdateOneAsync(filter, update);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fel vid uppdatering: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region CRUD contact
+        public async Task<Models.Contact> AddContactAsync(Models.Contact contact)
+        {
+            await ContactCollection().InsertOneAsync(contact);
+            return contact;
+        }
+
+        #endregion
+
+        #region CRUD info
+        public async Task<Models.Info> UpdateInfoAsync(Models.Info info, string Id)
+        {
+            await InfoCollection().ReplaceOneAsync(filter: Builders<Models.Info>.Filter.Eq(x => x.Id, "unique_id"),
+                replacement: info, options: new ReplaceOptions { IsUpsert = true });
+            return info;
+        }
+
+        #endregion
+
+        #region admin methods
+        public async Task<bool> RegisterAdminAsync(string userName, string userEmail, string password) // Byta till ex. SignInUser
         {
             var collection = AdminUserCollection();
 
@@ -80,10 +123,61 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             return true;
         }
 
-        //            {
-        //        _isConfirmed = value;
-        //        OnPropertyChanged();
-        //_ = Services.DB.UpdateCheckBoxDatabaseAsync(this); }
+        public async Task<bool> CheckIfAdminAsync(string username, string userEmail)
+        {
+            var collection = AdminUserCollection();
+            var filter = Builders<Models.Admin>.Filter.And(
+                Builders<Models.Admin>.Filter.Eq(x => x.Name, username),
+                Builders<Models.Admin>.Filter.Eq(x => x.Email, userEmail)
+            );
+
+            var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
+
+            return adminUser != null;
+        }
+        #endregion
+
+        public async Task<List<Models.Info>> GetAllInfoAsync()
+        {
+            List<Models.Info> info = await InfoCollection().Find(Builders<Models.Info>.Filter.Empty).ToListAsync();
+            return info;
+        }
+        public async Task<List<Customer>> GetAllBookingsAsync()
+        {
+            List<Customer> bookings = await BookingCollection().Find(_ => true).ToListAsync();
+            return bookings;
+        }
+
+        public async Task<List<Models.Contact>> GetAllContactsAsync()
+        {
+            List<Models.Contact> contacts = await ContactCollection().Find(Builders<Models.Contact>.Filter.Empty).ToListAsync();
+            return contacts;
+        }
+        public async Task<ObservableCollection<Customer>> LoadAllBookingsAsync(ObservableCollection<Customer> bookings)
+        {
+            var data = await GetAllBookingsAsync();
+            foreach (var booking in data)
+            {
+                bookings.Add(booking);
+            }
+            return bookings;
+        }
+        public async Task<ObservableCollection<Customer>> LoadAllNewBookingsAsync(ObservableCollection<Customer> bookings)
+        {
+            var data = await GetAllBookingsAsync();
+            var newData = data.Where(x => x.StartDate.Date >= DateTime.Today).ToList();
+            bookings.Clear();
+            foreach (var newBookings in newData)
+            {
+                bookings.Add(newBookings);
+            }
+            return bookings;
+        }
+        public async Task<Customer> FindBookingByIdAsync(Customer customer)
+        {
+            await BookingCollection().Find(c => c.Id == customer.Id).FirstOrDefaultAsync();
+            return customer;
+        }
     }
 }
 

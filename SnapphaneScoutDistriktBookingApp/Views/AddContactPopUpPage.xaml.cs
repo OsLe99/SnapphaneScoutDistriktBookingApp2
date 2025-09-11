@@ -13,7 +13,7 @@ public partial class AddContactPopUpPage : ContentPage
 		_db = db;
 	}
 
-    private async void OnClickedPopPopUp(object sender, EventArgs e)
+    private async void OnClickedPopPopUpAsync(object sender, EventArgs e)
     {
 		var name = xName.Text;
 		var email = xEmail.Text;
@@ -24,8 +24,7 @@ public partial class AddContactPopUpPage : ContentPage
 			Email = email,
 			PhoneNumber = phone
 		};
-
-		await _db.ContactCollection().InsertOneAsync(contact);
+		await _db.AddContactAsync(contact);
 		await Navigation.PopAsync();
     }
 }

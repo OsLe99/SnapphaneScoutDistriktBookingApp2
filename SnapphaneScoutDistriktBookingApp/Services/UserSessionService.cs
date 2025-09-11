@@ -38,7 +38,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
         public string UserEmail
         {
-                       get => _userEmail;
+            get => _userEmail;
             set
             {
                 if (_userEmail != value)

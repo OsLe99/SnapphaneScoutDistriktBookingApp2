@@ -24,10 +24,13 @@ namespace SnapphaneScoutDistriktBookingApp
             builder.Services.AddSingleton<IUserSessionService, UserSessionService>();
             builder.Services.AddScoped<IDbService, DbService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
+            builder.Services.AddTransient<IBookingService, BookingService>();
+            builder.Services.AddSingleton<IValidateBookingService, ValidateBookingService>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
             return builder.Build();
         }
     }

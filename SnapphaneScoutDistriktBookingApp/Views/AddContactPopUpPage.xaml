@@ -11,6 +11,6 @@
         <Entry x:Name="xName" Placeholder="Namn på kontakt"></Entry>
         <Entry x:Name="xEmail" Placeholder="Email till kontakt" ></Entry>
         <Entry x:Name="xPhone" Placeholder="Tele nr till kontakt" ></Entry>
-        <Button Text="Klar" Clicked="OnClickedPopPopUp"></Button>
+        <Button Text="Klar" Clicked="OnClickedPopPopUpAsync"></Button>
     </VerticalStackLayout>
 </ContentPage>

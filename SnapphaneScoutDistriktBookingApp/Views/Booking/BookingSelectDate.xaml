@@ -20,6 +20,6 @@
         <Button 
             x:Name="GoToBookingCustomerInfo"
             Text="Nästa steg"
-            Clicked="OnChangeToBookingCustomerInfo"/>
+            Clicked="OnChangeToBookingCustomerInfoAsync"/>
     </VerticalStackLayout>
 </ContentPage>

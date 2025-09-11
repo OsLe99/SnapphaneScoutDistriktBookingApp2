@@ -5,24 +5,30 @@ using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using SnapphaneScoutDistriktBookingApp.Data;
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using MongoDB.Driver;
 using SnapphaneScoutDistriktBookingApp.ViewModels;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using SnapphaneScoutDistriktBookingApp.Views;
+using SnapphaneScoutDistriktBookingApp.Services;
 
 namespace SnapphaneScoutDistriktBookingApp;
 
 public partial class BookingPage : ContentPage
 {
-    public BookingPage()
+	private readonly IUserSessionService _userSessionService;
+	private readonly IBookingService _bookingService;
+    public BookingPage(IUserSessionService userSessionService, IBookingService bookingService)
 	{
 		InitializeComponent();
-		BindingContext = new BookingViewModel();
+		_userSessionService = userSessionService;
+		_bookingService = bookingService;
+        BindingContext = new Models.Customer();
+
     }
-    private async void OnChangeToMoreInfo(object sender, EventArgs e)
+    private async void OnChangeToMoreInfoAsync(object sender, EventArgs e)
 	{
-        var newCustomer = (BindingContext as BookingViewModel)?.Customer;
+        var newCustomer = (BindingContext as Models.Customer);
         if (sender is Button button && button.Text is string type)
         {
             switch (type)
@@ -41,7 +47,7 @@ public partial class BookingPage : ContentPage
 					break;
             }
         }
-        await Navigation.PushAsync(new BookingExtraInfo(newCustomer));
+        await Navigation.PushAsync(new BookingExtraInfo(newCustomer, _bookingService));
 	}
   //  private void OnCheckChange(object sender, CheckedChangedEventArgs e)
   //  {

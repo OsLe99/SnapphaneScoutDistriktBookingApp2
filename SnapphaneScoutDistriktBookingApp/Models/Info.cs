@@ -12,6 +12,6 @@ namespace SnapphaneScoutDistriktBookingApp.Models
     {
         [BsonId]
         public string Id { get; set; }
-        public string InfoString { get; set; }
+        public string? InfoString { get; set; }
     }
 }
