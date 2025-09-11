@@ -17,6 +17,6 @@
         <Button
             x:Name="GoToStep3"
             Text="Nästa steg"
-            Clicked="OnChangeToBookingDate"/>
+            Clicked="OnChangeToBookingDateAsync"/>
     </VerticalStackLayout>
 </ContentPage>

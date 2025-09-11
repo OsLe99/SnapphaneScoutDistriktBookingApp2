@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
-    public interface IAdminService
+    public interface IBookingService
     {
-        Task<bool> TryLoginAdminAsync(string username, string userEmail, string password);
+        Task<Models.Customer> AddBookingAsync(Models.Customer customer);
+        Task<Models.Customer> FindAddedBookingByIdAsync(Models.Customer customer);
     }
 }

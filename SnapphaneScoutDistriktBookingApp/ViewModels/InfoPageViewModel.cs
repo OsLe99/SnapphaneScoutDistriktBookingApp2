@@ -38,14 +38,14 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             UpdateInfoCommand = new Command(async () => await UpdateInfoDBAsync());
             SetInfoProperty();
         }
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public async Task<List<Models.Contact>> GetAllContacts()
         {
-            var listContacts = await _db.ContactCollection().Find(Builders<Models.Contact>.Filter.Empty).ToListAsync();
+            var listContacts = await _db.GetAllContactsAsync();
             return listContacts;
         }
         public async Task FillContacts()
@@ -57,13 +57,13 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
                 Contacts.Add(x);
             }
         }
-        private async Task<string> GetThisInfo()
-        {
-            var data = await _db.InfoCollection().Find(Builders<Models.Info>.Filter.Empty).ToListAsync();
-            var thisData = data.FirstOrDefault();
-            var infoStringData = thisData.InfoString;
-            return infoStringData;
-        }
+        //private async Task<string> GetThisInfo()
+        //{
+        //    var data = await _db.InfoCollection().Find(Builders<Models.Info>.Filter.Empty).ToListAsync();
+        //    var thisData = data.FirstOrDefault();
+        //    var infoStringData = thisData.InfoString;
+        //    return infoStringData;
+        //}
         private async Task UpdateInfoDBAsync()
         {
             Models.Info info = new Models.Info()
@@ -71,17 +71,16 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
                 Id = "unique_id",
                 InfoString = Info
             };
-            await _db.InfoCollection().ReplaceOneAsync(filter: Builders<Models.Info>.Filter.Eq(x => x.Id, "unique_id"),
-                replacement: info, options: new ReplaceOptions { IsUpsert = true });
+            await _db.UpdateInfoAsync(info, info.Id);
+            //await _db.InfoCollection().ReplaceOneAsync(filter: Builders<Models.Info>.Filter.Eq(x => x.Id, "unique_id"),
+            //    replacement: info, options: new ReplaceOptions { IsUpsert = true });
 
         }
         private async void SetInfoProperty()
         {
-            var allInfoStringData = await _db.InfoCollection().Find(Builders<Models.Info>.Filter.Empty).ToListAsync();
+            var allInfoStringData = await _db.GetAllInfoAsync();
             string infoStringData = allInfoStringData.FirstOrDefault().InfoString;
             Info = infoStringData;
-
-            
         }
     }
 }

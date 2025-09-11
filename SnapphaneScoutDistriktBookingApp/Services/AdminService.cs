@@ -20,40 +20,17 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         }
         public async Task<bool> TryLoginAdminAsync(string username, string userEmail, string password)
         {
-            var collection = _db.AdminUserCollection();
-            var filter = Builders<Models.Admin>.Filter.And(
-                Builders<Models.Admin>.Filter.Eq(x => x.Name, username),
-                Builders<Models.Admin>.Filter.Eq(x => x.Email, userEmail)
-                );
+            var adminUser = await _db.CheckIfAdminAsync(username, userEmail);
 
-            var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
-
-            if (adminUser == null)
+            if (adminUser == true)
+            {
+                _userSession.SetAdmin(true);
+                return true;
+            }
+            else
             {
                 return false;
             }
-
-            bool isAdmin = BCrypt.Net.BCrypt.Verify(password, adminUser.PasswordHashed);
-            if (isAdmin)
-            {
-                _userSession.SetAdmin(true);
-                Preferences.Set("IsAdmin", true);
-            }
-
-            return isAdmin;
-        }
-
-        public async Task<bool> CheckIfAdminAsync(string username, string userEmail)
-        {
-            var collection = _db.AdminUserCollection();
-            var filter = Builders<Models.Admin>.Filter.And(
-                Builders<Models.Admin>.Filter.Eq(x => x.Name, username),
-                Builders<Models.Admin>.Filter.Eq(x => x.Email, userEmail)
-            );
-
-            var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
-
-            return adminUser != null;
         }
     }
 }

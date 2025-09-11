@@ -44,7 +44,7 @@
                     Grid.Column="0"
                     x:Name="BookingStart"
                     Text="Boka"
-                    Clicked="OnChangeToBookingSelect"
+                    Clicked="OnChangeToBookingSelectAsync"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                 ></Button>
@@ -56,7 +56,7 @@
                     Text="Infosidan"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Clicked="OnClickedGoToInfoPage"
+                    Clicked="OnClickedGoToInfoPageAsync"
                     ></Button>
 
                 <Button
@@ -64,7 +64,7 @@
                     Grid.Column="0"
                     x:Name="AdminPage"
                     Text="AdminSidan"
-                    Clicked="OnClickedGoToAdminPage"
+                    Clicked="OnClickedGoToAdminPageAsync"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     ></Button>
@@ -79,7 +79,7 @@
                     ></Button>
 
             </Grid>
-            <Button Text="Ändra användare" Clicked="OnResetUser" ></Button>
+            <Button Text="Ändra användare" Clicked="OnResetUserAsync" ></Button>
         </VerticalStackLayout>
     </ScrollView>
 

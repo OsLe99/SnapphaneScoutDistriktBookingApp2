@@ -16,6 +16,8 @@
 
 //public partial class BookingPage : ContentPage
 //{
+      // BookingPage används ej längre då bokningar sker i flera steg
+
 //    private readonly IUserSessionService _userSession;
 //    private readonly IDbService _db;
 //    private readonly IEmailService _emailService;
@@ -29,132 +31,114 @@
 //        myName.Text = _userSession.UserName;
 //        myEmail.Text = _userSession.UserEmail;
 //    }
-  //  private void OnCheckChange(object sender, CheckedChangedEventArgs e)
-  //  {
-		//if (e.Value)
-		//{
-		//	statusLabel.Text = "Scoutmedlem";
-		//	hiddenLabel.IsVisible = true;
-		//	orgNameInput.IsVisible = true;
-		//}
-		//else
-		//{
-		//	statusLabel.Text = "Icke scoutmedlem";
-		//	hiddenLabel.IsVisible = false;
-		//	orgNameInput.IsVisible = false;
-		//}
-  //  }
-	
-  //  private async void OnConformation(object sender, EventArgs e)
-  //  {
+//    private void OnCheckChange(object sender, CheckedChangedEventArgs e)
+//    {
+//		if (e.Value)
+//		{
+//			statusLabel.Text = "Scoutmedlem";
+//			hiddenLabel.IsVisible = true;
+//			orgNameInput.IsVisible = true;
+//		}
+//		else
+//		{
+//			statusLabel.Text = "Icke scoutmedlem";
+//			hiddenLabel.IsVisible = false;
+//			orgNameInput.IsVisible = false;
+//		}
+//    }
 
-		//Models.Customer.TypeOfBooking bookingtype = Models.Customer.TypeOfBooking.None;
-		//if(checkCanoe.IsChecked == true)
-		//{
-		//	bookingtype |= Models.Customer.TypeOfBooking.Kanot;
-		//}
-		//if(checkCabin.IsChecked == true)
-		//{
-		//	bookingtype |= Models.Customer.TypeOfBooking.Stuga;
-		//}
-		//if(checkLeanTo.IsChecked == true)
-		//{
-		//	bookingtype |= Models.Customer.TypeOfBooking.Vindskydd;
-		//}
-		//if(checkCampGrounds.IsChecked == true)
-		//{
-		//	bookingtype |= Models.Customer.TypeOfBooking.Lägerplats;
-		//}
+//    private async void OnConformation(object sender, EventArgs e)
+//    {
 
-		
-		//var customer = new Models.Customer()
-		//{
-		//	Name = myName.Text,
-		//	Phone = myPhone.Text,
-		//	Email = myEmail.Text,
-		//	IsOrg = myCheckBox.IsChecked,
-		//	OrgName = (myCheckBox.IsChecked == true ? orgNameInput.Text : ""),
-		//	StartDate = MyStartDate.Date.AddHours(1),
-		//	EndDate = MyEndDate.Date.AddHours(1),
-		//	BookingType = bookingtype,
-		//	NumberOfCanoes = int.TryParse(AntalKanoter.Text, out int result) ? result : null,
-		//	NumberOfCabin = int.TryParse(AntalStuga.Text, out int result1) ? result1 : null,
-		//	NumberOfCampground = int.TryParse(Lägerområde.Text, out int result2) ? result2 : null,
-		//	NumberOfLeanTo = int.TryParse(Vindskydd.Text, out int result3) ? result3 : null,
-  //          IsConfirmed = false
-		//};
+//		Models.Customer.TypeOfBooking bookingtype = Models.Customer.TypeOfBooking.None;
+//		if(checkCanoe.IsChecked == true)
+//		{
+//			bookingtype |= Models.Customer.TypeOfBooking.Kanot;
+//		}
+//		if(checkCabin.IsChecked == true)
+//		{
+//			bookingtype |= Models.Customer.TypeOfBooking.Stuga;
+//		}
+//		if(checkLeanTo.IsChecked == true)
+//		{
+//			bookingtype |= Models.Customer.TypeOfBooking.Vindskydd;
+//		}
+//		if(checkCampGrounds.IsChecked == true)
+//		{
+//			bookingtype |= Models.Customer.TypeOfBooking.Lägerplats;
+//		}
 
-		//await _db.BookingCollection().InsertOneAsync(customer);
-  //      await _emailService.SendEmail("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", "emil.berg@campusnykoping.se", customer.Email, customer);
-  //      var popup = new ContentPage
-  //      {
-  //          Content = new VerticalStackLayout
-  //          {
-  //              Padding = 20,
-  //              Children =
-  //                  {
-  //                      new Label { Text = "Tack för din bokning!"},
 
-  //                      new Button
-  //                      {
-  //                          Text = "Tillbaka",
-  //                          Command = new Command(async () => await Navigation.PopModalAsync())
+//        var popup = new ContentPage
+//        {
+//            Content = new VerticalStackLayout
+//            {
+//                Padding = 20,
+//                Children =
+//                    {
+//                        new Label { Text = "Tack för din bokning!"},
 
-  //                      }
-  //                  }
-  //          }
-  //      };
-  //      await Navigation.PushModalAsync(popup);
-  //  }
-	
+//                        new Button
+//                        {
+//                            Text = "Tillbaka",
+//                            Command = new Command(async () => await Navigation.PopModalAsync())
 
-  //  private void OnCheckCanoe(object sender, CheckedChangedEventArgs e)
-  //  {
-		//if (e.Value)
-		//{
-		//	AntalKanoter.IsVisible = true;
-		//}
-		//else
-		//{
-		//	AntalKanoter.IsVisible = false;
-  //      }
-  //  }
+//                        }
+//                    }
+//            }
+//        };
+//        await Navigation.PushModalAsync(popup);
 
-  //  private void OnCheckCabin(object sender, CheckedChangedEventArgs e)
-  //  {
-  //      if (e.Value)
-  //      {
-  //          AntalStuga.IsVisible = true;
-  //      }
-  //      else
-  //      {
-  //          AntalStuga.IsVisible = false;
-  //      }
-  //  }
 
-  //  private void OnCampGrounds(object sender, CheckedChangedEventArgs e)
-  //  {
-  //      if (e.Value)
-  //      {
-  //          Lägerområde.IsVisible = true;
-  //      }
-  //      else
-  //      {
-  //          Lägerområde.IsVisible = false;
-  //      }
-  //  }
 
-  //  private void OnLeanTo(object sender, CheckedChangedEventArgs e)
-  //  {
-  //      if (e.Value)
-  //      {
-  //          Vindskydd.IsVisible = true;
-  //      }
-  //      else
-  //      {
-  //          Vindskydd.IsVisible = false;
-  //      }
-  //  }
+//    Koden nedanför används ej längre, bokningens typ sker i ett steg längre fram istället
+//    private void OnCheckCanoe(object sender, CheckedChangedEventArgs e)
+//    {
+//		if (e.Value)
+//		{
+//			AntalKanoter.IsVisible = true;
+//		}
+//		else
+//		{
+//			AntalKanoter.IsVisible = false;
+//        }
+//    }
 
-   
+//    private void OnCheckCabin(object sender, CheckedChangedEventArgs e)
+//    {
+//        if (e.Value)
+//        {
+//            AntalStuga.IsVisible = true;
+//        }
+//        else
+//        {
+//            AntalStuga.IsVisible = false;
+//        }
+//    }
+
+//    private void OnCampGrounds(object sender, CheckedChangedEventArgs e)
+//    {
+//        if (e.Value)
+//        {
+//            Lägerområde.IsVisible = true;
+//        }
+//        else
+//        {
+//            Lägerområde.IsVisible = false;
+//        }
+//    }
+
+//    private void OnLeanTo(object sender, CheckedChangedEventArgs e)
+//    {
+//        if (e.Value)
+//        {
+//            Vindskydd.IsVisible = true;
+//        }
+//        else
+//        {
+//            Vindskydd.IsVisible = false;
+//        }
+//    }
+
+
 //}
