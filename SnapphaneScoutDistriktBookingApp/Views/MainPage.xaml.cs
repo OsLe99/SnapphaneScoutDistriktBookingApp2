@@ -1,5 +1,6 @@
 ﻿using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using SnapphaneScoutDistriktBookingApp.Views;
 using System.Threading.Tasks;
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -23,15 +24,9 @@ namespace SnapphaneScoutDistriktBookingApp
             OnAppearing();
         }
         bool pageStarted = false;
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            if (!pageStarted)
-            {
-                pageStarted = true;
-                await CheckUserSessionAsync();
-            }
 
             if (_userSession.IsAdmin == false)
             {
@@ -48,15 +43,6 @@ namespace SnapphaneScoutDistriktBookingApp
             await Navigation.PushAsync(new BookingPage(_userSession, _bookingService));
         }
 
-
-        public async Task CheckUserSessionAsync()
-        {
-            if (!_userSession.IsUserSet())
-            {
-                await Navigation.PushAsync(new Views.LoginPage(_userSession, _adminService, _db));
-            }
-        }
-
         public async void OnResetUserAsync(object sender, EventArgs e)
         {
             bool confirm = await DisplayAlert("Ändra användare", "Är du säker på att du vill ändra användare?", "Ja", "Nej");
@@ -68,7 +54,7 @@ namespace SnapphaneScoutDistriktBookingApp
             _userSession.ResetUser();
 
             await DisplayAlert("Användarinformation återställd", "Nuvarande sparad användare är borttagen.", "OK");
-            await CheckUserSessionAsync();
+            await Navigation.PushAsync(new LoginPage(_userSession, _adminService, _db));
         }
 
         private async void OnClickedGoToAdminPageAsync(object sender, EventArgs e)

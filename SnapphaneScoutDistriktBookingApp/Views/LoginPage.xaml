@@ -4,11 +4,11 @@
              x:Class="SnapphaneScoutDistriktBookingApp.Views.LoginPage"
              Title="LoginPage">
     <VerticalStackLayout Padding="20" Spacing="10">
-        <Label Text="Namn" FontSize="18"/>
-        <Entry x:Name="NameEntry" Placeholder="Ditt namn"/>
-
         <Label Text="Email" FontSize="18"/>
-        <Entry x:Name="EmailEntry" Placeholder="Din email" Keyboard="Email"/>
+        <Entry x:Name="EmailEntry" Placeholder="Din email" Keyboard="Email" IsSpellCheckEnabled="False"/>
+
+        <Label Text="Lösenord" FontSize="18" />
+        <Entry x:Name="PasswordEntry" Placeholder="Ditt lösenord" IsPassword="True" />
 
         <Button Text="Spara information" Clicked="OnLoginClickedAsync"/>
     </VerticalStackLayout>
