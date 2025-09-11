@@ -72,7 +72,7 @@
                 
                 
             </Grid>
-            <Button Text="Ändra användare" Clicked="OnResetUserAsync" ></Button>
+            <Button Text="Logga in som admin" Clicked="OnResetUserAsync" ></Button>
         </VerticalStackLayout>
     </ScrollView>
 

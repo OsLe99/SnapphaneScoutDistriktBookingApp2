@@ -53,7 +53,7 @@ namespace SnapphaneScoutDistriktBookingApp
 
             _userSession.ResetUser();
 
-            await DisplayAlert("Användarinformation återställd", "Nuvarande sparad användare är borttagen.", "OK");
+            await DisplayAlert("Utloggning", "Du är nu utloggad.", "OK");
             await Navigation.PushAsync(new LoginPage(_userSession, _adminService, _db));
         }
 

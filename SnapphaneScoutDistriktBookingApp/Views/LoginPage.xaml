@@ -10,6 +10,6 @@
         <Label Text="Lösenord" FontSize="18" />
         <Entry x:Name="PasswordEntry" Placeholder="Ditt lösenord" IsPassword="True" />
 
-        <Button Text="Spara information" Clicked="OnLoginClickedAsync"/>
+        <Button Text="Logga in" Clicked="OnLoginClickedAsync"/>
     </VerticalStackLayout>
 </ContentPage>

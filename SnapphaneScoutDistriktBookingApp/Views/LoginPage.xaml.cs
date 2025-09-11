@@ -39,7 +39,7 @@ public partial class LoginPage : ContentPage
         else
         {
             await DisplayAlert("Fel", "Ogiltiga inloggningsuppgifter.", "OK");
-            await Shell.Current.GoToAsync("//MainPage");
+            PasswordEntry.Text = "";
         }
     }
 }
