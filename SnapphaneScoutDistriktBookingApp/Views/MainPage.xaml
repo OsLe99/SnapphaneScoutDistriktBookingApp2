@@ -17,9 +17,8 @@
                 SemanticProperties.Description="Logga för hultet" />
 
             <Label
-                Text="{Binding UserName, StringFormat='Välkommen {0}'}"
-                TextColor="Black"
-                FontFamily="OldGerman"
+                Text="{Binding UserName, StringFormat='Välkommen {0}!'}"
+                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
@@ -27,7 +26,7 @@
                 Text="Snapphane Scoutdistrikt"
                 FontFamily="OldGerman"
                 Style="{StaticResource SubHeadline}"
-                TextColor="Black"
+                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Välkommen" />
 
@@ -43,7 +42,7 @@
                 <Button
                     Grid.Row="0"
                     Grid.Column="0"
-                    x:Name="BokaKanot"
+                    x:Name="BookingStart"
                     Text="Boka"
                     Clicked="OnChangeToBookingSelectAsync"
                     HorizontalOptions="Center"
@@ -53,24 +52,32 @@
                 <Button
                     Grid.Row="0"
                     Grid.Column="1"
-                    x:Name="InfoSidan"
+                    x:Name="InfoPage"
                     Text="Infosidan"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     Clicked="OnClickedGoToInfoPageAsync"
                     ></Button>
-                
+
                 <Button
                     Grid.Row="1"
                     Grid.Column="0"
-                    x:Name="AdminSidan"
+                    x:Name="AdminPage"
                     Text="AdminSidan"
                     Clicked="OnClickedGoToAdminPageAsync"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     ></Button>
-                
-                
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    x:Name="ChangeTheme"
+                    Text="Byt tema"
+                    Clicked="OnClickedChangeTheme"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    ></Button>
+
             </Grid>
             <Button Text="Ändra användare" Clicked="OnResetUserAsync" ></Button>
         </VerticalStackLayout>

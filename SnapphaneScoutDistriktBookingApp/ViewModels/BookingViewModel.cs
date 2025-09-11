@@ -171,6 +171,6 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         //    return datePicker.Date;
 
-        //}
-    }
+            //}
+        }
 }

@@ -35,11 +35,24 @@ namespace SnapphaneScoutDistriktBookingApp
 
             if (_userSession.IsAdmin == false)
             {
-                AdminSidan.IsVisible = false;
+                AdminPage.IsVisible = false;
             }
             else
             {
-                AdminSidan.IsVisible = true;
+                AdminPage.IsVisible = true;
+            }
+        }
+
+        private void OnClickedChangeTheme(object sender, EventArgs e)
+        {
+            var app = Application.Current;
+            if (app.UserAppTheme == AppTheme.Light)
+            {
+                app.UserAppTheme = AppTheme.Dark;
+            }
+            else
+            {
+                app.UserAppTheme = AppTheme.Light;
             }
         }
 
