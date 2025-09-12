@@ -19,6 +19,7 @@ public partial class BookingConfirmation : ContentPage, INotifyPropertyChanged
     private async void OnConfirmBookingClickedAsync(object sender, EventArgs e)
 	{
         await _bookingService.AddBookingAsync(_customer);
-        await Shell.Current.GoToAsync("//MainPage");
+        await Shell.Current.Navigation.PopToRootAsync();
+        await Shell.Current.GoToAsync("//MainPage", true);
 	}
 }

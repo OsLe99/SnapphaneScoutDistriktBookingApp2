@@ -1,8 +1,10 @@
 ﻿using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using SnapphaneScoutDistriktBookingApp.Views.Booking;
+using SnapphaneScoutDistriktBookingApp.Views;
 using System.Threading.Tasks;
 
-namespace SnapphaneScoutDistriktBookingApp
+namespace SnapphaneScoutDistriktBookingApp.Views
 {
     public partial class MainPage : ContentPage
     {
@@ -32,15 +34,6 @@ namespace SnapphaneScoutDistriktBookingApp
                 pageStarted = true;
                 await CheckUserSessionAsync();
             }
-
-            if (_userSession.IsAdmin == false)
-            {
-                AdminPage.IsVisible = false;
-            }
-            else
-            {
-                AdminPage.IsVisible = true;
-            }
         }
 
         private void OnClickedChangeTheme(object sender, EventArgs e)
@@ -58,7 +51,7 @@ namespace SnapphaneScoutDistriktBookingApp
 
         private async void OnChangeToBookingSelectAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BookingPage(_userSession, _bookingService));
+            await Navigation.PushAsync(new Views.Booking.BookingPage(_userSession, _bookingService));
         }
 
 
