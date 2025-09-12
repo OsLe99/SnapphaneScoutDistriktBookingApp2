@@ -18,68 +18,28 @@ public partial class LoginPage : ContentPage
     }
     private async void OnLoginClickedAsync(object sender, EventArgs e)
     {
-        string userName = NameEntry.Text.Trim();
-        string userEmail = EmailEntry.Text.Trim();
+        string userEmail = EmailEntry.Text;
+        string userPassword = PasswordEntry.Text;
 
-        if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(userEmail))
+        if (string.IsNullOrEmpty(userEmail) || string.IsNullOrEmpty(userPassword))
         {
-            await DisplayAlert("Fel", "Du måste ange både namn och email!", "OK");
+            await DisplayAlert("Fel", "Du måste ange en komplett inloggning!", "OK");
             return;
         }
 
-        _userSession.SetUser(userName, userEmail);
+        bool isAdmin = await _dbService.CheckAdminCredentialsAsync(userEmail, userPassword);
 
-        await DisplayAlert("Välkommen!", $"Hej, {_userSession.UserName}!", "OK");
-
-        bool isAdmin = await _dbService.CheckIfAdminAsync(_userSession.UserName, _userSession.UserEmail);
-
-        if (isAdmin == true)
+        if (isAdmin)
         {
-            Debug.WriteLine("Admin login found");
-
-            Entry passwordEntry = new Entry { Placeholder = "Ditt lösenord" };
-            var popupPassword = new ContentPage
-            {
-                Content = new VerticalStackLayout
-                {
-                    Padding = 20,
-                    Spacing = 10,
-                    Children =
-                 {
-                     new Label { Text = "Lösenord" },
-                     passwordEntry,
-                     new Button
-                     {
-                         Text = "OK",
-                         Command = new Command(async () =>
-                         {
-                             bool isAdmin = await _adminService.TryLoginAdminAsync(
-                                 _userSession.UserName,
-                                 _userSession.UserEmail,
-                                 passwordEntry.Text
-                             );
-
-                             if (isAdmin)
-                             {
-                                 await DisplayAlert("Inloggning", "Admin inloggning lyckades!", "OK");
-                                 Preferences.Set("IsAdmin", true);
-                                 await Shell.Current.GoToAsync("//MainPage");
-
-                             }
-                             else
-                             {
-                                 await DisplayAlert("Fel", "Ogiltigt lösenord.", "OK");
-                             }
-                         })
-                     }
-                 }
-                }
-            };
-            await Navigation.PushModalAsync(popupPassword);
+            await DisplayAlert("Inloggning", "Inloggning lyckades!", "OK");
+            _userSession.SetAdmin(true);
+            Preferences.Set("isAdmin", true);
+            await Shell.Current.GoToAsync("//MainPage");
         }
         else
         {
-            await Shell.Current.GoToAsync("//MainPage");
+            await DisplayAlert("Fel", "Ogiltiga inloggningsuppgifter.", "OK");
+            PasswordEntry.Text = "";
         }
     }
 }

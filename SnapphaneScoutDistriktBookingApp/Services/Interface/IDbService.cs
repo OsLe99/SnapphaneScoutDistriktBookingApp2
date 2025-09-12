@@ -15,6 +15,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
         Task UpdateCheckBoxDatabaseAsync(Customer costumer);
         Task<bool> RegisterAdminAsync(string userName, string userEmail, string password);
         Task<bool> CheckIfAdminAsync(string username, string userEmail);
+        Task<bool> CheckAdminCredentialsAsync(string userEmail, string password);
         Task<List<Models.Customer>> GetAllBookingsAsync();
         Task<List<Models.Contact>> GetAllContactsAsync();
         Task<Models.Contact> AddContactAsync(Models.Contact contact);
