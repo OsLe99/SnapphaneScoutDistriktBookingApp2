@@ -9,8 +9,8 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
     public interface IUserSessionService : INotifyPropertyChanged
     {
-        string UserName { get; }
-        string UserEmail { get; }
+        string UserName { get; set; }
+        string UserEmail { get; set; }
         bool IsAdmin { get; }
 
         void SetUser(string userName, string userEmail);

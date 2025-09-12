@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
@@ -123,18 +124,33 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             return true;
         }
 
-        public async Task<bool> CheckIfAdminAsync(string username, string userEmail)
+        public async Task<bool> CheckIfAdminAsync(string userName, string userEmail)
         {
             var collection = AdminUserCollection();
-            var filter = Builders<Models.Admin>.Filter.And(
-                Builders<Models.Admin>.Filter.Eq(x => x.Name, username),
-                Builders<Models.Admin>.Filter.Eq(x => x.Email, userEmail)
+            var filter = Builders<Admin>.Filter.And(
+                Builders<Admin>.Filter.Eq(x => x.Name, userName),
+                Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
             );
 
             var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
 
             return adminUser != null;
         }
+        public async Task<bool> CheckAdminCredentialsAsync(string userEmail, string password)
+        {
+            var collection = AdminUserCollection();
+            var filter = Builders<Admin>.Filter.And(
+                Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
+                );
+            var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
+
+            if (adminUser == null )
+            {
+                return false;
+            }
+            return BCrypt.Net.BCrypt.Verify(password, adminUser.PasswordHashed);
+        }
+
         #endregion
 
         public async Task<List<Models.Info>> GetAllInfoAsync()
