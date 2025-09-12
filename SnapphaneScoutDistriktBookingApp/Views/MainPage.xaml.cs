@@ -32,7 +32,6 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             if (!pageStarted)
             {
                 pageStarted = true;
-                await CheckUserSessionAsync();
             }
         }
 
