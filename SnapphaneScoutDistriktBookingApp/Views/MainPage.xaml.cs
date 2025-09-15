@@ -69,7 +69,7 @@ namespace SnapphaneScoutDistriktBookingApp.Views
 
         private async void OnClickedGoToAdminPageAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Views.AdminPage(_db, _emailService));
+            await Navigation.PushAsync(new Views.AdminPage(_db, _emailService, _userSession));
         }
 
         private async void OnClickedGoToInfoPageAsync(object sender, EventArgs e)
