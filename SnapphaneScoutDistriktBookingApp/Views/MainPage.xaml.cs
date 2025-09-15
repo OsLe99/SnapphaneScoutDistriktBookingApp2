@@ -35,19 +35,6 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             }
         }
 
-        private void OnClickedChangeTheme(object sender, EventArgs e)
-        {
-            var app = Application.Current;
-            if (app.UserAppTheme == AppTheme.Light)
-            {
-                app.UserAppTheme = AppTheme.Dark;
-            }
-            else
-            {
-                app.UserAppTheme = AppTheme.Light;
-            }
-        }
-
         private async void OnChangeToBookingSelectAsync(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Views.Booking.BookingPage(_userSession, _bookingService));
