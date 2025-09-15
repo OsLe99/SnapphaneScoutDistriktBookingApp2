@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SnapphaneScoutDistriktBookingApp.MainPage"
+             x:Class="SnapphaneScoutDistriktBookingApp.Views.MainPage"
              >
 
     <ScrollView>
@@ -29,57 +29,6 @@
                 TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Välkommen" />
-
-            <Grid
-                ColumnDefinitions="*, *"
-                RowDefinitions="auto, auto"
-                Padding="10"
-                RowSpacing="20"
-                ColumnSpacing="20"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                >
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    x:Name="BookingStart"
-                    Text="Boka"
-                    Clicked="OnChangeToBookingSelectAsync"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                ></Button>
-                
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    x:Name="InfoPage"
-                    Text="Infosidan"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Clicked="OnClickedGoToInfoPageAsync"
-                    ></Button>
-
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    x:Name="AdminPage"
-                    Text="AdminSidan"
-                    Clicked="OnClickedGoToAdminPageAsync"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    ></Button>
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    x:Name="ChangeTheme"
-                    Text="Byt tema"
-                    Clicked="OnClickedChangeTheme"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    ></Button>
-
-            </Grid>
-            <Button Text="Logga in som admin" Clicked="OnResetUserAsync" ></Button>
         </VerticalStackLayout>
     </ScrollView>
 

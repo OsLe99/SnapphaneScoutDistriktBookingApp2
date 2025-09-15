@@ -1,9 +1,10 @@
 ﻿using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using SnapphaneScoutDistriktBookingApp.Views.Booking;
 using SnapphaneScoutDistriktBookingApp.Views;
 using System.Threading.Tasks;
 
-namespace SnapphaneScoutDistriktBookingApp
+namespace SnapphaneScoutDistriktBookingApp.Views
 {
     public partial class MainPage : ContentPage
     {
@@ -28,32 +29,15 @@ namespace SnapphaneScoutDistriktBookingApp
         {
             base.OnAppearing();
 
-            if (_userSession.IsAdmin == false)
+            if (!pageStarted)
             {
-                AdminPage.IsVisible = false;
-            }
-            else
-            {
-                AdminPage.IsVisible = true;
-            }
-        }
-
-        private void OnClickedChangeTheme(object sender, EventArgs e)
-        {
-            var app = Application.Current;
-            if (app.UserAppTheme == AppTheme.Light)
-            {
-                app.UserAppTheme = AppTheme.Dark;
-            }
-            else
-            {
-                app.UserAppTheme = AppTheme.Light;
+                pageStarted = true;
             }
         }
 
         private async void OnChangeToBookingSelectAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BookingPage(_userSession, _bookingService));
+            await Navigation.PushAsync(new Views.Booking.BookingPage(_userSession, _bookingService));
         }
 
         public async void OnResetUserAsync(object sender, EventArgs e)
@@ -72,7 +56,7 @@ namespace SnapphaneScoutDistriktBookingApp
 
         private async void OnClickedGoToAdminPageAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Views.AdminPage(_db, _emailService));
+            await Navigation.PushAsync(new Views.AdminPage(_db, _emailService, _userSession));
         }
 
         private async void OnClickedGoToInfoPageAsync(object sender, EventArgs e)

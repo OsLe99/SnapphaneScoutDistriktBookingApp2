@@ -9,13 +9,25 @@ public partial class AdminPage : ContentPage
 {
     private readonly IDbService _db;
     private readonly IEmailService _emailService;
-    public AdminPage(IDbService db, IEmailService emailService)
+    private readonly IUserSessionService _userSessionService;
+    public AdminPage(IDbService db, IEmailService emailService, IUserSessionService userSessionService)
     {
         InitializeComponent();
+        _userSessionService = userSessionService;
         _db = db;
         _emailService = emailService;
         BindingContext = new ViewModels.AdminPageViewModel();
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (_userSessionService.IsAdmin == false)
+        {
+            Shell.Current.GoToAsync("//MainPage");
+        }
+    }
 
     private async void OnBookingSelectedAsync(object sender, SelectedItemChangedEventArgs e)
     {
@@ -27,8 +39,6 @@ public partial class AdminPage : ContentPage
 			await Navigation.PushAsync(page);
 		}
     }
-
-    
 
     private async void OnClickedAddContactAsync(object sender, EventArgs e)
     {
@@ -50,6 +60,5 @@ public partial class AdminPage : ContentPage
                 await _db.UpdateCheckBoxDatabaseAsync(customer);
             }
         }
-        
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using SnapphaneScoutDistriktBookingApp.Views;
 using SnapphaneScoutDistriktBookingApp.Services;
 
-namespace SnapphaneScoutDistriktBookingApp;
+namespace SnapphaneScoutDistriktBookingApp.Views.Booking;
 
 public partial class BookingPage : ContentPage
 {
@@ -20,7 +20,7 @@ public partial class BookingPage : ContentPage
 	private readonly IBookingService _bookingService;
     public BookingPage(IUserSessionService userSessionService, IBookingService bookingService)
 	{
-		InitializeComponent();
+        InitializeComponent();
 		_userSessionService = userSessionService;
 		_bookingService = bookingService;
         BindingContext = new Models.Customer();

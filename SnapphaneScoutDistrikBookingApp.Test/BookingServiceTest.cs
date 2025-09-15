@@ -44,7 +44,7 @@ public class BookingServiceTest
         };
 
         _mockBooking.Setup(book => book.FindAddedBookingByIdAsync(_customer).Result).Returns(_customer);
-        _mockEmailService.Setup(e => e.SendEmail(
+        _mockEmailService.Setup(e => e.SendEmailAsync(
             It.IsAny<string>(),
             It.IsAny<string>(),
             It.IsAny<string>(),
