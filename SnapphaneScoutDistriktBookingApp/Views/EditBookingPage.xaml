@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SnapphaneScoutDistriktBookingApp.Views.EditBookingPage"
+             Title="Redigera bokning">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Redigera bokning" FontSize="20" />
+
+            <Entry Text="{Binding Name}" Placeholder="Namn" />
+            <Entry Text="{Binding Email}" Placeholder="Email" Keyboard="Email" />
+            <Entry Text="{Binding Phone}" Placeholder="Telefon" Keyboard="Telephone" />
+
+            <Label Text="Scoutkår?" />
+            <Switch IsToggled="{Binding IsOrg}" />
+
+            <Entry Text="{Binding OrgName}" Placeholder="Kårnamn" IsEnabled="{Binding IsOrg}" />
+
+            <!-- Kanoter -->
+            <VerticalStackLayout>
+                <VerticalStackLayout.Triggers>
+                    <DataTrigger TargetType="VerticalStackLayout"
+                                 Binding="{Binding NumberOfCanoes, StringFormat='{}{0}'}"
+                                 Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </VerticalStackLayout.Triggers>
+                <Label Text="Kanoter" />
+                <Entry Text="{Binding NumberOfCanoes}" Keyboard="Numeric" />
+            </VerticalStackLayout>
+
+            <!-- Stuga -->
+            <VerticalStackLayout>
+                <VerticalStackLayout.Triggers>
+                    <DataTrigger TargetType="VerticalStackLayout"
+                                 Binding="{Binding NumberOfCabin, StringFormat='{}{0}'}"
+                                 Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </VerticalStackLayout.Triggers>
+                <Label Text="Stuga" />
+                <Entry Text="{Binding NumberOfCabin}" Keyboard="Numeric" />
+            </VerticalStackLayout>
+
+            <!-- Vindskydd -->
+            <VerticalStackLayout>
+                <VerticalStackLayout.Triggers>
+                    <DataTrigger TargetType="VerticalStackLayout"
+                                 Binding="{Binding NumberOfLeanTo, StringFormat='{}{0}'}"
+                                 Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </VerticalStackLayout.Triggers>
+                <Label Text="Vindskydd" />
+                <Entry Text="{Binding NumberOfLeanTo}" Keyboard="Numeric" />
+            </VerticalStackLayout>
+
+            <!-- Lägerområde -->
+            <VerticalStackLayout>
+                <VerticalStackLayout.Triggers>
+                    <DataTrigger TargetType="VerticalStackLayout"
+                                 Binding="{Binding NumberOfCampground, StringFormat='{}{0}'}"
+                                 Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </VerticalStackLayout.Triggers>
+                <Label Text="Lägerområde" />
+                <Entry Text="{Binding NumberOfCampground}" Keyboard="Numeric" />
+            </VerticalStackLayout>
+
+            <Label Text="Startdatum" />
+            <DatePicker Date="{Binding StartDate}" />
+
+            <Label Text="Slutdatum" />
+            <DatePicker Date="{Binding EndDate}" />
+
+            <Button Text="Spara" Clicked="OnSaveClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
+using MongoDB.Bson;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
@@ -63,19 +64,25 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             await BookingCollection().InsertOneAsync(customer);
             return customer;
         }
-        public async Task UpdateCheckBoxDatabaseAsync(Models.Customer customer) // UpdateConfirmedCustomer
+        public async Task UpdateCheckBoxDatabaseAsync(Customer customer) // UpdateConfirmedCustomer
         {
             try
             {
                 var collection = BookingCollection();
-                var filter = Builders<Models.Customer>.Filter.Eq(x => x.Id, customer.Id);
-                var update = Builders<Models.Customer>.Update.Set(x => x.IsConfirmed, customer.IsConfirmed);
+                var filter = Builders<Customer>.Filter.Eq(x => x.Id, customer.Id);
+                var update = Builders<Customer>.Update.Set(x => x.IsConfirmed, customer.IsConfirmed);
                 await collection.UpdateOneAsync(filter, update);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Fel vid uppdatering: {ex.Message}");
             }
+        }
+
+        public async Task UpdateBookingAsync(Customer booking)
+        {
+            var filter = Builders<Customer>.Filter.Eq(b => b.Id, booking.Id);
+            await BookingCollection().ReplaceOneAsync(filter, booking);
         }
 
         #endregion
@@ -189,10 +196,13 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             }
             return bookings;
         }
-        public async Task<Customer> FindBookingByIdAsync(Customer customer)
+        public async Task<Customer?> FindBookingByIdAsync(Customer customer)
         {
-            await BookingCollection().Find(c => c.Id == customer.Id).FirstOrDefaultAsync();
-            return customer;
+            return await BookingCollection().Find(c => c.Id == customer.Id).FirstOrDefaultAsync();
+        }
+        public async Task<Customer?> FindBookingByIdAndEmailAsync(ObjectId id, string  email)
+        {
+            return await BookingCollection().Find(c => c.Id == id && c.Email == email).FirstOrDefaultAsync();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using MongoDB;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using SnapphaneScoutDistriktBookingApp.Models;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -21,7 +23,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             _emailService = emailService;
         }
 
-        public async Task<Models.Customer> AddBookingAsync(Models.Customer customer)
+        public async Task<Customer?> AddBookingAsync(Customer customer)
         {
             // Add the booking to the database
             await _db.AddCustomerAsync(customer);
@@ -31,10 +33,20 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         }
 
         // Find placed booking based on Id and return
-        public async Task<Models.Customer> FindAddedBookingByIdAsync(Models.Customer customer)
+        public async Task<Customer?> FindAddedBookingByIdAsync(Customer customer)
         {
             var newBooking = await _db.FindBookingByIdAsync(customer);
             return newBooking;
+        }
+
+        public async Task<Customer?> GetBookingByIdAndEmailAsync(ObjectId id, string email)
+        {
+            return await _db.FindBookingByIdAndEmailAsync(id, email);
+        }
+
+        public async Task UpdateBookingAsync(Customer booking)
+        {
+            await _db.UpdateBookingAsync(booking);
         }
     }
 }

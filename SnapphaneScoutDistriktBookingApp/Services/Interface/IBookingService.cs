@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using SnapphaneScoutDistriktBookingApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,9 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
     public interface IBookingService
     {
-        Task<Models.Customer> AddBookingAsync(Models.Customer customer);
-        Task<Models.Customer> FindAddedBookingByIdAsync(Models.Customer customer);
+        Task<Customer?> AddBookingAsync(Customer customer);
+        Task UpdateBookingAsync(Customer booking);
+        Task<Customer?> FindAddedBookingByIdAsync(Customer customer);
+        Task<Customer?> GetBookingByIdAndEmailAsync(ObjectId id, string email);
     }
 }
