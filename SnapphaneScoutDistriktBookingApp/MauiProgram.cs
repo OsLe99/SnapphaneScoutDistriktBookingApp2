@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using Syncfusion.Maui.Core.Hosting;
 
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -13,6 +14,7 @@ namespace SnapphaneScoutDistriktBookingApp
 
             builder
                 .UseMauiApp<App>()
+                .ConfigureSyncfusionCore()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

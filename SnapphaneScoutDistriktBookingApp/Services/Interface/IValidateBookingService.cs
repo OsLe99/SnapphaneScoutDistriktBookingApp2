@@ -12,5 +12,6 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
         bool ValidatePhoneNumber(string phoneNumber);
         bool ValidateName(string name);
         List<string> ValidateBookingDetails(Models.Customer customer);
+        Task<bool> CheckIfValidTime(TimeSpan? StartTime, TimeSpan? EndTime);
     }
 }

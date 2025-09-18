@@ -13,7 +13,8 @@ namespace SnapphaneScoutDistriktBookingApp.Views
         private readonly IDbService _db;
         private readonly IEmailService _emailService;
         private readonly IBookingService _bookingService;
-        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService)
+        private readonly IValidateBookingService _validateBookingService;
+        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService, IValidateBookingService validateBookingService)
         {
             InitializeComponent();
             _userSession = userSession;
@@ -23,6 +24,7 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             _bookingService = bookingService;
             BindingContext = _userSession;
             OnAppearing();
+            _validateBookingService = validateBookingService;
         }
         bool pageStarted = false;
         protected override void OnAppearing()
@@ -37,7 +39,7 @@ namespace SnapphaneScoutDistriktBookingApp.Views
 
         private async void OnChangeToBookingSelectAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Views.Booking.BookingPage(_userSession, _bookingService));
+            await Navigation.PushAsync(new Views.Booking.BookingPage(_userSession, _bookingService, _db, _validateBookingService));
         }
 
         public async void OnResetUserAsync(object sender, EventArgs e)
