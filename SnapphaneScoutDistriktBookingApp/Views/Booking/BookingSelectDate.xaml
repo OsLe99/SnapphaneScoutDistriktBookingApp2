@@ -20,21 +20,21 @@
         </cal:SfCalendar>
 
         <!--StartPicker-->
-        <picker:SfTimePicker x:Name="StartTimePicker" Format="HH_mm" MinuteInterval="15" TextDisplayMode="FadeAndShrink" Mode="Dialog" SelectedTime="12:00:00">
+        <picker:SfTimePicker x:Name="StartTimePicker" Format="HH_mm" MinuteInterval="15" TextDisplayMode="FadeAndShrink" Mode="Dialog" SelectedTime="12:00:00" SelectionChanged="OnStartTimeChanged">
             <picker:SfTimePicker.HeaderView>
                 <picker:PickerHeaderView Text="Tid för start" Height="40" />
             </picker:SfTimePicker.HeaderView>
         </picker:SfTimePicker>
 
         <!--EndPicker-->
-        <picker:SfTimePicker x:Name="EndTimePicker" Format="HH_mm" MinuteInterval="15" TextDisplayMode="FadeAndShrink" Mode="Dialog" SelectedTime="13:00:00">
+        <picker:SfTimePicker x:Name="EndTimePicker" Format="HH_mm" MinuteInterval="15" TextDisplayMode="FadeAndShrink" Mode="Dialog" SelectedTime="13:00:00" SelectionChanged="OnEndTimeChanged">
             <picker:SfTimePicker.HeaderView>
                 <picker:PickerHeaderView Text="Tid för avslutning" Height="40" />
             </picker:SfTimePicker.HeaderView>
         </picker:SfTimePicker>
 
-        <Button Text="Starttid" Clicked="OnStartClicked" />
-        <Button Text="Sluttid" Clicked="OnEndClicked" />
+        <Button x:Name="StartTimeButton" Text="Starttid: 12:00" Clicked="OnStartClicked" />
+        <Button x:Name="EndTimeButton" Text="Sluttid: 13:00" Clicked="OnEndClicked" />
 
         <!--<DatePicker
             x:Name="StartDatePicker"
