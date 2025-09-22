@@ -221,14 +221,12 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         }
         public async Task<Customer?> FindBookingByIdAsync(Customer customer)
         {
-            var booking = await BookingCollection().Find(c => c.Id == customer.Id)
-                                                   .FirstOrDefaultAsync();
+            var booking = await BookingCollection().Find(c => c.Id == customer.Id).FirstOrDefaultAsync();
             return booking != null ? ConvertCustomerToSwedishTime(booking) : null;
         }
         public async Task<Customer?> FindBookingByIdAndEmailAsync(ObjectId id, string email)
         {
-            var booking = await BookingCollection().Find(c => c.Id == id && c.Email == email)
-                                                   .FirstOrDefaultAsync();
+            var booking = await BookingCollection().Find(c => c.Id == id && c.Email == email).FirstOrDefaultAsync();
             return booking != null ? ConvertCustomerToSwedishTime(booking) : null;
         }
     }
