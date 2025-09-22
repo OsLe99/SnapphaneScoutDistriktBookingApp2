@@ -129,7 +129,7 @@ public partial class BookingSelectDate : ContentPage
 
 /* 
 Check för:
-Datum: Inom samma tidsram ex. inga datum-hopp i bokningen pga andra bokningar
+Datum: Inom samma tidsram ex. inga datum-hopp i bokningen pga andra bokningar. Avklarat
 Tid: starttid > sluttid. Avklarat!
 Kolla vid OnChangeToBooking
 
