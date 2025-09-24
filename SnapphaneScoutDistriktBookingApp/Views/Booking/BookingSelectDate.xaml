@@ -36,14 +36,6 @@
         <Button x:Name="StartTimeButton" Text="Starttid: 12:00" Clicked="OnStartClicked" />
         <Button x:Name="EndTimeButton" Text="Sluttid: 13:00" Clicked="OnEndClicked" />
 
-        <!--<DatePicker
-            x:Name="StartDatePicker"
-            Date="{Binding StartDate, Mode=TwoWay}" 
-            MinimumDate="{x:Static sys:DateTime.Today}"/>
-        <DatePicker 
-            x:Name="EndDatePicker" 
-            Date="{Binding EndDate, Mode=TwoWay}" 
-            MinimumDate="{x:Static sys:DateTime.Today}"/>-->
         <Button 
             x:Name="GoToBookingCustomerInfo"
             Text="Nästa steg"

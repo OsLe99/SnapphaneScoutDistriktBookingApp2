@@ -6,16 +6,21 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using SnapphaneScoutDistriktBookingApp.Helpers;
 
 namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
     public class EditBookingViewModel : INotifyPropertyChanged
     {
         private Customer _booking;
+        private TimeSpan _startTime;
+        private TimeSpan _endTime;
 
         public EditBookingViewModel(Customer booking)
         {
             _booking = booking;
+            _startTime = booking.StartDate.TimeOfDay;
+            _endTime = booking.EndDate.TimeOfDay;
         }
 
         #region PropertyChanged vars
@@ -85,20 +90,56 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         public DateTime StartDate
         {
-            get => _booking.StartDate;
-            set { _booking.StartDate = value; OnPropertyChanged(); }
+            get => TimeZoneHelper.ToSwedishTime(_booking.StartDate);
+            set 
+            {
+                _booking.StartDate = value.Date + _startTime; 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(StartTimeText));
+            }
         }
 
         public DateTime EndDate
         {
-            get => _booking.EndDate;
-            set { _booking.EndDate = value; OnPropertyChanged(); }
+            get => TimeZoneHelper.ToSwedishTime(_booking.EndDate);
+            set 
+            { 
+                _booking.EndDate = value.Date + _endTime; 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(EndTimeText));
+            }
         }
+        public TimeSpan StartTime
+        {
+            get => _startTime;
+            set
+            {
+                _startTime = value;
+                _booking.StartDate = _booking.StartDate.Date + value;
+                OnPropertyChanged(nameof(StartTime));
+                OnPropertyChanged(nameof(StartTimeText));
+            }
+        }
+
+        public TimeSpan EndTime
+        {
+            get => _endTime;
+            set
+            {
+                _endTime = value;
+                _booking.EndDate = _booking.EndDate.Date + value;
+                OnPropertyChanged(nameof(EndTime));
+                OnPropertyChanged(nameof(EndTimeText));
+            }
+        }
+
+        public string StartTimeText => $"Starttid: {StartTime:hh\\:mm}";
+        public string EndTimeText => $"Sluttid: {EndTime:hh\\:mm}";
         #endregion
 
         public Customer GetBooking() => _booking;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

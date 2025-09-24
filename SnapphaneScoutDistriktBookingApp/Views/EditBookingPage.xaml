@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:picker="clr-namespace:Syncfusion.Maui.Picker;assembly=Syncfusion.Maui.Picker"
+             xmlns:cal="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
              x:Class="SnapphaneScoutDistriktBookingApp.Views.EditBookingPage"
              Title="Redigera bokning">
 
@@ -69,11 +71,35 @@
                 <Entry Text="{Binding NumberOfCampground}" Keyboard="Numeric" />
             </VerticalStackLayout>
 
-            <Label Text="Startdatum" />
-            <DatePicker Date="{Binding StartDate}" />
+            <!-- Calendar -->
+            <cal:SfCalendar x:Name="BookingCalendar"
+                SelectionMode="Range"
+                EnablePastDates="False"
+                SelectionChanged="OnCalendarSelectionChanged">
+                <cal:SfCalendar.MonthView>
+                    <cal:CalendarMonthView FirstDayOfWeek="Monday"
+                               DisabledDatesBackground="DarkRed" />
+                </cal:SfCalendar.MonthView>
+            </cal:SfCalendar>
 
-            <Label Text="Slutdatum" />
-            <DatePicker Date="{Binding EndDate}" />
+            <!-- Starttid -->
+            <picker:SfTimePicker
+                x:Name="StartTimePicker"
+                Format="HH_mm"
+                MinuteInterval="15"
+                Mode="Dialog"
+                SelectedTime="{Binding StartTime, Mode=TwoWay}" />
+
+            <!-- Sluttid -->
+            <picker:SfTimePicker 
+                x:Name="EndTimePicker"
+                Format="HH_mm"
+                MinuteInterval="15"
+                Mode="Dialog"
+                SelectedTime="{Binding EndTime, Mode=TwoWay}" />
+            
+            <Button x:Name="StartTimeButton" Text="{Binding StartTimeText}" Clicked="OnStartClicked" />
+            <Button x:Name="EndTimeButton" Text="{Binding EndTimeText}" Clicked="OnEndClicked" />
 
             <Button Text="Spara" Clicked="OnSaveClicked" />
         </VerticalStackLayout>

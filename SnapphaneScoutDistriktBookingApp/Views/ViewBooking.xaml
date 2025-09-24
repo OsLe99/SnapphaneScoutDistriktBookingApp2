@@ -85,8 +85,8 @@
                                     <Label Text="{Binding NumberOfCampground, StringFormat='Antal på lägerområdet: {0}'}" />
                                 </VerticalStackLayout>
 
-                                <Label Text="{Binding StartDate, StringFormat='Startdatum: {0:yyyy-MM-dd}'}" />
-                                <Label Text="{Binding EndDate, StringFormat='Slutdatum: {0:yyyy-MM-dd}'}" />
+                                <Label Text="{Binding StartDate, StringFormat='Startdatum: {0:yyyy-MM-dd | HH-mm}'}" />
+                                <Label Text="{Binding EndDate, StringFormat='Slutdatum: {0:yyyy-MM-dd | HH-mm}'}" />
                                 <Label Text="{Binding IsConfirmed, StringFormat='Bekräftad: {0}'}" />
                             </VerticalStackLayout>
                         </Border>

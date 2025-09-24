@@ -22,11 +22,16 @@ public partial class BookingSelectDate : ContentPage
         _validateBookingService = validateBookingService;
         BindingContext = _customer;
 
-        LoadBlackoutDatesAsync();
         UpdateTimeButtons();
     }
 
-    private async void LoadBlackoutDatesAsync()
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await LoadBlackoutDatesAsync();
+    }
+
+    private async Task LoadBlackoutDatesAsync()
     {
         var allBookings = await _dbService.GetAllBookingsAsync();
         _relevantBookings = allBookings.Where(b => b.BookingType == _customer.BookingType && b.IsConfirmed).ToList();
@@ -128,11 +133,6 @@ public partial class BookingSelectDate : ContentPage
 }
 
 /* 
-Check för:
-Datum: Inom samma tidsram ex. inga datum-hopp i bokningen pga andra bokningar. Avklarat
-Tid: starttid > sluttid. Avklarat!
-Kolla vid OnChangeToBooking
-
 Manus vigilat, Machina servit.
 Daemonium in errore latet, sed dextra vigilat.
  */
