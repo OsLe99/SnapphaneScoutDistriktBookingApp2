@@ -23,7 +23,12 @@
             Title="Ny bokning"
             ContentTemplate="{DataTemplate booking:BookingPage}"
             Route="BookingPage" />
-        
+
+        <ShellContent
+            Title="Kolla upp bokning"
+            ContentTemplate="{DataTemplate local:ViewBooking}"
+            Route="ViewBooking" />
+
         <ShellContent
             Title="Info"
             ContentTemplate="{DataTemplate local:InfoPage}"

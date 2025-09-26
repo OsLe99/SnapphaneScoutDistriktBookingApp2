@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
+using MongoDB.Bson;
+using SnapphaneScoutDistriktBookingApp.Helpers;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
@@ -55,27 +57,55 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             var database = _client.GetDatabase("adminUsers");
             return database.GetCollection<Models.Admin>("adminUsers");
         }
+
+        private Customer ConvertCustomerToSwedishTime(Customer customer)
+        {
+            if (customer == null) 
+                return null!;
+
+            customer.StartDate = TimeZoneHelper.ToSwedishTime(customer.StartDate);
+            customer.EndDate = TimeZoneHelper.ToSwedishTime(customer.EndDate);
+            return customer;
+        }
+        private List<Customer> ConvertCustomersToSwedishTime(List<Customer> customers)
+        {
+            foreach (var c in customers)
+            {
+                ConvertCustomerToSwedishTime(c);
+            }
+            return customers;
+        }
         #endregion
 
         #region CRUD customer
         public async Task<Customer> AddCustomerAsync(Customer customer)
         {
+            customer.StartDate = TimeZoneHelper.FromSwedishTime(customer.StartDate);
+            customer.EndDate = TimeZoneHelper.FromSwedishTime(customer.EndDate);
             await BookingCollection().InsertOneAsync(customer);
             return customer;
         }
-        public async Task UpdateCheckBoxDatabaseAsync(Models.Customer customer) // UpdateConfirmedCustomer
+        public async Task UpdateCheckBoxDatabaseAsync(Customer customer) // UpdateConfirmedCustomer
         {
             try
             {
                 var collection = BookingCollection();
-                var filter = Builders<Models.Customer>.Filter.Eq(x => x.Id, customer.Id);
-                var update = Builders<Models.Customer>.Update.Set(x => x.IsConfirmed, customer.IsConfirmed);
+                var filter = Builders<Customer>.Filter.Eq(x => x.Id, customer.Id);
+                var update = Builders<Customer>.Update.Set(x => x.IsConfirmed, customer.IsConfirmed);
                 await collection.UpdateOneAsync(filter, update);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Fel vid uppdatering: {ex.Message}");
             }
+        }
+
+        public async Task UpdateBookingAsync(Customer booking)
+        {
+            booking.StartDate = TimeZoneHelper.FromSwedishTime(booking.StartDate);
+            booking.EndDate = TimeZoneHelper.FromSwedishTime (booking.EndDate);
+            var filter = Builders<Customer>.Filter.Eq(b => b.Id, booking.Id);
+            await BookingCollection().ReplaceOneAsync(filter, booking);
         }
 
         #endregion
@@ -161,7 +191,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         public async Task<List<Customer>> GetAllBookingsAsync()
         {
             List<Customer> bookings = await BookingCollection().Find(_ => true).ToListAsync();
-            return bookings;
+            return ConvertCustomersToSwedishTime(bookings);
         }
 
         public async Task<List<Models.Contact>> GetAllContactsAsync()
@@ -189,10 +219,15 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             }
             return bookings;
         }
-        public async Task<Customer> FindBookingByIdAsync(Customer customer)
+        public async Task<Customer?> FindBookingByIdAsync(Customer customer)
         {
-            await BookingCollection().Find(c => c.Id == customer.Id).FirstOrDefaultAsync();
-            return customer;
+            var booking = await BookingCollection().Find(c => c.Id == customer.Id).FirstOrDefaultAsync();
+            return booking != null ? ConvertCustomerToSwedishTime(booking) : null;
+        }
+        public async Task<Customer?> FindBookingByIdAndEmailAsync(ObjectId id, string email)
+        {
+            var booking = await BookingCollection().Find(c => c.Id == id && c.Email == email).FirstOrDefaultAsync();
+            return booking != null ? ConvertCustomerToSwedishTime(booking) : null;
         }
     }
 }
