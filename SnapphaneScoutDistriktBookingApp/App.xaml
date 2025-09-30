@@ -7,33 +7,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                
+
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!-- Define color resources --><!--
-            <Color x:Key="TextColor">White</Color>
-            <Color x:Key="ButtonBackgroundColor">#007BFF</Color>
-
-            --><!-- Global style for Text (Labels, Buttons, and other text elements) --><!--
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-            </Style>
-
-            --><!-- Global style for Buttons (text color white) --><!--
-            <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
-                <Setter Property="TextColor" Value="White" />
-            </Style>
-
-            --><!-- Global style for Entries (text color white) --><!--
-            <Style TargetType="Entry">
-                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-            </Style>
-
-            --><!-- Global style for other text elements (if necessary, such as Picker, etc.) --><!--
-            <Style TargetType="Picker">
-                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-            </Style>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

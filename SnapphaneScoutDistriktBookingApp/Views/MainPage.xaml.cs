@@ -39,7 +39,7 @@ namespace SnapphaneScoutDistriktBookingApp.Views
 
         private async void OnChangeToBookingSelectAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Views.Booking.BookingPage(_userSession, _bookingService, _db, _validateBookingService));
+            await Shell.Current.GoToAsync("//BookingPage");
         }
 
         public async void OnResetUserAsync(object sender, EventArgs e)

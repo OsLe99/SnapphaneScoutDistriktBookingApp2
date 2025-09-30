@@ -72,22 +72,25 @@
 		<MauiXaml Update="Views\AdminPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\Booking\BookingConfirmation.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Booking\BookingCustomerInfo.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Booking\BookingExtraInfo.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Views\Booking\BookingPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Booking\BookingStep5View.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Booking\BookingStep4View.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Booking\BookingStep2View.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Booking\BookingStep1View.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\BookingPopUpPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\Booking\BookingSelectDate.xaml">
+		<MauiXaml Update="Views\Booking\BookingStep3View.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\EditBookingPage.xaml">
@@ -108,8 +111,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Views\Booking\BookingPage.xaml.cs">
-			<DependentUpon>BookingPage.xaml</DependentUpon>
+		<Compile Update="Views\Booking\BookingStep5View.xaml.cs">
+		  <DependentUpon>BookingStep5View.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\Booking\BookingStep4View.xaml.cs">
+		  <DependentUpon>BookingStep4View.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\Booking\BookingStep3View.xaml.cs">
+		  <DependentUpon>BookingStep3View.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\Booking\BookingStep2View.xaml.cs">
+		  <DependentUpon>BookingStep2View.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\Booking\BookingStep1View.xaml.cs">
+			<DependentUpon>BookingStep1View.xaml</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
