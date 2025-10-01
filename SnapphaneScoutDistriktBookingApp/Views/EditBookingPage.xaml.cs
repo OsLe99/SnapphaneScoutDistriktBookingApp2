@@ -57,7 +57,7 @@ public partial class EditBookingPage : ContentPage
             .ToList();
 
         BookingCalendar.SelectableDayPredicate = IsSelectableDates;
-    }
+	}
 
     private bool IsSelectableDates(DateTime date)
     {
@@ -95,7 +95,7 @@ public partial class EditBookingPage : ContentPage
         return _relevantBookings.Any(b => start <= b.EndDate.Date && end >= b.StartDate.Date);
     }
 
-    private async void OnSaveClicked(object sender, EventArgs e)
+	private async void OnSaveClicked(object sender, EventArgs e)
 	{
         var updatedBooking = _viewModel.GetBooking();
 
@@ -106,6 +106,7 @@ public partial class EditBookingPage : ContentPage
         }
 
         var errors = _validateBookingService.ValidateBookingDetails(updatedBooking);
+
         if (errors.Any())
         {
             var errorMessage = string.Join("\n", errors);
