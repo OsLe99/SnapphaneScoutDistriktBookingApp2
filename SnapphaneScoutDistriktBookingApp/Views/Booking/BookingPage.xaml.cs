@@ -18,12 +18,16 @@ public partial class BookingPage : ContentPage
 {
 	private readonly IUserSessionService _userSessionService;
 	private readonly IBookingService _bookingService;
-    public BookingPage(IUserSessionService userSessionService, IBookingService bookingService)
+	private readonly IDbService _dbService;
+	private readonly IValidateBookingService _validateBookingService;
+    public BookingPage(IUserSessionService userSessionService, IBookingService bookingService, IDbService dbService, IValidateBookingService validateBookingService)
 	{
         InitializeComponent();
 		_userSessionService = userSessionService;
 		_bookingService = bookingService;
-        BindingContext = new Models.Customer();
+		_dbService = dbService;
+		_validateBookingService = validateBookingService;
+		BindingContext = new Models.Customer();
 
     }
     private async void OnChangeToMoreInfoAsync(object sender, EventArgs e)
@@ -47,7 +51,7 @@ public partial class BookingPage : ContentPage
 					break;
             }
         }
-        await Navigation.PushAsync(new BookingExtraInfo(newCustomer, _bookingService));
+        await Navigation.PushAsync(new BookingExtraInfo(newCustomer, _bookingService, _dbService, _validateBookingService));
 	}
   //  private void OnCheckChange(object sender, CheckedChangedEventArgs e)
   //  {

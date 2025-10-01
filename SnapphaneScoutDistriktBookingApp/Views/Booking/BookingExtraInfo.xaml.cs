@@ -8,12 +8,16 @@ namespace SnapphaneScoutDistriktBookingApp.Views;
 public partial class BookingExtraInfo : ContentPage
 {
     private Customer _customer;
-    private IBookingService _bookingService;
-    public BookingExtraInfo(Customer customer, IBookingService bookingService)
+    private readonly IBookingService _bookingService;
+    private readonly IDbService _dbService;
+    private readonly IValidateBookingService _validateBookingService;
+    public BookingExtraInfo(Customer customer, IBookingService bookingService, IDbService dbService, IValidateBookingService validateBookingService)
     {
         InitializeComponent();
         _customer = customer;
+        _dbService = dbService;
         _bookingService = bookingService;
+        _validateBookingService = validateBookingService;
 
         switch (customer.BookingType)
         {
@@ -60,6 +64,6 @@ public partial class BookingExtraInfo : ContentPage
     private async void OnChangeToBookingDateAsync(object sender, EventArgs e)
 	{
         SaveNumberInputToCustomer();
-		await Navigation.PushAsync(new BookingSelectDate(_customer, _bookingService));
+		await Navigation.PushAsync(new BookingSelectDate(_customer,_bookingService, _dbService, _validateBookingService));
     }
 }

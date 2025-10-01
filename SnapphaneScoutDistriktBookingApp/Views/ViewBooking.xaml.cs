@@ -9,18 +9,20 @@ public partial class ViewBooking : ContentPage
 {
 	private readonly IBookingService _bookingService;
     private readonly IValidateBookingService _validateBookingService;
+    private readonly IDbService _dbService;
     public ICommand EditBookingCommand { get; }
-	public ViewBooking(IBookingService bookingService, IValidateBookingService validateBookingService)
+	public ViewBooking(IBookingService bookingService, IValidateBookingService validateBookingService, IDbService dbService)
 	{
 		InitializeComponent();
 		_bookingService = bookingService;
         _validateBookingService = validateBookingService;
+        _dbService = dbService;
 
         EditBookingCommand = new Command<Customer>(async booking =>
         {
             if (booking != null)
             {
-                await Navigation.PushAsync(new EditBookingPage(booking, _bookingService, _validateBookingService));
+                await Navigation.PushAsync(new EditBookingPage(booking, _bookingService, _validateBookingService, dbService));
             }
         });
         BindingContext = this;

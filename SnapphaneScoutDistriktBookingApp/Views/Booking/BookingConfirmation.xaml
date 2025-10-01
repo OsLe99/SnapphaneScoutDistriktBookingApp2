@@ -39,10 +39,10 @@
                 <Label Text="{Binding OrgName}" Grid.Row="5" Grid.Column="1" />
 
                 <Label Text="Startdatum:" Grid.Row="6" Grid.Column="0" />
-                <Label Text="{Binding StartDate, StringFormat='{0:yyyy-MM-dd}'}" Grid.Row="6" Grid.Column="1" />
+                <Label Text="{Binding StartDate, StringFormat='{0:yyyy-MM-dd HH:mm}'}" Grid.Row="6" Grid.Column="1" />
 
                 <Label Text="Slutdatum:" Grid.Row="7" Grid.Column="0" />
-                <Label Text="{Binding EndDate, StringFormat='{0:yyyy-MM-dd}'}" Grid.Row="7" Grid.Column="1" />
+                <Label Text="{Binding EndDate, StringFormat='{0:yyyy-MM-dd HH:mm}'}" Grid.Row="7" Grid.Column="1" />
 
                 <Button x:Name="ConfirmBooking" Text="Skapa bokning" Clicked="OnConfirmBookingClickedAsync" Grid.Row="8" Grid.Column="0"/>
             </Grid>

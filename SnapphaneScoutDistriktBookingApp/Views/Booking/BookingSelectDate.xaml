@@ -2,21 +2,40 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:cal="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
+             xmlns:picker="clr-namespace:Syncfusion.Maui.Picker;assembly=Syncfusion.Maui.Picker"
              x:Class="SnapphaneScoutDistriktBookingApp.Views.Booking.BookingSelectDate"
              Title="BookingSelectDate">
     <VerticalStackLayout>
         <Label 
-            Text="Placeholder för datum"
+            Text="Välj datum och tid för bokning."
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <DatePicker
-            x:Name="StartDatePicker"
-            Date="{Binding StartDate, Mode=TwoWay}" 
-            MinimumDate="{x:Static sys:DateTime.Today}"/>
-        <DatePicker 
-            x:Name="EndDatePicker" 
-            Date="{Binding EndDate, Mode=TwoWay}" 
-            MinimumDate="{x:Static sys:DateTime.Today}"/>
+
+        <!--Calendar-->
+        <cal:SfCalendar x:Name="BookingCalendar" SelectionMode="Range" EnablePastDates="False" SelectionChanged="OnCalendarSelectionChanged" >
+            <cal:SfCalendar.MonthView>
+                <cal:CalendarMonthView FirstDayOfWeek="Monday" DisabledDatesBackground="DarkRed" />
+            </cal:SfCalendar.MonthView>
+        </cal:SfCalendar>
+
+        <!--StartPicker-->
+        <picker:SfTimePicker x:Name="StartTimePicker" Format="HH_mm" MinuteInterval="15" TextDisplayMode="FadeAndShrink" Mode="Dialog" SelectedTime="12:00:00" SelectionChanged="OnStartTimeChanged">
+            <picker:SfTimePicker.HeaderView>
+                <picker:PickerHeaderView Text="Tid för start" Height="40" />
+            </picker:SfTimePicker.HeaderView>
+        </picker:SfTimePicker>
+
+        <!--EndPicker-->
+        <picker:SfTimePicker x:Name="EndTimePicker" Format="HH_mm" MinuteInterval="15" TextDisplayMode="FadeAndShrink" Mode="Dialog" SelectedTime="13:00:00" SelectionChanged="OnEndTimeChanged">
+            <picker:SfTimePicker.HeaderView>
+                <picker:PickerHeaderView Text="Tid för avslutning" Height="40" />
+            </picker:SfTimePicker.HeaderView>
+        </picker:SfTimePicker>
+
+        <Button x:Name="StartTimeButton" Text="Starttid: 12:00" Clicked="OnStartClicked" />
+        <Button x:Name="EndTimeButton" Text="Sluttid: 13:00" Clicked="OnEndClicked" />
+
         <Button 
             x:Name="GoToBookingCustomerInfo"
             Text="Nästa steg"

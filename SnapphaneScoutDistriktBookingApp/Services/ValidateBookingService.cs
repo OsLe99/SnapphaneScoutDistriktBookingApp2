@@ -16,6 +16,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         { 
 
         }
+        #region Email, phone, name
         public bool ValidateEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
@@ -57,6 +58,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
                 return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
             }
         }
+        #endregion
         public List<string> ValidateBookingDetails(Customer customer)
         {
             var errors = new List<string>();
@@ -73,6 +75,15 @@ namespace SnapphaneScoutDistriktBookingApp.Services
                 errors.Add("Ogiltig email.");
             }
             return errors;
+        }
+
+        public Task<bool> CheckIfValidTime(TimeSpan? StartTime, TimeSpan? EndTime)
+        {
+            if (StartTime >= EndTime && StartTime != null)
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
         }
     }
 }
