@@ -97,7 +97,7 @@
                 MinuteInterval="15"
                 Mode="Dialog"
                 SelectedTime="{Binding EndTime, Mode=TwoWay}" />
-            
+
             <Button x:Name="StartTimeButton" Text="{Binding StartTimeText}" Clicked="OnStartClicked" />
             <Button x:Name="EndTimeButton" Text="{Binding EndTimeText}" Clicked="OnEndClicked" />
 

@@ -96,6 +96,9 @@
 		<MauiXaml Update="Views\EditBookingPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\EditBookingPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\InfoPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
