@@ -50,7 +50,7 @@ public partial class BookingStep3View : ContentView
             return false;
         start = range.StartDate.Value.Date;
         end = range.EndDate?.Date ?? start;
-        Debug.WriteLine($"Retrieved date range: Start={start}, End={end}");
+        Debug.WriteLine($"Retrieved date range: Start={start.TimeOfDay}, End={end.TimeOfDay}");
         return true;
     }
 
@@ -74,8 +74,15 @@ public partial class BookingStep3View : ContentView
 
             if (TryGetSelectedRange(out var start, out var end))
             {
-                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime)
-                    EndTimePicker.SelectedTime = StartTimePicker.SelectedTime;
+                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime && vm.Customer.StartDate == vm.Customer.EndDate)
+                {
+                    var proposedEndTime = StartTimePicker.SelectedTime.Value.Add(TimeSpan.FromHours(1));
+                    if (proposedEndTime >= TimeSpan.FromDays(1))
+                    {
+                        proposedEndTime = TimeSpan.FromHours(23) + TimeSpan.FromMinutes(59);
+                    }
+                    EndTimePicker.SelectedTime = proposedEndTime;
+                }
 
                 vm.UpdateCustomerDatesAndTimes(start, end);
             }
@@ -92,8 +99,15 @@ public partial class BookingStep3View : ContentView
 
             if (TryGetSelectedRange(out var start, out var end))
             {
-                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime)
-                    EndTimePicker.SelectedTime = StartTimePicker.SelectedTime;
+                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime && vm.Customer.StartDate == vm.Customer.EndDate)
+                {
+                    var proposedEndTime = StartTimePicker.SelectedTime.Value.Add(TimeSpan.FromHours(1));
+                    if (proposedEndTime >= TimeSpan.FromDays(1))
+                    {
+                        proposedEndTime = TimeSpan.FromHours(23) + TimeSpan.FromMinutes(59);
+                    }
+                    EndTimePicker.SelectedTime = proposedEndTime;
+                }
 
                 vm.UpdateCustomerDatesAndTimes(start, end);
             }

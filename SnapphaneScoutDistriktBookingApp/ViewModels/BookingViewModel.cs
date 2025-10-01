@@ -90,6 +90,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             UpdateNavigationButtons();
             UpdateCurrentView();
         }
+        #region Navigation and Step Management
         private void OnStepChanged()
         {
             OnPropertyChanged(nameof(StepInfo));
@@ -135,6 +136,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             CanGoToNextStep = _currentStep < _totalSteps && _currentStep != 1;
             OnStepChanged();
         }
+        #endregion
 
         private void ResetBookingSelection()
         {
@@ -251,7 +253,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
                     NumberInputPlaceholder = "Antal kanoter";
                     break;
                 case Customer.TypeOfBooking.Cabin:
-                    InfoLabelText = "Hur många personer ska bo i stugan?";
+                    InfoLabelText = "Hur många personer ska vistas i stugan?";
                     NumberInputPlaceholder = "Antal personer i stugan";
                     break;
                 case Customer.TypeOfBooking.LeanTo:
@@ -259,7 +261,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
                     NumberInputPlaceholder = "Antal vindskydd";
                     break;
                 case Customer.TypeOfBooking.CampGrounds:
-                    InfoLabelText = "Hur många personer ska bo på lägerområdet?";
+                    InfoLabelText = "Hur många personer ska använda lägerområdet?";
                     NumberInputPlaceholder = "Antal personer på lägerområdet";
                     break;
                 default:
