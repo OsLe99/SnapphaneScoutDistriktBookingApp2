@@ -4,15 +4,17 @@
              x:Class="SnapphaneScoutDistriktBookingApp.Views.MainPage"
              >
 
-    <ScrollView>
+    <ScrollView
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25"
-            VerticalOptions="Center"
-            HorizontalOptions="Center">
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill">
             <Image
                 Source="logga.png"
-                HeightRequest="185"
+                HeightRequest="220"
                 Aspect="AspectFit"
                 SemanticProperties.Description="Logga för hultet" />
 
@@ -20,6 +22,7 @@
                 Text="{Binding UserName, StringFormat='Välkommen {0}!'}"
                 TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                 Style="{StaticResource Headline}"
+                HorizontalOptions="Center"
                 SemanticProperties.HeadingLevel="Level1" />
 
             <Label
@@ -31,5 +34,4 @@
                 SemanticProperties.Description="Välkommen" />
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

@@ -8,13 +8,14 @@ namespace SnapphaneScoutDistriktBookingApp.Views
 {
     public partial class MainPage : ContentPage
     {
-        private readonly IUserSessionService _userSession;
+        private readonly IClerkUserSessionService _userSession;
         private readonly IAdminService _adminService;
         private readonly IDbService _db;
         private readonly IEmailService _emailService;
         private readonly IBookingService _bookingService;
         private readonly IValidateBookingService _validateBookingService;
-        public MainPage(IUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService, IValidateBookingService validateBookingService)
+        private readonly IClerkAuthService _clerkAuthService;
+        public MainPage(IClerkUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService, IValidateBookingService validateBookingService, IClerkAuthService clerkAuthService)
         {
             InitializeComponent();
             _userSession = userSession;
@@ -25,6 +26,7 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             BindingContext = _userSession;
             OnAppearing();
             _validateBookingService = validateBookingService;
+            _clerkAuthService = clerkAuthService;
         }
         bool pageStarted = false;
         protected override void OnAppearing()
@@ -53,7 +55,7 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             _userSession.ResetUser();
 
             await DisplayAlert("Utloggning", "Du är nu utloggad.", "OK");
-            await Navigation.PushAsync(new LoginPage(_userSession, _adminService, _db));
+            await Navigation.PushAsync(new LoginPage(_userSession, _adminService, _db, _clerkAuthService));
         }
 
         private async void OnClickedGoToAdminPageAsync(object sender, EventArgs e)

@@ -23,7 +23,9 @@ namespace SnapphaneScoutDistriktBookingApp
                 });
             // Services
             builder.Services.AddTransient<IAdminService, AdminService>();
-            builder.Services.AddSingleton<IUserSessionService, UserSessionService>();
+            builder.Services.AddSingleton<IClerkUserSessionService>(sp =>
+                new ClerkUserSessionService("sk_test_kRFPzExdplSes3eeLt9uD9fubBNXsilcMBWxAW3PK1"));
+            builder.Services.AddSingleton<IClerkAuthService, ClerkAuthService>();
             builder.Services.AddScoped<IDbService, DbService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddTransient<IBookingService, BookingService>();

@@ -16,11 +16,11 @@ namespace SnapphaneScoutDistriktBookingApp.Views.Booking;
 
 public partial class BookingPage : ContentPage
 {
-	private readonly IUserSessionService _userSessionService;
+	private readonly IClerkUserSessionService _userSessionService;
 	private readonly IBookingService _bookingService;
 	private readonly IDbService _dbService;
 	private readonly IValidateBookingService _validateBookingService;
-    public BookingPage(IUserSessionService userSessionService, IBookingService bookingService, IDbService dbService, IValidateBookingService validateBookingService)
+    public BookingPage(IClerkUserSessionService userSessionService, IBookingService bookingService, IDbService dbService, IValidateBookingService validateBookingService)
 	{
         InitializeComponent();
 		_userSessionService = userSessionService;

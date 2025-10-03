@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SnapphaneScoutDistriktBookingApp.Models;
 
 namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
-    public interface IUserSessionService : INotifyPropertyChanged
+    public interface IClerkUserSessionService : INotifyPropertyChanged
     {
         string UserName { get; set; }
         string UserEmail { get; set; }
@@ -17,5 +18,8 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
         bool SetAdmin(bool isAdmin);
         bool IsUserSet();
         void ResetUser();
+
+        Task<ClerkUser?> CreateUserAsync(string firstName, string lastName, string email, string password);
+        void SetUserToken(string token);
     }
 }

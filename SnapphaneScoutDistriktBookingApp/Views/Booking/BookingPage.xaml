@@ -5,7 +5,9 @@
              Title="Bokningssida"
              >
 
-    <ScrollView>
+    <ScrollView
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25"

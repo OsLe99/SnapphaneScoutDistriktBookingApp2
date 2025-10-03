@@ -7,20 +7,32 @@ using System.Threading.Tasks;
 using Microsoft.Maui.Storage;
 using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using Clerk.BackendAPI;
+using Clerk.BackendAPI.Models.Components;
+using Clerk.BackendAPI.Models.Operations;
+using Clerk.BackendAPI.Models;
+using System.Net.Http.Json;
+using SnapphaneScoutDistriktBookingApp.Models;
+using System.Text.Json;
+using System.Diagnostics;
+using SnapphaneScoutDistriktBookingApp.Helpers;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
-    public class UserSessionService : IUserSessionService
+    public class ClerkUserSessionService : IClerkUserSessionService
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        private readonly ClerkBackendApi _sdk;
 
         private string _userName = string.Empty;
         private string _userEmail = string.Empty;
         private bool _isAdmin = false;
 
-        public UserSessionService()
+        public ClerkUserSessionService(string bearerToken)
         {
             LoadUserData();
+            _sdk = new ClerkBackendApi(bearerAuth: bearerToken);
         }
         #region Setters
         public string UserName
@@ -62,6 +74,45 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             }
         }
         #endregion
+
+        public async Task<ClerkUser?> CreateUserAsync(string firstName, string lastName, string email, string password)
+        {
+            var req = new CreateUserRequestBody()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                EmailAddress = new List<string> { email },
+                Password = password,
+                
+            };
+
+            try
+            {
+                var response = await _sdk.Users.CreateAsync(req);
+
+                if (response?.User != null)
+                {
+                    return new ClerkUser
+                    {
+                        Id = response.User.Id,
+                        FirstName = response.User.FirstName,
+                        LastName = response.User.LastName,
+                        EmailAddress = response.User.PrimaryEmailAddressId ?? string.Empty
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Write($"Error creating user: {ex.Message}");
+            }
+
+            return null;
+        }
+
+        public async void SetUserToken(string token)
+        {
+            await TokenStorage.SaveTokenAsync(token);
+        }
 
         public void LoadUserData()
         {

@@ -1,10 +1,13 @@
-﻿namespace SnapphaneScoutDistriktBookingApp
+﻿using SnapphaneScoutDistriktBookingApp.Pages;
+
+namespace SnapphaneScoutDistriktBookingApp
 {
     public partial class AppShell : Shell
     {
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
         }
         private void OnClickedChangeTheme(object sender, EventArgs e)
         {

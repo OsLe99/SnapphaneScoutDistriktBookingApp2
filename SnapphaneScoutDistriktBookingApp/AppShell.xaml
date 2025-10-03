@@ -38,10 +38,10 @@
             Title="Admin" 
             ContentTemplate="{DataTemplate local:AdminPage}"
             Route="AdminPage" />
-
         <ShellContent
-            Title="Logga in"
-            ContentTemplate="{DataTemplate local:LoginPage}"
-            Route="LoginPage" />
+                Title="Logga in"
+                ContentTemplate="{DataTemplate local:LoginPage}"
+                Route="LoginPage" />
+
     </FlyoutItem>
 </Shell>

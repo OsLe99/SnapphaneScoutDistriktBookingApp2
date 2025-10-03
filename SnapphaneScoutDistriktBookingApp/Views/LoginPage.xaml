@@ -11,5 +11,7 @@
         <Entry x:Name="PasswordEntry" Placeholder="Ditt lösenord" IsPassword="True" />
 
         <Button Text="Logga in" Clicked="OnLoginClickedAsync"/>
+        <Button Text="Registrera ny användare" Clicked="OnRegisterClickedAsync" />
+        
     </VerticalStackLayout>
 </ContentPage>
