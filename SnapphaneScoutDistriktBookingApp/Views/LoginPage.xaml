@@ -3,15 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SnapphaneScoutDistriktBookingApp.Views.LoginPage"
              Title="LoginPage">
-    <VerticalStackLayout Padding="20" Spacing="10">
-        <Label Text="Email" FontSize="18"/>
-        <Entry x:Name="EmailEntry" Placeholder="Din email" Keyboard="Email" IsSpellCheckEnabled="False"/>
+    <Grid>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Label Text="Email" FontSize="18"/>
+            <Entry x:Name="EmailEntry" Placeholder="Din email" Keyboard="Email" IsSpellCheckEnabled="False"/>
 
-        <Label Text="Lösenord" FontSize="18" />
-        <Entry x:Name="PasswordEntry" Placeholder="Ditt lösenord" IsPassword="True" />
+            <Label Text="Lösenord" FontSize="18" />
+            <Entry x:Name="PasswordEntry" Placeholder="Ditt lösenord" IsPassword="True" />
 
-        <Button Text="Logga in" Clicked="OnLoginClickedAsync"/>
-        <Button Text="Registrera ny användare" Clicked="OnRegisterClickedAsync" />
+            <Button Text="Logga in" Clicked="OnLoginClickedAsync"/>
+            <Button Text="Registrera ny användare" Clicked="OnRegisterClickedAsync" />
+        </VerticalStackLayout>
         
-    </VerticalStackLayout>
+        <ActivityIndicator x:Name="LoadingIndicator"
+                           Color="DarkOrange"
+                           IsRunning="False"
+                           IsVisible="False"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+    </Grid>
 </ContentPage>

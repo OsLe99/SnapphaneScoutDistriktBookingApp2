@@ -18,9 +18,10 @@ namespace SnapphaneScoutDistriktBookingApp.Helpers
         {
             return await SecureStorage.GetAsync(Key);
         }
-        public static void RemoveToken()
+        public static async Task RemoveTokenAsync()
         {
             SecureStorage.Remove(Key);
+            await Task.CompletedTask;
         }
     }
 }

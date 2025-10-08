@@ -8,7 +8,10 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
     public interface IClerkAuthService
     {
-       Task<string?> SignInAsync(string email, string password);
-       Task<Task> SignOutAsync();
+        Task<string?> SignInAsync(string email, string password);
+        Task<bool> SignOutAsync();
+        Task<string> CheckSessionStateAsync();
+        Task<bool> RefreshTokenAsync();
+        Task<bool> IsUserLoggedInAsync();
     }
 }

@@ -23,39 +23,20 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             _emailService = emailService;
             _db = db;
             _bookingService = bookingService;
-            BindingContext = _userSession;
-            OnAppearing();
             _validateBookingService = validateBookingService;
             _clerkAuthService = clerkAuthService;
+            _userSession.LoadUserData();
+            BindingContext = userSession;
         }
-        bool pageStarted = false;
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            if (!pageStarted)
-            {
-                pageStarted = true;
-            }
+            await _userSession.LoadUserData();
         }
 
         private async void OnChangeToBookingSelectAsync(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Views.Booking.BookingPage(_userSession, _bookingService, _db, _validateBookingService));
-        }
-
-        public async void OnResetUserAsync(object sender, EventArgs e)
-        {
-            bool confirm = await DisplayAlert("Ändra användare", "Är du säker på att du vill ändra användare?", "Ja", "Nej");
-            if (!confirm)
-            {
-                return;
-            }
-
-            _userSession.ResetUser();
-
-            await DisplayAlert("Utloggning", "Du är nu utloggad.", "OK");
-            await Navigation.PushAsync(new LoginPage(_userSession, _adminService, _db, _clerkAuthService));
         }
 
         private async void OnClickedGoToAdminPageAsync(object sender, EventArgs e)

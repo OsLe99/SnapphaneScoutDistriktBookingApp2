@@ -19,7 +19,7 @@
                 SemanticProperties.Description="Logga för hultet" />
 
             <Label
-                Text="{Binding UserName, StringFormat='Välkommen {0}!'}"
+                Text="{Binding WelcomeText}"
                 TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                 Style="{StaticResource Headline}"
                 HorizontalOptions="Center"

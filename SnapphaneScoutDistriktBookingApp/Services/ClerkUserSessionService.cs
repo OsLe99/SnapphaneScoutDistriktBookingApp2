@@ -19,20 +19,23 @@ using SnapphaneScoutDistriktBookingApp.Helpers;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
-    public class ClerkUserSessionService : IClerkUserSessionService
+    public class ClerkUserSessionService : IClerkUserSessionService, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly ClerkBackendApi _sdk;
+        private readonly IClerkAuthService _authService;
 
         private string _userName = string.Empty;
         private string _userEmail = string.Empty;
         private bool _isAdmin = false;
-
-        public ClerkUserSessionService(string bearerToken)
+        private bool _isLoggedIn = false;
+        public string UserToken { get; private set; } = string.Empty;
+        public string WelcomeText => string.IsNullOrWhiteSpace(UserName) ? "Välkommen!" : $"Välkommen {UserName}!";
+        public ClerkUserSessionService(string bearerToken, IClerkAuthService authService)
         {
-            LoadUserData();
             _sdk = new ClerkBackendApi(bearerAuth: bearerToken);
+            _authService = authService;
         }
         #region Setters
         public string UserName
@@ -44,6 +47,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
                 {
                     _userName = value;
                     OnPropertyChanged(nameof(UserName));
+                    OnPropertyChanged(nameof(WelcomeText));
                 }
             }
         }
@@ -70,6 +74,19 @@ namespace SnapphaneScoutDistriktBookingApp.Services
                 {
                     _isAdmin = value;
                     OnPropertyChanged(nameof(IsAdmin));
+                }
+            }
+        }
+
+        public bool IsLoggedIn
+        {
+            get => _isLoggedIn;
+            private set
+            {
+                if (_isLoggedIn != value)
+                {
+                    _isLoggedIn = value;
+                    OnPropertyChanged(nameof(IsLoggedIn));
                 }
             }
         }
@@ -109,24 +126,34 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             return null;
         }
 
-        public async void SetUserToken(string token)
+        public void SetLoggedIn(bool isLoggedIn)
         {
-            await TokenStorage.SaveTokenAsync(token);
+            IsLoggedIn = isLoggedIn;
         }
 
-        public void LoadUserData()
+        public async Task CheckLoginStateAsync()
         {
-            UserName = Preferences.Get("Användarnamn", string.Empty);
-            UserEmail = Preferences.Get("Användarmail", string.Empty);
-            IsAdmin = Preferences.Get("IsAdmin", false);
+            bool isLoggedIn = await _authService.IsUserLoggedInAsync();
+            SetLoggedIn(isLoggedIn);
         }
 
-        public void SetUser(string userName, string userEmail)
+        public Task LoadUserData()
         {
+            UserName = Preferences.Get("userName", string.Empty);
+            UserEmail = Preferences.Get("userEmail", string.Empty);
+
+            return Task.CompletedTask;
+        }
+
+        public async void SetUserAsync(string userName, string userEmail, string sessionId)
+        {
+            Preferences.Set("userName", userName);
+            Preferences.Set("userEmail", userEmail);
+
+            await SecureStorage.SetAsync("sessionId", sessionId);
+
             UserName = userName;
             UserEmail = userEmail;
-            Preferences.Set("Användarnamn", userName);
-            Preferences.Set("Användarmail", userEmail);
         }
 
         public bool SetAdmin(bool isAdmin)
@@ -141,14 +168,25 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             return !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(UserEmail);
         }
 
-        public void ResetUser()
+        public async Task ResetUser()
         {
-            Preferences.Remove("Användarnamn");
-            Preferences.Remove("Användarmail");
-            Preferences.Remove("IsAdmin");
-            UserName = string.Empty;
-            UserEmail = string.Empty;
-            IsAdmin = false;
+            try
+            {
+                Preferences.Set("userName", string.Empty);
+                Preferences.Set("userEmail", string.Empty);
+
+                SecureStorage.Remove("sessionId");
+                await TokenStorage.RemoveTokenAsync();
+
+                UserName = string.Empty;
+                UserEmail = string.Empty;
+                Debug.WriteLine("User data cleared safely");
+                await Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error on user reset: {ex.Message}");
+            }
         }
 
         protected void OnPropertyChanged(string propertyName)

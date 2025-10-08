@@ -7,167 +7,220 @@ using Clerk.BackendAPI;
 using Clerk.BackendAPI.Helpers;
 using Clerk.BackendAPI.Models.Components;
 using Clerk.BackendAPI.Models.Operations;
+using MongoDB.Bson;
+using SnapphaneScoutDistriktBookingApp.Services;
 
 public class ClerkAuthService : IClerkAuthService
 {
-    private readonly HttpClient _httpClient;
-    private const string ClerkFrontendApi = "https://communal-albacore-55.clerk.accounts.dev";
-
-    public ClerkAuthService()
+    private readonly ClerkBackendApi _sdk;
+    public ClerkAuthService(string bearerToken)
     {
-        _httpClient = new HttpClient();
+        _sdk = new ClerkBackendApi(bearerAuth: bearerToken);
     }
 
     public async Task<string?> SignInAsync(string email, string password)
     {
         try
         {
-            /* Starta inloggningsprocessen. 
-             * 4 steg då Clerks frontedapi endast tar emot vissa inputs under varje steg. 
-             * Omega nivå av debug writes
-             * Om jag fattar det rätt så går det inte att logga in på detta sättet då den är gjord för web, går att använda backenApi men då finns det ingen färdig lösning för hantering av lösenord. Ifall jag har fel så är det toppen :)
-             * Skapa sign-in attempt, ange identifierare (email), ange första faktor (lösenord), hämta JWT från session och spara den för framtida inloggningar*/
-            var startResponse = await _httpClient.PostAsync(
-                $"{ClerkFrontendApi}/v1/client/sign_ins",
-                new StringContent("{}", Encoding.UTF8, "application/json")
-            );
+            var userListResponse = await _sdk.Users.ListAsync();
+            var user = userListResponse?.UserList?.FirstOrDefault(u => u.EmailAddresses?.Any(e => e.EmailAddressValue == email) == true);
 
-            var startBody = await startResponse.Content.ReadAsStringAsync();
-            Debug.WriteLine("=== Start SignIn Response ===");
-            Debug.WriteLine(startBody);
-
-            if (!startResponse.IsSuccessStatusCode)
+            if (user == null)
             {
-                Debug.WriteLine($"Start sign-in failed: {startResponse.StatusCode}");
+                Debug.Write("User not found");
                 return null;
             }
 
-            var startJson = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(startBody);
-            if (startJson == null || !startJson.ContainsKey("response"))
+            var verifyResponse = await _sdk.Users.VerifyPasswordAsync(user.Id, new VerifyPasswordRequestBody
             {
-                Debug.WriteLine("No sign-in attempt created.");
+                Password = password
+            });
+
+            if (verifyResponse.Object?.Verified != true)
+            {
+                Debug.Write("Password verification failed");
                 return null;
             }
 
-            var signInAttempt = startJson["response"];
-            var signInId = signInAttempt.GetProperty("id").GetString();
-            if (string.IsNullOrEmpty(signInId))
+            var sessionResponse = await _sdk.Sessions.CreateAsync(new CreateSessionRequestBody
             {
-                Debug.WriteLine("Sign-in ID is null.");
+                UserId = user.Id
+            });
+
+            var session = sessionResponse?.Session;
+            if (session == null)
+            {
+                Debug.Write("Session creation failed");
                 return null;
             }
 
-            // Använd email som identifierare
-            var identifierRequest = new
+            var jwtResponse = await _sdk.Sessions.CreateTokenAsync(
+                sessionId: session.Id,
+                requestBody: new CreateSessionTokenRequestBody()
+                );
+
+            var jwt = jwtResponse?.Object?.Jwt;
+            if(string.IsNullOrEmpty(jwt))
             {
-                sign_in_attempt_id = signInId,
-                identifier = email
-            };
-
-            var identifierResponse = await _httpClient.PostAsync(
-                $"{ClerkFrontendApi}/v1/client/sign_ins/{signInId}/identifiers",
-                new StringContent(
-                    JsonSerializer.Serialize(identifierRequest),
-                    Encoding.UTF8,
-                    "application/json"
-                )
-            );
-
-            var identifierBody = await identifierResponse.Content.ReadAsStringAsync();
-            Debug.WriteLine("=== Identifier Response ===");
-            Debug.WriteLine(identifierBody);
-
-            if (!identifierResponse.IsSuccessStatusCode)
-            {
-                Debug.WriteLine($"Provide identifier failed: {identifierResponse.StatusCode}");
+                Debug.Write("JWT creation failed");
                 return null;
             }
 
-            // Använd lösenordet som första faktor
-            var firstFactorRequest = new
-            {
-                sign_in_attempt_id = signInId,
-                strategy = "password",
-                password = password
-            };
-
-            var firstFactorResponse = await _httpClient.PostAsync(
-                $"{ClerkFrontendApi}/v1/client/sign_ins/{signInId}/first_factors",
-                new StringContent(
-                    JsonSerializer.Serialize(firstFactorRequest),
-                    Encoding.UTF8,
-                    "application/json"
-                )
-            );
-
-            var firstFactorBody = await firstFactorResponse.Content.ReadAsStringAsync();
-            Debug.WriteLine("=== First Factor Response ===");
-            Debug.WriteLine(firstFactorBody);
-
-            if (!firstFactorResponse.IsSuccessStatusCode)
-            {
-                Debug.WriteLine($"First factor failed: {firstFactorResponse.StatusCode}");
-                return null;
-            }
-
-            var firstFactorJson = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(firstFactorBody);
-            if (firstFactorJson == null || !firstFactorJson.ContainsKey("created_session_id"))
-            {
-                Debug.WriteLine("No session created.");
-                return null;
-            }
-
-            var sessionId = firstFactorJson["created_session_id"].GetString();
-            if (string.IsNullOrEmpty(sessionId))
-            {
-                Debug.WriteLine("Session ID is null.");
-                return null;
-            }
-
-            //Byt ut sessionId mot en JWT
-            var tokenResponse = await _httpClient.PostAsync(
-                $"{ClerkFrontendApi}/v1/client/sessions/{sessionId}/tokens",
-                null
-            );
-
-            var tokenBody = await tokenResponse.Content.ReadAsStringAsync();
-            Debug.WriteLine("=== Token Response ===");
-            Debug.WriteLine(tokenBody);
-
-            if (!tokenResponse.IsSuccessStatusCode)
-            {
-                Debug.WriteLine($"Token fetch failed: {tokenResponse.StatusCode}");
-                return null;
-            }
-
-            var tokenJson = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(tokenBody);
-            if (tokenJson == null || !tokenJson.ContainsKey("jwt"))
-            {
-                Debug.WriteLine("No JWT in response.");
-                return null;
-            }
-
-            var jwt = tokenJson["jwt"].GetString();
-            if (!string.IsNullOrEmpty(jwt))
-            {
-                await SecureStorage.Default.SetAsync("jwt", jwt);
-                Debug.WriteLine("Sign-in successful. JWT saved.");
-                return jwt;
-            }
-
-            return null;
+            Debug.WriteLine($"JWT: {jwt}");
+            await TokenStorage.SaveTokenAsync(jwt);
+            await SecureStorage.SetAsync("sessionId", session.Id);
+            Preferences.Set("userName", $"{user.FirstName} {user.LastName}");
+            Preferences.Set("userEmail", user.PrimaryEmailAddressId);
+            return jwt;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Exception in SignInAsync: {ex}");
+            Debug.Write($"Error during sign-in: {ex.Message}");
             return null;
         }
     }
 
-    // Enkel sign-out som tar bort den sparade token, behöver lägga till mer senare för att logga ut helt
-    public async Task<Task> SignOutAsync()
+    public async Task<bool> SignOutAsync()
     {
-        TokenStorage.RemoveToken();
-        return Task.CompletedTask;
+        var sessionId = await SecureStorage.GetAsync("sessionId");
+        if(!string.IsNullOrEmpty(sessionId))
+        {
+            try
+            {
+                await _sdk.Sessions.RevokeAsync(sessionId);
+                Debug.WriteLine("Revoked sessionId");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error during sign-out: {ex.Message}");
+                return false;
+            }
+        }
+        return false;
+    }
+    // 2
+    public async Task<string> CheckSessionStateAsync()
+    {
+        try
+        {
+            var sessionId = await SecureStorage.GetAsync("sessionId");
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                Debug.WriteLine($"Check session state: {sessionId}");
+                return "missing";
+            }
+
+            var sessionResponse = await _sdk.Sessions.GetAsync(sessionId);
+            var session = sessionResponse?.Session;
+
+            if (session == null)
+            {
+                Debug.WriteLine("Session not found");
+                return "missing";
+            }
+            if (session.Status == Clerk.BackendAPI.Models.Components.Status.Active)
+            {
+                return "active";
+            }
+            else
+            {
+                return session.Status.ToString().ToLower();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error: {ex.Message}");
+            return "missing";
+        }
+
+    }
+    // 4
+    public async Task<bool> RefreshTokenAsync()
+    {
+        try
+        {
+            var sessionId = await SecureStorage.Default.GetAsync("sessionId");
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                Debug.WriteLine("sessionId missing");
+                return false;
+            }
+
+            var newTokenResponse = await _sdk.Sessions.CreateTokenAsync(
+                sessionId: sessionId,
+                requestBody: new CreateSessionTokenRequestBody());
+            var newJwt = newTokenResponse?.Object?.Jwt;
+
+            if (string.IsNullOrEmpty(newJwt))
+            {
+                Debug.WriteLine("Failed to refresh token");
+                return false;
+            }
+
+            await TokenStorage.SaveTokenAsync(newJwt);
+            Debug.WriteLine("Token refreshed successfully");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error: {ex.Message}");
+            return false;
+        }
+
+    }
+    // 3
+    public async Task<bool> RefreshSession()
+    {
+        try
+        {
+            var sessionId = await SecureStorage.GetAsync("sessionId");
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                return false;
+            }
+            var sessionRefreshResponse = await _sdk.Sessions.RefreshAsync(
+                sessionId: sessionId,
+                requestBody: new RefreshSessionRequestBody());
+            if (!string.IsNullOrEmpty(sessionRefreshResponse?.SessionRefresh?.Token?.Object.Value()))
+            {
+                var newToken = sessionRefreshResponse?.SessionRefresh?.Token?.Object.Value();
+                await TokenStorage.SaveTokenAsync(newToken);
+                return true;
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error: {ex.Message}");
+            return false;
+        }
+    }
+
+    // 1
+    public async Task<bool> IsUserLoggedInAsync()
+    {
+        string sessionState = await CheckSessionStateAsync();
+
+        if (sessionState == "active")
+        {
+            Debug.WriteLine("Session is active");
+            return true;
+        }
+
+        if (await RefreshSession())
+        {
+            Debug.WriteLine("Session was refreshed");
+            return true;
+        }
+
+        if (await RefreshTokenAsync())
+        {
+            Debug.WriteLine("Token was refreshed");
+            return true;
+        }
+        Debug.WriteLine("User has been logged out");
+        await SignOutAsync();
+        return false;
     }
 }

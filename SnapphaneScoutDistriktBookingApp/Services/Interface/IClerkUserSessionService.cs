@@ -13,13 +13,15 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
         string UserName { get; set; }
         string UserEmail { get; set; }
         bool IsAdmin { get; }
-
-        void SetUser(string userName, string userEmail);
+        bool IsLoggedIn { get; }
+        void SetLoggedIn(bool isLoggedIn);
+        Task LoadUserData();
+        void SetUserAsync(string userName, string userEmail, string sessionId);
         bool SetAdmin(bool isAdmin);
         bool IsUserSet();
-        void ResetUser();
+        Task ResetUser();
 
         Task<ClerkUser?> CreateUserAsync(string firstName, string lastName, string email, string password);
-        void SetUserToken(string token);
+        Task CheckLoginStateAsync();
     }
 }

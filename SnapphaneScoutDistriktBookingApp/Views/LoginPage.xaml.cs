@@ -9,19 +9,16 @@ namespace SnapphaneScoutDistriktBookingApp.Views;
 public partial class LoginPage : ContentPage
 {
     private readonly IClerkUserSessionService _userSession;
-    private readonly IAdminService _adminService;
-    private readonly IDbService _dbService;
     private readonly IClerkAuthService _clerkAuthService;
-    public LoginPage(IClerkUserSessionService userSession, IAdminService adminService, IDbService dbService, IClerkAuthService clerkAuthService)
+    public LoginPage(IClerkUserSessionService userSession, IClerkAuthService clerkAuthService)
 	{
 		InitializeComponent();
         _userSession = userSession;
-        _adminService = adminService;
-        _dbService = dbService;
         _clerkAuthService = clerkAuthService;
     }
     private async void OnLoginClickedAsync(object sender, EventArgs e)
     {
+
         string userEmail = EmailEntry.Text;
         string userPassword = PasswordEntry.Text;
 
@@ -31,12 +28,21 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        // Kolla ifall inloggning går igenom. Om inte detta fungerar så kan det vara värt att använda en webview för att logga in
+        LoadingIndicator.IsVisible = true;
+        LoadingIndicator.IsRunning = true;
+
         string jwt = await _clerkAuthService.SignInAsync(userEmail, userPassword);
+
+        LoadingIndicator.IsVisible = false;
+        LoadingIndicator.IsRunning = false;
 
         if (jwt != null)
         {
             await DisplayAlert("Inloggning", "Inloggning lyckades!", "OK");
+            if (Shell.Current is AppShell shell)
+            {
+                shell.UpdateSignInSignOutUI(true);
+            }
             await Shell.Current.GoToAsync("//MainPage");
         }
         else

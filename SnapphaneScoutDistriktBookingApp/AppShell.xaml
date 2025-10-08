@@ -10,6 +10,10 @@
     Shell.TabBarIsVisible="False"
     Title="SnapphaneScoutDistriktBookingApp">
 
+    <Shell.FlyoutBackdrop>
+        <SolidColorBrush Color="#B0000000"/>
+    </Shell.FlyoutBackdrop>
+    
     <Shell.FlyoutHeader>
         <Button Text="Byt tema" Clicked="OnClickedChangeTheme" />
     </Shell.FlyoutHeader>
@@ -38,10 +42,19 @@
             Title="Admin" 
             ContentTemplate="{DataTemplate local:AdminPage}"
             Route="AdminPage" />
-        <ShellContent
-                Title="Logga in"
-                ContentTemplate="{DataTemplate local:LoginPage}"
-                Route="LoginPage" />
 
     </FlyoutItem>
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="10">
+            <Button Text="Logga in"
+                    Clicked="OnSignInClicked"
+                    x:Name="SignInButton"
+                    HorizontalOptions="Fill" />
+            
+            <Button Text="Logga ut"
+                    Clicked="OnSignOutClicked"
+                    x:Name="SignOutButton"
+                    HorizontalOptions="Fill" />
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
 </Shell>
