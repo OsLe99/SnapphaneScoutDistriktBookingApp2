@@ -5,6 +5,7 @@
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(Views.Booking.BookingPage), typeof(Views.Booking.BookingPage));
         }
         private void OnClickedChangeTheme(object sender, EventArgs e)
         {
