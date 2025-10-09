@@ -55,6 +55,6 @@ public partial class LoginPage : ContentPage
 
     private async void OnRegisterClickedAsync(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(RegisterPage));
+        await Shell.Current.Navigation.PushModalAsync(new RegisterPage(_userSession));
     }
 }

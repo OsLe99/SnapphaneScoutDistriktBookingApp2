@@ -40,7 +40,7 @@ public partial class RegisterPage : ContentPage
             if (user != null)
             {
                 await DisplayAlert("Success", $"Välkommen {user.FirstName}!", "OK");
-                await Shell.Current.GoToAsync("//LoginPage");
+                await Shell.Current.Navigation.PopModalAsync();
             }
             else
             {
