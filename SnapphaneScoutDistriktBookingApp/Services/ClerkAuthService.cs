@@ -68,7 +68,7 @@ public class ClerkAuthService : IClerkAuthService
 
             Debug.WriteLine($"JWT: {jwt}");
             await TokenStorage.SaveTokenAsync(jwt);
-            await SecureStorage.SetAsync("sessionId", session.Id);
+            await SecureStorage.Default.SetAsync("sessionId", session.Id);
             Preferences.Set("userName", $"{user.FirstName} {user.LastName}");
             Preferences.Set("userEmail", user.PrimaryEmailAddressId);
             return jwt;
@@ -82,7 +82,7 @@ public class ClerkAuthService : IClerkAuthService
 
     public async Task<bool> SignOutAsync()
     {
-        var sessionId = await SecureStorage.GetAsync("sessionId");
+        var sessionId = await SecureStorage.Default.GetAsync("sessionId");
         if(!string.IsNullOrEmpty(sessionId))
         {
             try
@@ -104,7 +104,7 @@ public class ClerkAuthService : IClerkAuthService
     {
         try
         {
-            var sessionId = await SecureStorage.GetAsync("sessionId");
+            var sessionId = await SecureStorage.Default.GetAsync("sessionId");
             if (string.IsNullOrEmpty(sessionId))
             {
                 Debug.WriteLine($"Check session state: {sessionId}");

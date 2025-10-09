@@ -12,15 +12,15 @@ namespace SnapphaneScoutDistriktBookingApp.Helpers
 
         public static async Task SaveTokenAsync(string token)
         {
-            await SecureStorage.SetAsync(Key, token);
+            await SecureStorage.Default.SetAsync(Key, token);
         }
         public static async Task<string?> GetTokenAsync()
         {
-            return await SecureStorage.GetAsync(Key);
+            return await SecureStorage.Default.GetAsync(Key);
         }
         public static async Task RemoveTokenAsync()
         {
-            SecureStorage.Remove(Key);
+            SecureStorage.Default.Remove(Key);
             await Task.CompletedTask;
         }
     }
