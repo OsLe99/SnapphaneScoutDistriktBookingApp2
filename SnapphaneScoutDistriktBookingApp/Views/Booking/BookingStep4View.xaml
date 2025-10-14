@@ -5,15 +5,15 @@
     <VerticalStackLayout>
         <Entry
             Placeholder="För och efternamn"
-            Text="{Binding Customer.Name, Mode=TwoWay}"
+            Text="{Binding NewBooking.Name, Mode=TwoWay}"
             Keyboard="Chat" />
         <Entry
             Placeholder="Telefonnummer"
-            Text="{Binding Customer.Phone, Mode=TwoWay}"
+            Text="{Binding NewBooking.Phone, Mode=TwoWay}"
             Keyboard="Numeric" />
         <Entry
             Placeholder="Email"
-            Text="{Binding Customer.Email, Mode=TwoWay}"
+            Text="{Binding NewBooking.Email, Mode=TwoWay}"
             Keyboard="Email"
             TextTransform="None" />
         <HorizontalStackLayout>
@@ -23,7 +23,7 @@
         <Label Text="Scoutkårens namn" IsVisible="{Binding ShowOrgNameInput}" HorizontalTextAlignment="Center" />
         <Entry
             Placeholder="Scoutkår"
-            Text="{Binding Customer.OrgName, Mode=TwoWay}"
+            Text="{Binding NewBooking.OrgName, Mode=TwoWay}"
             IsVisible="{Binding ShowOrgNameInput}" />
     </VerticalStackLayout>
 </ContentView>

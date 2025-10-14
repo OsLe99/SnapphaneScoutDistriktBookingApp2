@@ -2,6 +2,7 @@
 using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using Syncfusion.Maui.Core.Hosting;
+using Supabase;
 
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -21,6 +22,18 @@ namespace SnapphaneScoutDistriktBookingApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("Deutsch.ttf", "OldGerman");
                 });
+            // Supabase
+            var url = "https://cwudkbwltvsjesoksxno.supabase.co";
+            var key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3dWRrYndsdHZzamVzb2tzeG5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMTA1MjIsImV4cCI6MjA3NTU4NjUyMn0.1uUS471huzB5OtJaJsQCxkGItcLMMekzwMz0m3rH1LY";
+            builder.Services.AddScoped<Supabase.Client>(provider =>
+            {
+                var options = new Supabase.SupabaseOptions
+                {
+                    AutoRefreshToken = true,
+                    AutoConnectRealtime = true,
+                };
+                return new Supabase.Client(url, key, options);
+            });
             // Services
             builder.Services.AddTransient<IAdminService, AdminService>();
             builder.Services.AddSingleton<IUserSessionService, UserSessionService>();

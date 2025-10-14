@@ -23,28 +23,28 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             _emailService = emailService;
         }
 
-        public async Task<Customer?> AddBookingAsync(Customer customer)
+        public async Task<Booking?> AddBookingAsync(Booking booking)
         {
             // Add the booking to the database
-            await _db.AddCustomerAsync(customer);
-            await _emailService.SendEmailAsync("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", "emil.berg@campusnykoping.se", customer.Email, customer);
-            var newBooking = await FindAddedBookingByIdAsync(customer);
+            await _db.AddCustomerAsync(booking);
+            await _emailService.SendEmailAsync("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", "emil.berg@campusnykoping.se", booking.Email, booking);
+            var newBooking = await FindAddedBookingByIdAsync(booking);
             return newBooking;
         }
 
         // Find placed booking based on Id and return
-        public async Task<Customer?> FindAddedBookingByIdAsync(Customer customer)
+        public async Task<Booking?> FindAddedBookingByIdAsync(Booking customer)
         {
             var newBooking = await _db.FindBookingByIdAsync(customer);
             return newBooking;
         }
 
-        public async Task<Customer?> GetBookingByIdAndEmailAsync(ObjectId id, string email)
+        public async Task<Booking?> GetBookingByIdAndEmailAsync(Guid id, string email)
         {
             return await _db.FindBookingByIdAndEmailAsync(id, email);
         }
 
-        public async Task UpdateBookingAsync(Customer booking)
+        public async Task UpdateBookingAsync(Booking booking)
         {
             await _db.UpdateBookingAsync(booking);
         }

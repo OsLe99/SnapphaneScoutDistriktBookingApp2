@@ -18,19 +18,18 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             _userSession = userSession;
             _db = db;
         }
-        public async Task<bool> TryLoginAdminAsync(string userName, string userEmail, string password)
-        {
-            var adminUser = await _db.CheckIfAdminAsync(userName, userEmail);
+        //public async Task<bool> TryLoginAdminAsync(string userName, string userEmail, string password)
+        //{
+        //    var adminUser = await _db.CheckIfAdminAsync(userName, userEmail);
 
-            if (adminUser == true)
-            {
-                _userSession.SetAdmin(true);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        //    if (adminUser == true)
+        //    {
+        //        _userSession.SetAdmin(true);
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
     }
 }

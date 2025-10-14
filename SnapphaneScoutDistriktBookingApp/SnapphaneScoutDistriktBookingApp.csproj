@@ -59,6 +59,7 @@
 		<PackageReference Include="Moq" Version="4.20.72" />
 		<PackageReference Include="Plugin.Maui.Calendar" Version="2.0.10" />
 		<PackageReference Include="SendGrid" Version="9.29.3" />
+		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="Syncfusion.Maui.Calendar" Version="31.1.20" />
 		<PackageReference Include="Syncfusion.Maui.Picker" Version="31.1.20" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="31.1.20" />

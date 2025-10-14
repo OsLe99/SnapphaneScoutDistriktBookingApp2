@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SnapphaneScoutDistriktBookingApp.Models;
 
 namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
@@ -11,7 +12,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
         bool ValidateEmail(string email);
         bool ValidatePhoneNumber(string phoneNumber);
         bool ValidateName(string name);
-        List<string> ValidateBookingDetails(Models.Customer customer);
+        List<string> ValidateBookingDetails(Booking booking);
         Task<bool> CheckIfValidTime(TimeSpan? StartTime, TimeSpan? EndTime);
     }
 }

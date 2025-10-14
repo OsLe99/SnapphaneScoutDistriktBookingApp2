@@ -13,30 +13,30 @@ using System.Windows.Input;
 
 namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
-    class AdminPageViewModel : INotifyPropertyChanged
+    class AdminPageViewModel
     {
-        private readonly IDbService _db = new DbService();
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private ObservableCollection<Models.Customer> _bookings;
-        public ObservableCollection<Models.Customer> Bookings { get { return _bookings; }
-            set
-            {
-                _bookings = value;
-                OnPropertyChanged();
-            }
-        }
-        public ICommand ListAllBookingsCommand { get; }
-        public ICommand ListAllNewBookingsCommand { get; }
-        public AdminPageViewModel()
-        {
-            Bookings = new ObservableCollection<Models.Customer>();
-            ListAllBookingsCommand = new Command(async () => await _db.LoadAllBookingsAsync(Bookings));
-            ListAllNewBookingsCommand = new Command(async () => await _db.LoadAllNewBookingsAsync(Bookings));
+        //private readonly IDbService _db = new DbService();
+        //public event PropertyChangedEventHandler? PropertyChanged;
+        //private ObservableCollection<Models.Customer> _bookings;
+        //public ObservableCollection<Models.Customer> Bookings { get { return _bookings; }
+        //    set
+        //    {
+        //        _bookings = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+        //public ICommand ListAllBookingsCommand { get; }
+        //public ICommand ListAllNewBookingsCommand { get; }
+        //public AdminPageViewModel()
+        //{
+        //    Bookings = new ObservableCollection<Models.Customer>();
+        //    ListAllBookingsCommand = new Command(async () => await _db.LoadAllBookingsAsync(Bookings));
+        //    ListAllNewBookingsCommand = new Command(async () => await _db.LoadAllNewBookingsAsync(Bookings));
 
-        }
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //}
+        //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }

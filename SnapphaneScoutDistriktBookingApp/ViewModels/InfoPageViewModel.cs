@@ -5,12 +5,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Supabase;
 
 namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
     class InfoPageViewModel : INotifyPropertyChanged
     {
-        private readonly IDbService _db = new DbService();
+        private readonly IDbService _db;
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand UpdateInfoCommand { get; }
@@ -68,7 +69,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         {
             Models.Info info = new Models.Info()
             {
-                Id = "unique_id",
+                Id = new Guid(),
                 InfoString = Info
             };
             await _db.UpdateInfoAsync(info, info.Id);

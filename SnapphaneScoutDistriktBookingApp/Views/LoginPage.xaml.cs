@@ -27,19 +27,19 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        bool isAdmin = await _dbService.CheckAdminCredentialsAsync(userEmail, userPassword);
+        //bool isAdmin = await _dbService.CheckAdminCredentialsAsync(userEmail, userPassword);
 
-        if (isAdmin)
-        {
-            await DisplayAlert("Inloggning", "Inloggning lyckades!", "OK");
-            _userSession.SetAdmin(true);
-            Preferences.Set("isAdmin", true);
-            await Shell.Current.GoToAsync("//MainPage");
-        }
-        else
-        {
-            await DisplayAlert("Fel", "Ogiltiga inloggningsuppgifter.", "OK");
-            PasswordEntry.Text = "";
-        }
+        //if (isAdmin)
+        //{
+        //    await DisplayAlert("Inloggning", "Inloggning lyckades!", "OK");
+        //    _userSession.SetAdmin(true);
+        //    Preferences.Set("isAdmin", true);
+        //    await Shell.Current.GoToAsync("//MainPage");
+        //}
+        //else
+        //{
+        //    await DisplayAlert("Fel", "Ogiltiga inloggningsuppgifter.", "OK");
+        //    PasswordEntry.Text = "";
+        //}
     }
 }

@@ -13,25 +13,25 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class EmailService : IEmailService
     {
-        public async Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Models.Customer customer)
+        public async Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Models.Booking booking)
         {
             toEmail = "oscar.lejon@campusnykoping.se";
             string bokningsNummer = "";
-            if(customer.NumberOfCanoes != null)
+            if(booking.NumberOfCanoes != null)
             {
-                bokningsNummer += "<br> Antal kanoter: " + customer.NumberOfCanoes;
+                bokningsNummer += "<br> Antal kanoter: " + booking.NumberOfCanoes;
             }
-            if(customer.NumberOfCampground != null)
+            if(booking.NumberOfCampground != null)
             {
-                bokningsNummer += "<br> Antal personer för lägerområde: " + customer.NumberOfCampground;
+                bokningsNummer += "<br> Antal personer för lägerområde: " + booking.NumberOfCampground;
             }
-            if(customer.NumberOfLeanTo != null)
+            if(booking.NumberOfLeanTo != null)
             {
-                bokningsNummer += "<br> Antal vindskydd: " + customer.NumberOfLeanTo;
+                bokningsNummer += "<br> Antal vindskydd: " + booking.NumberOfLeanTo;
             }
-            if(customer.NumberOfCabin != null)
+            if(booking.NumberOfCabin != null)
             {
-                bokningsNummer += "<br> Antal i stugan: " + customer.NumberOfCabin;
+                bokningsNummer += "<br> Antal i stugan: " + booking.NumberOfCabin;
             }
 
 
@@ -39,10 +39,10 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress(fromEmail, "Snapphane Scoutdistrikt");
-            var subject = "Bokning av: " + customer.BookingType;
+            var subject = "Bokning av: " + booking.BookingType;
             var to = new EmailAddress(toEmail, "Mottagare");
-            string plainTextContent = $"Namn: {customer.Name} \t Tele nr: {customer.Phone} \t Email: {customer.Email} \t Vill boka {customer.BookingType} \t {bokningsNummer}" +
-                $"\t Perioden: {customer.StartDate} - {customer.EndDate} \t Orginisation: {(customer.IsOrg ? customer.OrgName : "ingen org")}"; //info //Namn
+            string plainTextContent = $"Namn: {booking.Name} \t Tele nr: {booking.Phone} \t Email: {booking.Email} \t Vill boka {booking.BookingType} \t {bokningsNummer}" +
+                $"\t Perioden: {booking.StartDate} - {booking.EndDate} \t Orginisation: {(booking.IsOrg ? booking.OrgName : "ingen org")}"; //info //Namn
             string infoString = plainTextContent.Replace("\t", "<br>");
             var htmlContent = $"<strong> {infoString} </strong>"; //info //Namn
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
@@ -53,24 +53,24 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
 
 
-        public async Task SendEmailConfirmationAsync(string apiKey, string fromEmail, string toEmail, Models.Customer customer)
+        public async Task SendEmailConfirmationAsync(string apiKey, string fromEmail, string toEmail, Models.Booking booking)
         {
             string bokningsNummer = "";
-            if (customer.NumberOfCanoes != null)
+            if (booking.NumberOfCanoes != null)
             {
-                bokningsNummer += "<br> Antal kanoter: " + customer.NumberOfCanoes;
+                bokningsNummer += "<br> Antal kanoter: " + booking.NumberOfCanoes;
             }
-            if (customer.NumberOfCampground != null)
+            if (booking.NumberOfCampground != null)
             {
-                bokningsNummer += "<br> Antal personer för lägerområde: " + customer.NumberOfCampground;
+                bokningsNummer += "<br> Antal personer för lägerområde: " + booking.NumberOfCampground;
             }
-            if (customer.NumberOfLeanTo != null)
+            if (booking.NumberOfLeanTo != null)
             {
-                bokningsNummer += "<br> Antal vindskydd: " + customer.NumberOfLeanTo;
+                bokningsNummer += "<br> Antal vindskydd: " + booking.NumberOfLeanTo;
             }
-            if (customer.NumberOfCabin != null)
+            if (booking.NumberOfCabin != null)
             {
-                bokningsNummer += "<br> Antal i stugan: " + customer.NumberOfCabin;
+                bokningsNummer += "<br> Antal i stugan: " + booking.NumberOfCabin;
             }
 
 
@@ -78,9 +78,9 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress(fromEmail, "Snapphane Scoutdistrikt");
-            var subject = "Bokningsbekräftelse av " + customer.BookingType;
+            var subject = "Bokningsbekräftelse av " + booking.BookingType;
             var to = new EmailAddress(toEmail, "Mottagare");
-            string plainTextContent = $"Tack för bokning! Du har bokat datumen: {customer.StartDate} till den {customer.EndDate}. {bokningsNummer}"; //info //Namn
+            string plainTextContent = $"Tack för bokning! Du har bokat datumen: {booking.StartDate} till den {booking.EndDate}. {bokningsNummer}"; //info //Namn
             string infoString = plainTextContent.Replace("\t", "<br>");
             var htmlContent = $"<strong> {infoString} </strong>"; //info //Namn
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
