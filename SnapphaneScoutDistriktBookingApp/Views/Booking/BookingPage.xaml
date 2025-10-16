@@ -5,56 +5,31 @@
              Title="Bokningssida">
     <Grid RowDefinitions="Auto, *, Auto">
 
-    <ScrollView
-        HorizontalOptions="Center"
-        VerticalOptions="Center">
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25"
-            VerticalOptions="Center"
+        <Label Grid.Row="0"
+               HorizontalOptions="Center"
+               FontSize="18"
+               FontAttributes="Bold"
+               Margin="0,10,0,10"
+               Text="{Binding StepInfo}">
+        </Label>
+
+        <ContentView
+            Grid.Row="1"
+            Content="{Binding CurrentView}" />
+
+        <HorizontalStackLayout
+            Grid.Row="2"
+            Padding="10"
+            Spacing="10"
             HorizontalOptions="Center">
-            <Label 
-                Text="Vad vill du boka?"
-                Style="{StaticResource Headline}"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
-            <Grid
-                ColumnDefinitions="*, *"
-                RowDefinitions="auto, auto"
-                Padding="10"
-                RowSpacing="20"
-                ColumnSpacing="20"
-                HorizontalOptions="Center"
-                VerticalOptions="Center" >
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    x:Name="BookCanoe"
-                    Text="Kanot"
-                    Clicked="OnChangeToMoreInfoAsync">
-                </Button>
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    x:Name="BookLeanTo"
-                    Text="Vindskydd"
-                    Clicked="OnChangeToMoreInfoAsync">
-                </Button>
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    x:Name="BookCampGrounds"
-                    Text="Lägerområde"
-                    Clicked="OnChangeToMoreInfoAsync">
-                </Button>
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    x:Name="BookCabin"
-                    Text="Stugan"
-                    Clicked="OnChangeToMoreInfoAsync">
-                </Button>
-            </Grid>
-        </VerticalStackLayout>
-    </ScrollView>
+            <Button
+                Text="Tillbaka"
+                Command="{Binding GoToPreviousStepCommand}"
+                IsVisible="{Binding CanGoToPreviousStep}" />
+            <Button
+                Text="Nästa"
+                Command="{Binding GoToNextStepCommand}"
+                IsVisible="{Binding CanGoToNextStep}" />
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

@@ -323,7 +323,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         public async Task LoadBlackoutDatesAsync()
         {
             var allBookings = await _db.GetAllBookingsAsync();
-            RelevantBookings = allBookings.Where(b => b.BookingType == NewBooking.BookingType && b.IsConfirmed).ToList();
+            RelevantBookings = allBookings.Where(b => b.BookingType == NewBooking.BookingType).ToList();
         }
 
         public bool IsSelectableDates(DateTime date)
