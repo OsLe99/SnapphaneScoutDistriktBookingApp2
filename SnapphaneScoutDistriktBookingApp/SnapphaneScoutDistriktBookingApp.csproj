@@ -26,7 +26,9 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\androidlogo.svg" Resize="False" ForegroundFile="Resources/AppIcon/androidlogofg.svg" Platform="android" />
+		<MauiIcon Include="Resources\AppIcon\androidlogo.svg" Resize="False" ForegroundFile="Resources/AppIcon/androidlogofg.svg" Platform="iOS" />
 		<MauiIcon Include="Resources\AppIcon\windowslogo.svg" Resize="True" Platform="windows" />
+		<MauiIcon Include="Resources\AppIcon\windowslogo.svg" Resize="True" Platform="maccatalyst" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Resize="True" Color="#003660"/>
