@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SnapphaneScoutDistriktBookingApp.Pages.RegisterPage"
+             Title="Registrera ny användare">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Förnamn" />
+            <Entry x:Name="FirstNameEntry" Placeholder="Förnamn" />
+
+            <Label Text="Efternamn" />
+            <Entry x:Name="LastNameEntry" Placeholder="Efternamn" />
+
+            <Label Text="Email" />
+            <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />
+
+            <Label Text="Lösenord" />
+            <Entry x:Name="PasswordEntry" Placeholder="Lösenord" IsPassword="True" />
+
+            <Button Text="Registrera" Clicked="OnRegisterClicked" />
+
+            <Label x:Name="StatusLabel" 
+                   TextColor="Red"
+                   IsVisible="False"
+                   HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

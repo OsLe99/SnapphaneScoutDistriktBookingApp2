@@ -11,9 +11,9 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly IUserSessionService _userSession;
+        private readonly IClerkUserSessionService _userSession;
         private readonly IDbService _db;
-        public AdminService(IUserSessionService userSession, IDbService db)
+        public AdminService(IClerkUserSessionService userSession, IDbService db)
         {
             _userSession = userSession;
             _db = db;
