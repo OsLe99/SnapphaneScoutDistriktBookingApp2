@@ -32,18 +32,23 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         #endregion
 
         #region private methods
-        private List<Booking> BookingCollection()
+
+        // Hämta alla bookings i en lista
+        private async Task<List<Booking>> BookingCollection()
         {
-            var database = _client.From<Booking>().Get();
-            return database.Result.Models;
+            await _client.InitializeAsync();
+            var database = await _client.From<Booking>().Get();
+            return database.Models;
         }
-        private List<Models.Contact> ContactCollection()
+        private async Task<List<Models.Contact>> ContactCollection()
         {
+            await _client.InitializeAsync();
             var database = _client.From<Models.Contact>().Get();
             return database.Result.Models;
         }
-        private List<Models.Info> InfoCollection()
+        private async Task<List<Models.Info>> InfoCollection()
         {
+            await _client.InitializeAsync();
             var database = _client.From<Models.Info>().Get();
             return database.Result.Models;
         }
@@ -71,20 +76,11 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         public async Task<Booking> AddCustomerAsync(Booking booking)
         {
             await _client.InitializeAsync();
-            try
-            {
-                booking.StartDate = TimeZoneHelper.FromSwedishTime(booking.StartDate);
-                booking.EndDate = TimeZoneHelper.FromSwedishTime(booking.EndDate);
-                await _client.From<Booking>().Insert(booking);
-                return booking;
-            }
-            catch (Supabase.Postgrest.Exceptions.PostgrestException ex)
-            {
-                Debug.WriteLine($"Supabase error: {ex.Message}");
-                Debug.WriteLine($"Status: {ex.StatusCode}");
-                Debug.WriteLine($"Content: {ex.Content}");
-                throw;
-            }
+
+            booking.StartDate = TimeZoneHelper.FromSwedishTime(booking.StartDate);
+            booking.EndDate = TimeZoneHelper.FromSwedishTime(booking.EndDate);
+            await _client.From<Booking>().Insert(booking);
+            return booking;
         }
 
         public async Task UpdateBookingAsync(Booking booking)
@@ -113,6 +109,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         #region CRUD info
         public async Task<Models.Info> UpdateInfoAsync(Models.Info info, Guid Id)
         {
+            await _client.InitializeAsync();
             var updatedInfo = await _client
                 .From<Models.Info>()
                 .Where(x => x.Id == Id)
@@ -178,33 +175,40 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
         public async Task<List<Models.Info>> GetAllInfoAsync()
         {
+            await _client.InitializeAsync();
             var result = await _client.From<Models.Info>().Get();
-            return result.Models.ToList();
+            return result.Models.OrderBy(i => i.CreatedAt).ToList();
         }
         public async Task<List<Booking>> GetAllBookingsAsync()
         {
+            await _client.InitializeAsync();
             var result = await _client.From<Booking>().Get();
             return ConvertCustomersToSwedishTime(result.Models);
         }
 
         public async Task<List<Models.Contact>> GetAllContactsAsync()
         {
+            await _client.InitializeAsync();
             var result = await _client.From<Models.Contact>().Get();
-            return result.Models;
+            Debug.WriteLine("Number of contacts: " + result.Models.Count);
+            return result.Models.OrderBy(b => b.Id).ToList();
         }
         public async Task<ObservableCollection<Booking>> LoadAllBookingsAsync(ObservableCollection<Booking> bookings)
         {
             var data = await GetAllBookingsAsync();
-            foreach (var booking in data)
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                bookings.Add(booking);
-            }
+                bookings.Clear(); 
+                foreach (var booking in data)
+                    bookings.Add(booking);
+            });
             return bookings;
         }
         public async Task<ObservableCollection<Booking>> LoadAllNewBookingsAsync(ObservableCollection<Booking> bookings)
         {
             var data = await GetAllBookingsAsync();
-            var newData = data.Where(x => x.StartDate.Date >= DateTime.Today).ToList();
+            var newData = data.Where(x => x.IsConfirmed == false).ToList();
             bookings.Clear();
             foreach (var newBookings in newData)
             {

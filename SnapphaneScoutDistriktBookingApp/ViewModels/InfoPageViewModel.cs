@@ -17,6 +17,8 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         public ICommand UpdateInfoCommand { get; }
 
         private ObservableCollection<Models.Contact> _contacts = new ObservableCollection<Models.Contact>();
+
+        private ObservableCollection<Models.Info> _infoList = new ObservableCollection<Models.Info>();
         public ObservableCollection<Models.Contact> Contacts { get { return _contacts; } 
             set
             {
@@ -25,19 +27,34 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             } 
         }
         private string _info;
-        public string Info { get { return _info; }
-            set 
+        public string Info
+        {
+            get { return _info; }
+            set
             {
                 _info = value;
                 OnPropertyChanged();
 
             }
         }
-        public InfoPageViewModel()
+
+        public ObservableCollection<Models.Info> InfoList
         {
+            get { return _infoList; }
+            set
+            {
+                _infoList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public InfoPageViewModel(IDbService dbService)
+        {
+            _db = dbService;
             _ = FillContacts();
+            _ = FillInfoAsync();
             UpdateInfoCommand = new Command(async () => await UpdateInfoDBAsync());
-            SetInfoProperty();
+            //SetInfoProperty();
         }
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -49,6 +66,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             var listContacts = await _db.GetAllContactsAsync();
             return listContacts;
         }
+
         public async Task FillContacts()
         {
             var getContacts = await GetAllContacts();
@@ -57,6 +75,17 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             {
                 Contacts.Add(x);
             }
+        }
+
+        public async Task<List<Models.Info>> FillInfoAsync()
+        {
+            var listInfo = await _db.GetAllInfoAsync();
+            InfoList.Clear();
+            foreach (var x in listInfo)
+            {
+                InfoList.Add(x);
+            }
+            return listInfo;
         }
         //private async Task<string> GetThisInfo()
         //{
@@ -69,14 +98,16 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         {
             Models.Info info = new Models.Info()
             {
-                Id = new Guid(),
-                InfoString = Info
+                Id = Guid.NewGuid(),
+                InfoString = Info,
+                CreatedAt = DateTime.Now
             };
             await _db.UpdateInfoAsync(info, info.Id);
             //await _db.InfoCollection().ReplaceOneAsync(filter: Builders<Models.Info>.Filter.Eq(x => x.Id, "unique_id"),
             //    replacement: info, options: new ReplaceOptions { IsUpsert = true });
 
         }
+
         private async void SetInfoProperty()
         {
             var allInfoStringData = await _db.GetAllInfoAsync();
