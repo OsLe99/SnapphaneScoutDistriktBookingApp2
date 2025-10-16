@@ -26,12 +26,12 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\androidlogo.svg" Resize="False" ForegroundFile="Resources/AppIcon/androidlogofg.svg" Platform="android" />
-		<MauiIcon Include="Resources\AppIcon\androidlogo.svg" Resize="False" ForegroundFile="Resources/AppIcon/androidlogofg.svg" Platform="iOS" />
+		<MauiIcon Include="Resources\AppIcon\ioslogo.svg" Resize="False" ForegroundFile="Resources/AppIcon/ioslogofg.svg" Platform="iOS" />
 		<MauiIcon Include="Resources\AppIcon\windowslogo.svg" Resize="True" Platform="windows" />
-		<MauiIcon Include="Resources\AppIcon\windowslogo.svg" Resize="True" Platform="maccatalyst" />
+		<MauiIcon Include="Resources\AppIcon\maclogo.svg" Resize="True" Platform="maccatalyst" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Resize="True" Color="#003660"/>
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Resize="True" Color="#003660" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
