@@ -3,13 +3,13 @@
 En bokningsapp för Snapphane scoutdistrikt för att genomföra bokningar av kanoter, scoutstuga, lägerområde och vindskydd.
 
 Appen kan användas både som gäst eller som inloggad användare genom konton skapade i appen via Clerk. Administatörer har tillgång till särskilda verktyg för att:
-* Bekräfta bokningar
-* Ändra information som visas för användare
-* Ändra eller lägga till kontaktpersoner
+* Bekräfta bokningar.
+* Ändra information som visas för användare.
+* Ändra eller lägga till kontaktpersoner.
 
 Appen stödjer emailbekräftelse, sökbara bokningar via bokningsnummer och emailadress samt redigering av bokningar.
 
-Utvecklad för Android och Windows med .NET MAUI och Supbase som backend.
+Utvecklad för Android och Windows med .NET MAUI och Supabase som backend.
 ## Filstruktur
 Översikt över appens filstruktur:
 ```text
@@ -102,12 +102,38 @@ Utvecklad för Android och Windows med .NET MAUI och Supbase som backend.
 ```
 ## Teststruktur
 
-Enhetstester: Testar logik i Services och valideringsmetoder
+Enhetstester - Testar logik i services och valideringsmetoder.
 ## Branch-struktur
 
-* master - Stabil version av appen
-* dev - Aktiv utvecklings-branch
-* feat/ - Nya funktioner
+master - Stabil version av appen.
+
+dev - Aktiv utvecklings-branch.
+
+feat/ - Nya funktioner.
+
 ## Starta upp projektet
 
+1. Klona repot.
+2. Sätt upp nycklar för Clerk och Supabase.
+3. Konfigurera miljövariabler för Supabase och Clerk.
+4. Bygg projektet.
+5. Starta appen och skapa ett konto via Clerk.
+   
 ## Viktiga funktioner
+Bokningssystem – Skapa och hantera bokningar för kanoter, scoutstuga, lägerområde och vindskydd. 5 steg där användaren kan gå bakåt och framåt i bokningsstegen.
+
+Inloggning via Clerk – Användare kan logga in, skapa konton och hantera sina bokningar direkt i appen.
+
+Adminpanel – Administratörer kan bekräfta bokningar och uppdatera information.
+
+EmailService – Automatiskt e-postmeddelande skickas vid bokningar och bekräftade bokningar.
+
+Sökfunktion – Sök bokningar med bokningsnummer och e-postadress.
+
+Redigering av bokningar – Möjlighet att uppdatera befintliga bokningar direkt i appen.
+
+Databas via Supabase – All bokningsdata lagras i Supabase.
+
+Tidszonshantering – Automatisk anpassning av UTC till Stockholm-tid med hjälp av TimeZoneHelper.
+
+ValidationService – Tjänster för verifiering.
