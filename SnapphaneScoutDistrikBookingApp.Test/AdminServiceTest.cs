@@ -9,12 +9,12 @@ namespace SnapphaneScoutDistrikBookingApp.Test;
 
 public class AdminServiceTest
 {
-    private readonly Mock<IUserSessionService> _userSessionServiceMock;
+    private readonly Mock<IClerkUserSessionService> _userSessionServiceMock;
     private readonly Mock<IDbService> _dbServiceMock;
 
     public AdminServiceTest()
     {
-        _userSessionServiceMock = new Mock<IUserSessionService>();
+        _userSessionServiceMock = new Mock<IClerkUserSessionService>();
         _dbServiceMock = new Mock<IDbService>();
     }
 

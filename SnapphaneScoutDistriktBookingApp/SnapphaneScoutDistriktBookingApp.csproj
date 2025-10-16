@@ -25,10 +25,13 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\androidlogo.svg" Resize="False" ForegroundFile="Resources/AppIcon/androidlogofg.svg" Platform="android" />
+		<MauiIcon Include="Resources\AppIcon\ioslogo.svg" Resize="False" ForegroundFile="Resources/AppIcon/ioslogofg.svg" Platform="iOS" />
+		<MauiIcon Include="Resources\AppIcon\windowslogo.svg" Resize="True" Platform="windows" />
+		<MauiIcon Include="Resources\AppIcon\maclogo.svg" Resize="True" Platform="maccatalyst" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Resize="True" Color="#003660" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -52,6 +55,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+		<PackageReference Include="Clerk.BackendAPI" Version="0.13.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
@@ -105,6 +109,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\LoginPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\RegisterPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\UpdateInfoPopUpPage.xaml">
 			<Generator>MSBuild:Compile</Generator>

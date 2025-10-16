@@ -9,8 +9,8 @@ public partial class AdminPage : ContentPage
 {
     private readonly IDbService _db;
     private readonly IEmailService _emailService;
-    private readonly IUserSessionService _userSessionService;
-    public AdminPage(IDbService db, IEmailService emailService, IUserSessionService userSessionService)
+    private readonly IClerkUserSessionService _userSessionService;
+    public AdminPage(IDbService db, IEmailService emailService, IClerkUserSessionService userSessionService)
     {
         InitializeComponent();
         _userSessionService = userSessionService;
