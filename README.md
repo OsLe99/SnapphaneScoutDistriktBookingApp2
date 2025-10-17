@@ -13,96 +13,63 @@ Utvecklad för Android och Windows med .NET MAUI och Supabase som backend.
 ## Filstruktur
 Översikt över appens filstruktur:
 ```text
-├── SnapphaneScoutDistrikBookingApp.Test
-│   ├── AdminServiceTest.cs
-│   ├── BookingServiceTest.cs
-│   └── Validation.Test.cs
-└── SnapphaneScoutDistriktBookingApp
-    ├── Helpers
-    │   ├── TimeZoneHelper.cs
-    │   └── TokenStorage.cs
-    ├── Models
-    │   ├── Admin.cs
-    │   ├── ClerkUser.cs
-    │   ├── Contact.cs
-    │   ├── Customer.cs
-    │   ├── EventModel.cs
-    │   └── Info.cs
-    ├── Platforms
-    │   ├── Android
-    │   │   ├── Resources
-    │   │   │   └── values
-    │   │   ├── MainActivity.cs
-    │   │   └── MainApplication.cs
-    │   ├── iOS
-    │   │   ├── Resources
-    │   │   ├── AppDelegate.cs
-    │   │   └── Program.cs
-    │   ├── MacCatalyst
-    │   │   ├── AppDelegate.cs
-    │   │   └── Program.cs
-    │   ├── Tizen
-    │   │   └── Main.cs
-    │   └── Windows
-    │       └── App.xaml
-    ├── Properties
-    │   └── launchSettings.json
-    ├── Resources
-    │   ├── AppIcon
-    │   ├── Fonts
-    │   │   └── FluentUI.cs
-    │   ├── Images
-    │   ├── Raw
-    │   ├── Splash
-    │   └── Styles
-    │       ├── Colors.xaml
-    │       └── Styles.xaml
-    ├── Services
-    │   ├── Interface
-    │   │   ├── IAdminService.cs
-    │   │   ├── IBookingService.cs
-    │   │   ├── IClerkAuthService.cs
-    │   │   ├── IClerkUserSessionService.cs
-    │   │   ├── IDbService.cs
-    │   │   ├── IEmailService.cs
-    │   │   └── IValidateBookingService.cs
-    │   ├── AdminService.cs
-    │   ├── BookingService.cs
-    │   ├── ClerkAuthService.cs
-    │   ├── ClerkUserSessionService.cs
-    │   ├── DbService.cs
-    │   ├── EmailService.cs
-    │   └── ValidateBookingService.cs
-    ├── ViewModels
-    │   ├── AdminPageViewModel.cs
-    │   ├── BookingViewModel.cs
-    │   ├── EditBookingViewModel.cs
-    │   └── InfoPageViewModel.cs
-    ├── Views
-    │   ├── Booking
-    │   │   ├── BookingPage.xaml
-    │   │   ├── BookingStep1View.xaml
-    │   │   ├── BookingStep2View.xaml
-    │   │   ├── BookingStep3View.xaml
-    │   │   ├── BookingStep4View.xaml
-    │   │   └── BookingStep5View.xaml
-    │   ├── AddContactPopUpPage.xaml
-    │   ├── AdminPage.xaml
-    │   ├── BookingPopUpPage.xaml
-    │   ├── EditBookingPage.xaml
-    │   ├── InfoPage.xaml
-    │   ├── LoginPage.xaml
-    │   ├── MainPage.xaml
-    │   ├── RegisterPage.xaml
-    │   ├── UpdateInfoPopUpPage.xaml
-    │   └── ViewBooking.xaml
-    ├── App.xaml
-    ├── AppShell.xaml
-    └── MauiProgram.cs
+SnapphaneScoutDistriktBookingApp/
+├── SnapphaneScoutDistriktBookingApp/       # Huvudprojektet
+│   ├── Helpers/                            # Hjälpklasser och metoder som används globalt i projektet.
+│   ├── Models/                             # Datamodeller (t.ex. Booking, User, Resource, Info).
+│   ├── Platforms/                          # Plattformsspecifika filer (Android, iOS, Windows, MacCatalyst).
+│   ├── Properties/                         # Projektinställningar och konfigurationer.
+│   ├── Resources/                          # Bilder, typsnitt, teman, färger och stilar för appens UI.
+│   ├── Services/                           # Applikationstjänster (t.ex. autentisering, e-post, databas).
+│   │   └── Interface/                      # Servicegränssnitt (IService) som används för dependency injection.
+│   ├── ViewModels/                         # MVVM-lager. Logik kopplad till vyer.
+│   └── Views/                              # XAML-sidor, popup-fönster och vyer som användaren interagerar med.
+│   │   └── Booking/                        # Exempel: skapa mapp för sidor som hör till samma flöde eller funktion (t.ex. bokningssteg).
+│   ├── App.xaml / AppShell.xaml            # Definierar applikationens struktur, resurser och navigering.
+│   └── MauiProgram.cs                      # Registrera nya tjänster och konfigurationer för appstart.
+│
+└── SnapphaneScoutDistriktBookingApp.Test/  # Enhetstester för tjänster och logik
+    └──  ServiceTester.cs                   # Exempel: skapa testfiler för respektive serviceklass
 ```
+### Exempel - lägga till ny tjänst
+Om du t.ex. lägger till en ny tjänst för att skicka notiser:
+
+* Skapa NotificationService.cs i Services/.
+
+* Skapa INotificationService.cs i Services/Interface/.
+
+* Registrera Interface i MauiProgram.cs.
+
+* Skapa NotificationServiceTest.cs i SnapphaneScoutDistrikBookingApp.Test/.
+
 ## Teststruktur
 
-Enhetstester - Testar logik i services och valideringsmetoder.
+Enhetstester används för att säkerställa att appens logik fungerar korrekt och för att snabbt upptäcka fel vid förändringar i koden.
+
+Testerna fokuserar främst på:
+
+* ### Service-logik:
+    - Verifierar att metoder för datalagring, hämtning, autentisering, e-post och bokningshantering fungerar som förväntat (t.ex. testar att BookingService sparar korrekt).
+
+* ### Valideringsmetoder:
+    - Säkerställer att inmatad data (t.ex. namn, e-post eller telefonnummer) följer de regler och format som appen kräver.
+
+* ### Mockning av beroenden:
+    - Tjänster som kommunicerar med externa system (t.ex. Supabase) mockas vid testning för att möjliggöra tester utan att påverka verkliga databaser eller API:er.
+
+* ### Kvalitetssäkring:
+    - Testerna körs innan nya ändringar pushas till GitHub för att säkerställa att befintlig funktionalitet inte bryts.
+
+Testfiler placeras i mappen SnapphaneScoutDistriktBookingApp.Test/
+
+Varje service eller funktion har en egen testfil, t.ex.:
+
+- AdminServiceTest.cs
+
+- BookingServiceTest.cs
+
+- ValidationTest.cs
+
 ## Branch-struktur
 
 master - Stabil version av appen.
@@ -110,6 +77,8 @@ master - Stabil version av appen.
 dev - Aktiv utvecklings-branch.
 
 feat/ - Nya funktioner.
+
+bug/ - Brancher för buggfixar.
 
 ## Starta upp projektet
 
