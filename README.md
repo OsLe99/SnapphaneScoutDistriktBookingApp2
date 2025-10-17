@@ -12,7 +12,7 @@ Appen stödjer emailbekräftelse, sökbara bokningar via bokningsnummer och emai
 Utvecklad för Android och Windows med .NET MAUI och Supabase som backend.
 ## Filstruktur
 Översikt över appens filstruktur:
-```text
+```
 SnapphaneScoutDistriktBookingApp/
 ├── SnapphaneScoutDistriktBookingApp/       # Huvudprojektet
 │   ├── Helpers/                            # Hjälpklasser och metoder som används globalt i projektet.
@@ -83,10 +83,30 @@ bug/ - Brancher för buggfixar.
 ## Starta upp projektet
 
 1. Klona repot.
-2. Sätt upp nycklar för Clerk och Supabase.
+```
+git clone <repository-url>
+```
+    
+2. Skaffa nycklar för Clerk och Supabase.
+    
 3. Konfigurera miljövariabler för Supabase och Clerk.
+```
+set SUPABASE_URL=din_supabase_url
+set SUPABASE_KEY=din_supabase_key
+set CLERK_API_KEY=din_clerk_api_key
+```
+    
 4. Bygg projektet.
+```
+dotnet build
+```
+
 5. Starta appen och skapa ett konto via Clerk.
+```
+dotnet run
+```
+6. Öppna flyout menyn och navigera till Logga in i fotnoten.
+7. Tryck på registrera ny användare och skapa konto.
    
 ## Viktiga funktioner
 Bokningssystem – Skapa och hantera bokningar för kanoter, scoutstuga, lägerområde och vindskydd. 5 steg där användaren kan gå bakåt och framåt i bokningsstegen.
