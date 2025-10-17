@@ -23,8 +23,9 @@ namespace SnapphaneScoutDistriktBookingApp
                     fonts.AddFont("Deutsch.ttf", "OldGerman");
                 });
             // Supabase
-            var url = "https://cwudkbwltvsjesoksxno.supabase.co";
-            var key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3dWRrYndsdHZzamVzb2tzeG5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMTA1MjIsImV4cCI6MjA3NTU4NjUyMn0.1uUS471huzB5OtJaJsQCxkGItcLMMekzwMz0m3rH1LY";
+            var url = Environment.GetEnvironmentVariable("SUPABASE_URL");
+            var key = Environment.GetEnvironmentVariable("SUPABASE_KEY");
+            var bearerToken = Environment.GetEnvironmentVariable("CLERK_API_KEY");
             builder.Services.AddScoped<Supabase.Client>(provider =>
             {
                 var options = new Supabase.SupabaseOptions
@@ -38,12 +39,12 @@ namespace SnapphaneScoutDistriktBookingApp
             builder.Services.AddTransient<IAdminService, AdminService>();
 
             builder.Services.AddSingleton<IClerkAuthService>(sp =>
-                new ClerkAuthService("sk_test_kRFPzExdplSes3eeLt9uD9fubBNXsilcMBWxAW3PK1"));
+                new ClerkAuthService(bearerToken));
 
             builder.Services.AddSingleton<IClerkUserSessionService>(sp =>
             {
                 var authService = sp.GetRequiredService<IClerkAuthService>();
-                return new ClerkUserSessionService("sk_test_kRFPzExdplSes3eeLt9uD9fubBNXsilcMBWxAW3PK1", authService);
+                return new ClerkUserSessionService(bearerToken, authService);
             });
 
             builder.Services.AddScoped<IDbService, DbService>();
