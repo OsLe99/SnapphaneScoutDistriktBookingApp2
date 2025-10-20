@@ -8,14 +8,15 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using SnapphaneScoutDistriktBookingApp.Models;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class EmailService : IEmailService
     {
-        public async Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Models.Booking booking)
+        public async Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Booking booking)
         {
-            toEmail = "oscar.lejon@campusnykoping.se";
+            toEmail = Environment.GetEnvironmentVariable("SENDGRID_EMAIL");
             string bokningsNummer = "";
             if(booking.NumberOfCanoes != null)
             {
@@ -53,7 +54,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
 
 
-        public async Task SendEmailConfirmationAsync(string apiKey, string fromEmail, string toEmail, Models.Booking booking)
+        public async Task SendEmailConfirmationAsync(string apiKey, string fromEmail, string toEmail, Booking booking)
         {
             string bokningsNummer = "";
             if (booking.NumberOfCanoes != null)

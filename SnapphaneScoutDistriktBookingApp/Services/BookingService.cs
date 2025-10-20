@@ -27,7 +27,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         {
             // Add the booking to the database
             await _db.AddCustomerAsync(booking);
-            await _emailService.SendEmailAsync("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", "emil.berg@campusnykoping.se", booking.Email, booking);
+            await _emailService.SendEmailAsync(Environment.GetEnvironmentVariable("SENDGRID_API_KEY"), Environment.GetEnvironmentVariable("SENDGRID_EMAIL"), booking.Email, booking);
             var newBooking = await FindAddedBookingByIdAsync(booking);
             return newBooking;
         }

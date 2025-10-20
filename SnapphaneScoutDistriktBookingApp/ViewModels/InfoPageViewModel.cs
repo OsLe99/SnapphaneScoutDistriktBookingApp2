@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
+using SnapphaneScoutDistriktBookingApp.Models;
 using SnapphaneScoutDistriktBookingApp.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -18,7 +19,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         private ObservableCollection<Models.Contact> _contacts = new ObservableCollection<Models.Contact>();
 
-        private ObservableCollection<Models.Info> _infoList = new ObservableCollection<Models.Info>();
+        private ObservableCollection<Info> _infoList = new ObservableCollection<Info>();
         public ObservableCollection<Models.Contact> Contacts { get { return _contacts; } 
             set
             {
@@ -38,7 +39,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             }
         }
 
-        public ObservableCollection<Models.Info> InfoList
+        public ObservableCollection<Info> InfoList
         {
             get { return _infoList; }
             set
@@ -77,7 +78,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             }
         }
 
-        public async Task<List<Models.Info>> FillInfoAsync()
+        public async Task<List<Info>> FillInfoAsync()
         {
             var listInfo = await _db.GetAllInfoAsync();
             InfoList.Clear();
@@ -96,7 +97,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         //}
         private async Task UpdateInfoDBAsync()
         {
-            Models.Info info = new Models.Info()
+            Info info = new()
             {
                 Id = Guid.NewGuid(),
                 InfoString = Info,
