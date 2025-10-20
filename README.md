@@ -89,11 +89,13 @@ git clone <repository-url>
     
 2. Skaffa nycklar för Clerk och Supabase.
     
-3. Konfigurera miljövariabler för Supabase och Clerk.
+3. Konfigurera miljövariabler för Supabase, Clerk och Sendgrid.
 ```
 set SUPABASE_URL=din_supabase_url
 set SUPABASE_KEY=din_supabase_key
 set CLERK_API_KEY=din_clerk_api_key
+set SENDGRID_API_KEY=din_sendgrid_key
+set SENDGRID_EMAIL=din-_sendgrid_email
 ```
     
 4. Bygg projektet.
@@ -101,12 +103,13 @@ set CLERK_API_KEY=din_clerk_api_key
 dotnet build
 ```
 
-5. Starta appen och skapa ett konto via Clerk.
+5. Starta appen.
 ```
 dotnet run
 ```
-6. Öppna flyout menyn och navigera till Logga in i fotnoten.
-7. Tryck på registrera ny användare och skapa konto.
+6. Registrera konto.
+    * Öppna flyout menyn och navigera till Logga in i fotnoten.
+    * Tryck på registrera ny användare och skapa konto.
    
 ## Viktiga funktioner
 Bokningssystem – Skapa och hantera bokningar för kanoter, scoutstuga, lägerområde och vindskydd. 5 steg där användaren kan gå bakåt och framåt i bokningsstegen.
@@ -115,7 +118,7 @@ Inloggning via Clerk – Användare kan logga in, skapa konton och hantera sina 
 
 Adminpanel – Administratörer kan bekräfta bokningar och uppdatera information.
 
-EmailService – Automatiskt e-postmeddelande skickas vid bokningar och bekräftade bokningar.
+EmailService – Automatiskt e-postmeddelande skickas vid bokningar och bekräftade bokningar genom Sendgrid.
 
 Sökfunktion – Sök bokningar med bokningsnummer och e-postadress.
 
