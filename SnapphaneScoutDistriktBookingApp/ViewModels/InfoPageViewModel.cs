@@ -2,6 +2,7 @@
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using SnapphaneScoutDistriktBookingApp.Models;
 using SnapphaneScoutDistriktBookingApp.Services;
+using ScoutContact = SnapphaneScoutDistriktBookingApp.Models.Contact;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -17,10 +18,10 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         public ICommand UpdateInfoCommand { get; }
 
-        private ObservableCollection<Models.Contact> _contacts = new ObservableCollection<Models.Contact>();
+        private ObservableCollection<ScoutContact> _contacts = new ObservableCollection<ScoutContact>();
 
         private ObservableCollection<Info> _infoList = new ObservableCollection<Info>();
-        public ObservableCollection<Models.Contact> Contacts { get { return _contacts; } 
+        public ObservableCollection<ScoutContact> Contacts { get { return _contacts; } 
             set
             {
                 _contacts = value;
@@ -62,7 +63,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async Task<List<Models.Contact>> GetAllContacts()
+        public async Task<List<ScoutContact>> GetAllContacts()
         {
             var listContacts = await _db.GetAllContactsAsync();
             return listContacts;

@@ -1,4 +1,5 @@
 using SnapphaneScoutDistriktBookingApp.Services;
+using ScoutContact = SnapphaneScoutDistriktBookingApp.Models.Contact;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ public partial class AddContactPopUpPage : ContentPage
 		var name = xName.Text;
 		var email = xEmail.Text;
 		var phone = xPhone.Text;
-		var contact = new Models.Contact()
+		var contact = new ScoutContact()
 		{
 			Name = name,
 			Email = email,

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.ApplicationModel.Communication;
 using SnapphaneScoutDistriktBookingApp.Models;
+using ScoutContact = SnapphaneScoutDistriktBookingApp.Models.Contact;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -40,16 +41,16 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             var database = await _client.From<Booking>().Get();
             return database.Models;
         }
-        private async Task<List<Models.Contact>> ContactCollection()
+        private async Task<List<ScoutContact>> ContactCollection()
         {
             await _client.InitializeAsync();
-            var database = _client.From<Models.Contact>().Get();
+            var database = _client.From<ScoutContact>().Get();
             return database.Result.Models;
         }
-        private async Task<List<Models.Info>> InfoCollection()
+        private async Task<List<Info>> InfoCollection()
         {
             await _client.InitializeAsync();
-            var database = _client.From<Models.Info>().Get();
+            var database = _client.From<Info>().Get();
             return database.Result.Models;
         }
 
@@ -97,21 +98,21 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         #endregion
 
         #region CRUD contact
-        public async Task<Models.Contact> AddContactAsync(Models.Contact contact)
+        public async Task<ScoutContact> AddContactAsync(ScoutContact contact)
         {
             await _client.InitializeAsync();
-            await _client.From<Models.Contact>().Insert(contact);
+            await _client.From<ScoutContact>().Insert(contact);
             return contact;
         }
 
         #endregion
 
         #region CRUD info
-        public async Task<Models.Info> UpdateInfoAsync(Models.Info info, Guid Id)
+        public async Task<Info> UpdateInfoAsync(Info info, Guid Id)
         {
             await _client.InitializeAsync();
             var updatedInfo = await _client
-                .From<Models.Info>()
+                .From<Info>()
                 .Where(x => x.Id == Id)
                 .Upsert(info);
             return info;
@@ -173,10 +174,10 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
         #endregion
 
-        public async Task<List<Models.Info>> GetAllInfoAsync()
+        public async Task<List<Info>> GetAllInfoAsync()
         {
             await _client.InitializeAsync();
-            var result = await _client.From<Models.Info>().Get();
+            var result = await _client.From<Info>().Get();
             return result.Models.OrderBy(i => i.CreatedAt).ToList();
         }
         public async Task<List<Booking>> GetAllBookingsAsync()
@@ -186,10 +187,10 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             return ConvertCustomersToSwedishTime(result.Models);
         }
 
-        public async Task<List<Models.Contact>> GetAllContactsAsync()
+        public async Task<List<ScoutContact>> GetAllContactsAsync()
         {
             await _client.InitializeAsync();
-            var result = await _client.From<Models.Contact>().Get();
+            var result = await _client.From<ScoutContact>().Get();
             Debug.WriteLine("Number of contacts: " + result.Models.Count);
             return result.Models.OrderBy(b => b.Id).ToList();
         }
