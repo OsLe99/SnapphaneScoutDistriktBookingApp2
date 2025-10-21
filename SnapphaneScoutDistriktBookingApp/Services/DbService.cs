@@ -25,10 +25,10 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         #endregion
 
         #region ctor
-        public DbService(Supabase.Client supabaseClient)
+        public DbService(Supabase.Client supabaseClient, IEmailService emailService)
         {
             _client = supabaseClient;
-            _emailService = new EmailService();
+            _emailService = emailService;
         }
         #endregion
 

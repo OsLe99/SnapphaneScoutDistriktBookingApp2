@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using SnapphaneScoutDistriktBookingApp.Helpers;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using SnapphaneScoutDistriktBookingApp.Models;
 
@@ -14,9 +16,15 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class EmailService : IEmailService
     {
+        private readonly AppSettings _appSettings;
+        
+        public EmailService(IOptions<AppSettings> appSettings)
+        {
+            _appSettings = appSettings.Value;   
+        }
         public async Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Booking booking)
         {
-            toEmail = Environment.GetEnvironmentVariable("SENDGRID_EMAIL");
+            toEmail = _appSettings.SENDGRID_EMAIL;
             string bokningsNummer = "";
             if(booking.NumberOfCanoes != null)
             {

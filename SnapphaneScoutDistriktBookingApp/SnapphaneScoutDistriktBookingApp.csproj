@@ -139,4 +139,11 @@
 		</Compile>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="appSettings.json" />
+	  <EmbeddedResource Include="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>
