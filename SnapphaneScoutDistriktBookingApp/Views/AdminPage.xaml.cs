@@ -10,24 +10,16 @@ public partial class AdminPage : ContentPage
     private readonly IDbService _db;
     private readonly IEmailService _emailService;
     private readonly IClerkUserSessionService _userSessionService;
-    public AdminPage(IDbService db, IEmailService emailService, IClerkUserSessionService userSessionService)
+    private readonly IRoleAuthService _roleAuthService;
+    public AdminPage(IDbService db, IEmailService emailService, IClerkUserSessionService userSessionService, IRoleAuthService roleAuthService)
     {
         InitializeComponent();
         _userSessionService = userSessionService;
         _db = db;
         _emailService = emailService;
+        _roleAuthService = roleAuthService;
         BindingContext = new ViewModels.AdminPageViewModel();
 	}
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-
-        if (_userSessionService.IsAdmin == false)
-        {
-            Shell.Current.GoToAsync("//MainPage");
-        }
-    }
 
     private async void OnBookingSelectedAsync(object sender, SelectedItemChangedEventArgs e)
     {

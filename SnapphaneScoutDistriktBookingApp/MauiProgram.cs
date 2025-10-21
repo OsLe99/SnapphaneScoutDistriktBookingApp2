@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using Syncfusion.Maui.Core.Hosting;
+using System.Reflection;
 
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -37,6 +39,8 @@ namespace SnapphaneScoutDistriktBookingApp
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddTransient<IBookingService, BookingService>();
             builder.Services.AddSingleton<IValidateBookingService, ValidateBookingService>();
+            builder.Services.AddTransient<IRoleAuthService>(sp =>
+                new RoleAuthService(Environment.GetEnvironmentVariable("CLERK_API_KEY")));
 
 #if DEBUG
             builder.Logging.AddDebug();
