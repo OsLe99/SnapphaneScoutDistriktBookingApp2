@@ -1,15 +1,8 @@
-﻿using MongoDB;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using SnapphaneScoutDistriktBookingApp.Models;
+﻿using SnapphaneScoutDistriktBookingApp.Models;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static Microsoft.Maui.ApplicationModel.Permissions;
+using SnapphaneScoutDistriktBookingApp.Helpers;
+using Microsoft.Extensions.Options;
+
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
@@ -17,17 +10,19 @@ namespace SnapphaneScoutDistriktBookingApp.Services
     {
         private readonly IDbService _db;
         private readonly IEmailService _emailService;
-        public BookingService(IDbService db, IEmailService emailService)
+        private readonly AppSettings _appSettings;
+        public BookingService(IDbService db, IEmailService emailService, IOptions<AppSettings> appSettings)
         {
             _db = db;
             _emailService = emailService;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<Booking?> AddBookingAsync(Booking booking)
         {
             // Add the booking to the database
             await _db.AddCustomerAsync(booking);
-            await _emailService.SendEmailAsync(Environment.GetEnvironmentVariable("SENDGRID_API_KEY"), Environment.GetEnvironmentVariable("SENDGRID_EMAIL"), booking.Email, booking);
+            await _emailService.SendEmailAsync(_appSettings.SENDGRID_API_KEY, _appSettings.SENDGRID_EMAIL, booking.Email, booking);
             var newBooking = await FindAddedBookingByIdAsync(booking);
             return newBooking;
         }

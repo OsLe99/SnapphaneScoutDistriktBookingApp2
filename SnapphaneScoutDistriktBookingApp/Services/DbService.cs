@@ -21,14 +21,15 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         #region variables
         private readonly Supabase.Client _client;
         private readonly IEmailService _emailService;
+        private readonly AppSettings appSettings;
 
         #endregion
 
         #region ctor
-        public DbService(Supabase.Client supabaseClient)
+        public DbService(Supabase.Client supabaseClient, IEmailService emailService)
         {
             _client = supabaseClient;
-            _emailService = new EmailService();
+            _emailService = emailService;
         }
         #endregion
 

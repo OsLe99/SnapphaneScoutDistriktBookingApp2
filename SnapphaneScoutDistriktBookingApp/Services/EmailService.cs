@@ -1,22 +1,22 @@
 ﻿using SendGrid.Helpers.Mail;
 using SendGrid;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using SnapphaneScoutDistriktBookingApp.Models;
+using SnapphaneScoutDistriktBookingApp.Helpers;
+using Microsoft.Extensions.Options;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class EmailService : IEmailService
     {
+        private readonly AppSettings _settings;
+        public EmailService(IOptions<AppSettings> appSettings)
+        {
+            _settings = appSettings.Value;
+        }
         public async Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Booking booking)
         {
-            toEmail = Environment.GetEnvironmentVariable("SENDGRID_EMAIL");
+            toEmail = _settings.SENDGRID_EMAIL;
             string bokningsNummer = "";
             if(booking.NumberOfCanoes != null)
             {

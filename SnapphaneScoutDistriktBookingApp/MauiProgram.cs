@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using SnapphaneScoutDistriktBookingApp.Helpers;
 using SnapphaneScoutDistriktBookingApp.Services;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using Syncfusion.Maui.Core.Hosting;
-using Supabase;
+using System.Reflection;
 
 
 namespace SnapphaneScoutDistriktBookingApp
@@ -22,10 +24,19 @@ namespace SnapphaneScoutDistriktBookingApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("Deutsch.ttf", "OldGerman");
                 });
+
+            using var stream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("SnapphaneScoutDistriktBookingApp.appsettings.json");
+            var config = new ConfigurationBuilder().AddJsonStream(stream).Build();
+            builder.Configuration.AddConfiguration(config);
+
+            builder.Services.Configure<AppSettings>(builder.Configuration);
+            var settings = GetAppConfig(builder);
+
             // Supabase
-            var url = Environment.GetEnvironmentVariable("SUPABASE_URL");
-            var key = Environment.GetEnvironmentVariable("SUPABASE_KEY");
-            var bearerToken = Environment.GetEnvironmentVariable("CLERK_API_KEY");
+            var url = settings.SUPABASE_URL;
+            var key = settings.SUPABASE_KEY;
+            var bearerToken = settings.CLERK_API_KEY;
             builder.Services.AddScoped<Supabase.Client>(provider =>
             {
                 var options = new Supabase.SupabaseOptions
@@ -57,6 +68,17 @@ namespace SnapphaneScoutDistriktBookingApp
 #endif
 
             return builder.Build();
+        }
+
+        static AppSettings GetAppConfig(MauiAppBuilder builder)
+        {
+            AppSettings? settings = builder.Configuration.Get<AppSettings>();
+            if (settings == null)
+            {
+                throw new NullReferenceException($"{nameof(settings)} cannot be null");
+            }
+
+            return settings;
         }
     }
 }
