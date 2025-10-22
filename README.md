@@ -94,10 +94,10 @@ Viktigt att den skapas i roten för projektet, samma som MauiProgram.cs etc.
 ```
 {
     "SUPABASE_URL":"din_supabase_url",
-    "SUPABASE_KEY":"din_supabase_key"
+    "SUPABASE_KEY":"din_supabase_key",
     "CLERK_API_KEY":din_clerk_api_key",
     "SENDGRID_API_KEY":"din_sendgrid_key",
-    "SENDGRID_EMAIL":"din-_sendgrid_email"
+    "SENDGRID_EMAIL":"din_sendgrid_email"
 }
 ```
     
