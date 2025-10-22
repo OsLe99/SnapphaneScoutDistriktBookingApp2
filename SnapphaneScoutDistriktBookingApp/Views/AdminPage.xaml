@@ -2,49 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SnapphaneScoutDistriktBookingApp.Views.AdminPage"
+             xmlns:vm="clr-namespace:SnapphaneScoutDistriktBookingApp.ViewModels"
              Title="AdminPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Adminsidan"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Label Text="Välkommen!" ></Label>
-        <Button Text="Lista alla bokningar" Command="{Binding ListAllBookingsCommand}"></Button>
-        <Button Text="Lista all nya bokningar" Command="{Binding ListAllNewBookingsCommand}" ></Button>
-        <Button Text="Lägg till kontakt" Clicked="OnClickedAddContactAsync" ></Button>
-        <Button Text="Lägg till/ändra info" Clicked="OnClickedChangeInfoAsync" ></Button>
 
+    <VerticalStackLayout Padding="10" Spacing="10">
+
+        <Label Text="Adminsidan"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" 
+               FontSize="24"/>
+
+        <Label Text="Välkommen!" FontSize="18"/>
+
+        <!-- Booking buttons -->
+        <Button Text="Lista alla bokningar" Command="{Binding ListAllBookingsCommand}"/>
+        <Button Text="Lista all nya bokningar" Command="{Binding ListAllNewBookingsCommand}"/>
+        <Button Text="Lägg till kontakt" Clicked="OnClickedAddContactAsync"/>
+        <Button Text="Lägg till/ändra info" Clicked="OnClickedChangeInfoAsync"/>
+
+        <!-- Bookings List -->
         <CollectionView ItemsSource="{Binding Bookings}"
-                SelectionMode="Single"
-                SelectionChanged="OnBookingSelectedAsync">
+                        SelectionMode="Single"
+                        SelectionChanged="OnBookingSelectedAsync"
+                        HeightRequest="200">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"
-                  RowDefinitions="Auto,*"
-                  ColumnDefinitions="50,*,Auto"
-                  ColumnSpacing="20">
-
+                          RowDefinitions="Auto,*"
+                          ColumnDefinitions="50,*,Auto"
+                          ColumnSpacing="20">
                         <CheckBox Grid.Column="0"
                                   IsChecked="{Binding IsConfirmed}"
-                                  CheckedChanged="OnCheckBoxConformationSendEmailAsync" />
-
+                                  CheckedChanged="OnCheckBoxConformationSendEmailAsync"/>
                         <Label Grid.Column="1"
                                Text="{Binding Name}"
-                               TextColor="Yellow"
+                               TextColor="DarkRed"
                                VerticalOptions="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding IsConfirmed}"
                                              Value="True">
-                                    <Setter Property="TextColor" Value="Green" />
-
-                                 </DataTrigger>
+                                    <Setter Property="TextColor" Value="Green"/>
+                                </DataTrigger>
                             </Label.Triggers>
                         </Label>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
 
+        <!-- Users section -->
+        <Label Text="Användare" FontSize="20" Margin="0,20,0,0"/>
+        <Button Text="Ladda alla användare" Command="{Binding ListAllUsersCommand}"/>
+
+        <CollectionView ItemsSource="{Binding Users}" HeightRequest="250">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Label Text="{Binding DisplayEmail}" VerticalOptions="Center" Grid.Column="0" />
+                        <Label Text="{Binding RoleText}" VerticalOptions="Center" Grid.Column="1" />
+                        <Button Text="Gör till admin"
+                                Grid.Column="2"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminPageViewModel}}, Path=PromoteToAdminCommand}"
+                                CommandParameter="{Binding .}"
+                                IsEnabled="{Binding CanPromote}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
 </ContentPage>

@@ -11,19 +11,21 @@ public partial class AdminPage : ContentPage
     private readonly IEmailService _emailService;
     private readonly IClerkUserSessionService _userSessionService;
     private readonly IRoleAuthService _roleAuthService;
-    public AdminPage(IDbService db, IEmailService emailService, IClerkUserSessionService userSessionService, IRoleAuthService roleAuthService)
+    private readonly IClerkAuthService _authService;
+    public AdminPage(IDbService db, IEmailService emailService, IClerkUserSessionService userSessionService, IRoleAuthService roleAuthService, IClerkAuthService authService)
     {
         InitializeComponent();
         _userSessionService = userSessionService;
         _db = db;
         _emailService = emailService;
         _roleAuthService = roleAuthService;
-        BindingContext = new ViewModels.AdminPageViewModel();
+        _authService = authService;
+        BindingContext = new AdminPageViewModel(_db, _authService, _roleAuthService, _userSessionService);
 	}
 
     private async void OnBookingSelectedAsync(object sender, SelectedItemChangedEventArgs e)
     {
-		var booking = e.CurrentSelection.FirstOrDefault() as Models.Booking;
+		var booking = e.SelectedItem as Models.Booking;
         if (booking != null)
 		{
 			var page = new BookingPopUpPage();
@@ -44,12 +46,12 @@ public partial class AdminPage : ContentPage
 
     private async void OnCheckBoxConformationSendEmailAsync(object sender, CheckedChangedEventArgs e)
     {
-        //if (sender is CheckBox checkBox && checkBox.BindingContext is Models.Booking booking && booking.EmailConformation == false)
+        //if (sender is CheckBox checkBox && checkBox.BindingContext is Models.Booking booking && booking.EmailConfirmation == false)
         //{
         //    if (e.Value)
         //    {
-        //        await _emailService.SendEmailConfirmationAsync("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", "emil.berg@campusnykoping.se", customer.Email, customer);
-        //        await _db.UpdateCheckBoxDatabaseAsync(customer);
+        //        await _emailService.SendEmailConfirmationAsync("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", "emil.berg@campusnykoping.se", booking.Email, booking);
+        //        await _db.UpdateCheckBoxDatabaseAsync(booking);
         //    }
         //}
     }

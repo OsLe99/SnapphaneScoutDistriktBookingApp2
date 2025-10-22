@@ -126,6 +126,70 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             return null;
         }
 
+        public async Task<string> GetCurrentUserIdAsync()
+        {
+            var sessionId = await SecureStorage.Default.GetAsync("sessionId");
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                return string.Empty;
+            }
+
+            var sessionResponse = await _sdk.Sessions.GetAsync(sessionId);
+            return sessionResponse?.Session?.UserId ?? string.Empty;
+        }
+
+        public async Task<User?> GetUserAsync(string userId)
+        {
+            try
+            {
+                var response = await _sdk.Users.GetAsync(userId);
+                return response?.User;
+            }
+            catch (Exception ex)
+            {
+                // Future logging potential?
+                Debug.WriteLine($"Error getting user: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            try
+            {
+                var usersResponse = await _sdk.Users.ListAsync();
+                return usersResponse?.UserList?.ToList() ?? new List<User>();
+            }
+            catch(Exception ex)
+            {
+                // Future logging potential?
+                Debug.WriteLine($"Error fetching users: {ex.Message}");
+                return new List<User>();
+            }
+        }
+
+        public async Task<bool> UpdateUserRoleAsync(string userId, string role)
+        {
+            try
+            {
+                var response = await _sdk.Users.UpdateMetadataAsync(userId, new UpdateUserMetadataRequestBody
+                {
+                    PrivateMetadata = new Dictionary<string, object>
+                    {
+                        {"role", role }
+                    }
+                });
+
+                return response?.User != null;
+            }
+            catch (Exception ex)
+            {
+                // Future logging potential?
+                Debug.WriteLine($"Error updating user: {ex.Message}");
+                return false;
+            }
+        }
+
         public void SetLoggedIn(bool isLoggedIn)
         {
             IsLoggedIn = isLoggedIn;
@@ -154,13 +218,6 @@ namespace SnapphaneScoutDistriktBookingApp.Services
 
             UserName = userName;
             UserEmail = userEmail;
-        }
-
-        public bool SetAdmin(bool isAdmin)
-        {
-            IsAdmin = isAdmin;
-            Preferences.Set("IsAdmin", isAdmin);
-            return IsAdmin;
         }
 
         public bool IsUserSet()
