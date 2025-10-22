@@ -17,48 +17,48 @@ namespace SnapphaneScoutDistriktBookingApp.Views.Booking
         {
             if (BindingContext is BookingViewModel vm)
             {
-                UpdateNumberLabel(vm.Customer);
+                UpdateNumberLabel(vm.NewBooking);
 
                 vm.PropertyChanged += (s, args) =>
                 {
-                    if (args.PropertyName == nameof(vm.Customer))
+                    if (args.PropertyName == nameof(vm.NewBooking))
                     {
-                        UpdateNumberLabel(vm.Customer);
+                        UpdateNumberLabel(vm.NewBooking);
                     }
                 };
 
-                if (vm.Customer != null)
+                if (vm.NewBooking != null)
                 {
-                    vm.Customer.PropertyChanged += (s, args) =>
+                    vm.NewBooking.PropertyChanged += (s, args) =>
                     {
-                        if (args.PropertyName == nameof(vm.Customer.NumberOfCanoes) ||
-                            args.PropertyName == nameof(vm.Customer.NumberOfLeanTo) ||
-                            args.PropertyName == nameof(vm.Customer.NumberOfCampground) ||
-                            args.PropertyName == nameof(vm.Customer.NumberOfCabin))
+                        if (args.PropertyName == nameof(vm.NewBooking.NumberOfCanoes) ||
+                            args.PropertyName == nameof(vm.NewBooking.NumberOfLeanTo) ||
+                            args.PropertyName == nameof(vm.NewBooking.NumberOfCampground) ||
+                            args.PropertyName == nameof(vm.NewBooking.NumberOfCabin))
                         {
-                            UpdateNumberLabel(vm.Customer);
+                            UpdateNumberLabel(vm.NewBooking);
                         }
                     };
                 }
             }
         }
 
-        private void UpdateNumberLabel(Customer customer)
+        private void UpdateNumberLabel(Models.Booking booking)
         {
-            if (customer == null)
+            if (booking == null)
             {
                 NumberLabel.Text = string.Empty;
                 return;
             }
 
-            if (customer.NumberOfCanoes.HasValue)
-                NumberLabel.Text = $"{customer.NumberOfCanoes}";
-            else if (customer.NumberOfLeanTo.HasValue)
-                NumberLabel.Text = $"{customer.NumberOfLeanTo} vindskydd";
-            else if (customer.NumberOfCampground.HasValue)
-                NumberLabel.Text = $"{customer.NumberOfCampground} personer";
-            else if (customer.NumberOfCabin.HasValue)
-                NumberLabel.Text = $"{customer.NumberOfCabin} personer";
+            if (booking.NumberOfCanoes.HasValue)
+                NumberLabel.Text = $"{booking.NumberOfCanoes}";
+            else if (booking.NumberOfLeanTo.HasValue)
+                NumberLabel.Text = $"{booking.NumberOfLeanTo} vindskydd";
+            else if (booking.NumberOfCampground.HasValue)
+                NumberLabel.Text = $"{booking.NumberOfCampground} personer";
+            else if (booking.NumberOfCabin.HasValue)
+                NumberLabel.Text = $"{booking.NumberOfCabin} personer";
             else
                 NumberLabel.Text = string.Empty;
         }

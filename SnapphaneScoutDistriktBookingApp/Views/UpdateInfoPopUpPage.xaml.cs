@@ -1,12 +1,13 @@
+using SnapphaneScoutDistriktBookingApp.Services.Interface;
 namespace SnapphaneScoutDistriktBookingApp.Views;
 
 public partial class UpdateInfoPopUpPage : ContentPage
 {
-	public UpdateInfoPopUpPage()
+	private readonly IDbService _db;
+	public UpdateInfoPopUpPage(IDbService dbService)
 	{
-		InitializeComponent();
-		BindingContext = new ViewModels.InfoPageViewModel();
+        InitializeComponent();
+        _db = dbService;
+        BindingContext = new ViewModels.InfoPageViewModel(dbService);
 	}
-	
-	
 }

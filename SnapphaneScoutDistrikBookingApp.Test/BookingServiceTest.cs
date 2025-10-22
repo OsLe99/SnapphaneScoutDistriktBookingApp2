@@ -17,16 +17,16 @@ public class BookingServiceTest
     private readonly Mock<IBookingService> _mockBooking;
     private readonly Mock<IDbService> _mockDb;
     private readonly Mock<IEmailService> _mockEmailService;
-    private readonly Customer _customer;
-    private readonly Mock<IMongoCollection<Customer>> _mockCollection;
+    private readonly Booking _customer;
+    private readonly Mock<IMongoCollection<Booking>> _mockCollection;
     public BookingServiceTest()
     {
         _mockEmailService = new Mock<IEmailService>();
         _mockDb = new Mock<IDbService>();
         _mockBooking = new Mock<IBookingService>();
-        _mockCollection = new Mock<IMongoCollection<Customer>>();
+        _mockCollection = new Mock<IMongoCollection<Booking>>();
 
-        _customer = new Customer
+        _customer = new Booking
         {
             Name = "Oscar",
             Phone = "1234567",
@@ -35,7 +35,7 @@ public class BookingServiceTest
             OrgName = "Testkår",
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1),
-            BookingType = Customer.TypeOfBooking.Canoe,
+            BookingType = Booking.TypeOfBooking.Canoe,
             NumberOfCabin = null,
             NumberOfCampground = null,
             NumberOfCanoes = 2,
@@ -48,7 +48,7 @@ public class BookingServiceTest
             It.IsAny<string>(),
             It.IsAny<string>(),
             It.IsAny<string>(),
-            It.IsAny<SnapphaneScoutDistriktBookingApp.Models.Customer>())).Returns(Task.CompletedTask);
+            It.IsAny<SnapphaneScoutDistriktBookingApp.Models.Booking>())).Returns(Task.CompletedTask);
 
         _mockDb.Setup(d => d.AddCustomerAsync(_customer).Result).Returns(_customer);
         _mockDb.Setup(d => d.FindBookingByIdAsync(_customer).Result).Returns(_customer);

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Castle.Core.Resource;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MongoDB.Driver;
 using SnapphaneScoutDistriktBookingApp.Models;
@@ -35,7 +36,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         public string StepInfo => $"Steg {_currentStep} av {_totalSteps}";
 
         [ObservableProperty]
-        private Customer _customer = new();
+        private Booking _newBooking = new();
 
         [ObservableProperty]
         private string _infoLabelText = string.Empty;
@@ -73,7 +74,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         private TimeSpan? _endTime;
 
         [ObservableProperty]
-        private List<Customer> _relevantBookings = new();
+        private List<Booking> _relevantBookings = new();
         #endregion
 
         public BookingViewModel(IDbService db, IBookingService bookingService, IValidateBookingService validateBookingService)
@@ -81,7 +82,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             _db = db;
             _bookingService = bookingService;
             _validateBookingService = validateBookingService;
-            Customer = new Customer();
+            NewBooking = new Booking();
 
             StartTime = TimeSpan.FromHours(12);
             EndTime = TimeSpan.FromHours(13);
@@ -140,13 +141,13 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         private void ResetBookingSelection()
         {
-            Customer.BookingType = Customer.TypeOfBooking.None;
-            Customer.NumberOfCanoes = null;
-            Customer.NumberOfCabin = null;
-            Customer.NumberOfLeanTo = null;
-            Customer.NumberOfCampground = null;
-            Customer.StartDate = DateTime.Today;
-            Customer.EndDate = DateTime.Today;
+            NewBooking.BookingType = Booking.TypeOfBooking.None;
+            NewBooking.NumberOfCanoes = null;
+            NewBooking.NumberOfCabin = null;
+            NewBooking.NumberOfLeanTo = null;
+            NewBooking.NumberOfCampground = null;
+            NewBooking.StartDate = DateTime.Today;
+            NewBooking.EndDate = DateTime.Today;
 
             StartTime = TimeSpan.FromHours(12);
             EndTime = TimeSpan.FromHours(13);
@@ -185,15 +186,15 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             {
                 case 1:
                     // Check that a booking type has been selected
-                    return Customer.BookingType != Customer.TypeOfBooking.None;
+                    return NewBooking.BookingType != Booking.TypeOfBooking.None;
                 case 2:
                     // Validate that a number has been entered for the selected booking type
-                    return Customer.BookingType switch
+                    return NewBooking.BookingType switch
                     {
-                        Customer.TypeOfBooking.Canoe => Customer.NumberOfCanoes > 0,
-                        Customer.TypeOfBooking.Cabin => Customer.NumberOfCabin > 0,
-                        Customer.TypeOfBooking.LeanTo => Customer.NumberOfLeanTo > 0,
-                        Customer.TypeOfBooking.CampGrounds => Customer.NumberOfCampground > 0,
+                        Booking.TypeOfBooking.Canoe => NewBooking.NumberOfCanoes > 0,
+                        Booking.TypeOfBooking.Cabin => NewBooking.NumberOfCabin > 0,
+                        Booking.TypeOfBooking.LeanTo => NewBooking.NumberOfLeanTo > 0,
+                        Booking.TypeOfBooking.CampGrounds => NewBooking.NumberOfCampground > 0,
                         _ => false
                     };
                 case 3:
@@ -201,12 +202,12 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
                     return await _validateBookingService.CheckIfValidTime(StartTime, EndTime);
                 case 4:
                     // Validate that customer info is filled, add ValidateService later
-                    bool basicInfoFilled = !string.IsNullOrEmpty(Customer.Name) &&
-                                           !string.IsNullOrEmpty(Customer.Phone) &&
-                                           !string.IsNullOrEmpty(Customer.Email);
+                    bool basicInfoFilled = !string.IsNullOrEmpty(NewBooking.Name) &&
+                                           !string.IsNullOrEmpty(NewBooking.Phone) &&
+                                           !string.IsNullOrEmpty(NewBooking.Email);
                     if(!basicInfoFilled)
                         return false;
-                    var errors = _validateBookingService.ValidateBookingDetails(Customer);
+                    var errors = _validateBookingService.ValidateBookingDetails(NewBooking);
                     if (errors.Any())
                     {
                         string errorMessage = string.Join("\n", errors);
@@ -228,16 +229,16 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
             switch (type)
             {
                 case "Kanot":
-                    Customer.BookingType |= Customer.TypeOfBooking.Canoe;
+                    NewBooking.BookingType |= Booking.TypeOfBooking.Canoe;
                     break;
                 case "Stugan":
-                    Customer.BookingType |= Customer.TypeOfBooking.Cabin;
+                    NewBooking.BookingType |= Booking.TypeOfBooking.Cabin;
                     break;
                 case "Vindskydd":
-                    Customer.BookingType |= Customer.TypeOfBooking.LeanTo;
+                    NewBooking.BookingType |= Booking.TypeOfBooking.LeanTo;
                     break;
                 case "Lägerområde":
-                    Customer.BookingType |= Customer.TypeOfBooking.CampGrounds;
+                    NewBooking.BookingType |= Booking.TypeOfBooking.CampGrounds;
                     break;
             }
             UpdateInfoLabelAndPlaceholder();
@@ -246,21 +247,21 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         private void UpdateInfoLabelAndPlaceholder()
         {
-            switch (Customer.BookingType)
+            switch (NewBooking.BookingType)
             {
-                case Customer.TypeOfBooking.Canoe:
+                case Booking.TypeOfBooking.Canoe:
                     InfoLabelText = "Hur många kanoter vill ni boka?";
                     NumberInputPlaceholder = "Antal kanoter";
                     break;
-                case Customer.TypeOfBooking.Cabin:
+                case Booking.TypeOfBooking.Cabin:
                     InfoLabelText = "Hur många personer ska vistas i stugan?";
                     NumberInputPlaceholder = "Antal personer i stugan";
                     break;
-                case Customer.TypeOfBooking.LeanTo:
+                case Booking.TypeOfBooking.LeanTo:
                     InfoLabelText = "Hur många vindskydd vill ni boka?";
                     NumberInputPlaceholder = "Antal vindskydd";
                     break;
-                case Customer.TypeOfBooking.CampGrounds:
+                case Booking.TypeOfBooking.CampGrounds:
                     InfoLabelText = "Hur många personer ska använda lägerområdet?";
                     NumberInputPlaceholder = "Antal personer på lägerområdet";
                     break;
@@ -274,19 +275,19 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         [RelayCommand]
         private void SaveNumberInputToCustomer(int number)
         {
-            switch (Customer.BookingType)
+            switch (NewBooking.BookingType)
             {
-                case Customer.TypeOfBooking.Canoe:
-                    Customer.NumberOfCanoes = number;
+                case Booking.TypeOfBooking.Canoe:
+                    NewBooking.NumberOfCanoes = number;
                     break;
-                case Customer.TypeOfBooking.Cabin:
-                    Customer.NumberOfCabin = number;
+                case Booking.TypeOfBooking.Cabin:
+                    NewBooking.NumberOfCabin = number;
                     break;
-                case Customer.TypeOfBooking.LeanTo:
-                    Customer.NumberOfLeanTo = number;
+                case Booking.TypeOfBooking.LeanTo:
+                    NewBooking.NumberOfLeanTo = number;
                     break;
-                case Customer.TypeOfBooking.CampGrounds:
-                    Customer.NumberOfCampground = number;
+                case Booking.TypeOfBooking.CampGrounds:
+                    NewBooking.NumberOfCampground = number;
                     break;
             }
         }
@@ -313,7 +314,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         [RelayCommand]
         private async Task ConfirmBookingAsync()
         {
-            await _bookingService.AddBookingAsync(Customer);
+            await _bookingService.AddBookingAsync(NewBooking);
             await Shell.Current.Navigation.PopToRootAsync();
             await Shell.Current.GoToAsync("//MainPage", true);
         }
@@ -322,7 +323,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         public async Task LoadBlackoutDatesAsync()
         {
             var allBookings = await _db.GetAllBookingsAsync();
-            RelevantBookings = allBookings.Where(b => b.BookingType == Customer.BookingType && b.IsConfirmed).ToList();
+            RelevantBookings = allBookings.Where(b => b.BookingType == NewBooking.BookingType).ToList();
         }
 
         public bool IsSelectableDates(DateTime date)
@@ -337,9 +338,9 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 
         public void UpdateCustomerDatesAndTimes(DateTime start, DateTime end)
         {
-            Customer.StartDate = CombineDateAndTime(start, StartTime ?? TimeSpan.Zero);
-            Customer.EndDate = CombineDateAndTime(end, EndTime ?? TimeSpan.Zero);
-            Debug.WriteLine($"Updated Customer dates and times: Start={Customer.StartDate}, End={Customer.EndDate}");
+            NewBooking.StartDate = CombineDateAndTime(start, StartTime ?? TimeSpan.Zero);
+            NewBooking.EndDate = CombineDateAndTime(end, EndTime ?? TimeSpan.Zero);
+            Debug.WriteLine($"Updated Customer dates and times: Start={NewBooking.StartDate}, End={NewBooking.EndDate}");
         }
     }
 }

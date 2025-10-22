@@ -1,15 +1,8 @@
-﻿using MongoDB;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using SnapphaneScoutDistriktBookingApp.Models;
+﻿using SnapphaneScoutDistriktBookingApp.Models;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static Microsoft.Maui.ApplicationModel.Permissions;
+using SnapphaneScoutDistriktBookingApp.Helpers;
+using Microsoft.Extensions.Options;
+
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
@@ -17,34 +10,36 @@ namespace SnapphaneScoutDistriktBookingApp.Services
     {
         private readonly IDbService _db;
         private readonly IEmailService _emailService;
-        public BookingService(IDbService db, IEmailService emailService)
+        private readonly AppSettings _appSettings;
+        public BookingService(IDbService db, IEmailService emailService, IOptions<AppSettings> appSettings)
         {
             _db = db;
             _emailService = emailService;
+            _appSettings = appSettings.Value;
         }
 
-        public async Task<Customer?> AddBookingAsync(Customer customer)
+        public async Task<Booking?> AddBookingAsync(Booking booking)
         {
             // Add the booking to the database
-            await _db.AddCustomerAsync(customer);
-            await _emailService.SendEmailAsync("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", "emil.berg@campusnykoping.se", customer.Email, customer);
-            var newBooking = await FindAddedBookingByIdAsync(customer);
+            await _db.AddCustomerAsync(booking);
+            await _emailService.SendEmailAsync(_appSettings.SENDGRID_API_KEY, _appSettings.SENDGRID_EMAIL, booking.Email, booking);
+            var newBooking = await FindAddedBookingByIdAsync(booking);
             return newBooking;
         }
 
         // Find placed booking based on Id and return
-        public async Task<Customer?> FindAddedBookingByIdAsync(Customer customer)
+        public async Task<Booking?> FindAddedBookingByIdAsync(Booking customer)
         {
             var newBooking = await _db.FindBookingByIdAsync(customer);
             return newBooking;
         }
 
-        public async Task<Customer?> GetBookingByIdAndEmailAsync(ObjectId id, string email)
+        public async Task<Booking?> GetBookingByIdAndEmailAsync(Guid id, string email)
         {
             return await _db.FindBookingByIdAndEmailAsync(id, email);
         }
 
-        public async Task UpdateBookingAsync(Customer booking)
+        public async Task UpdateBookingAsync(Booking booking)
         {
             await _db.UpdateBookingAsync(booking);
         }

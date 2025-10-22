@@ -10,9 +10,9 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
     public interface IBookingService
     {
-        Task<Customer?> AddBookingAsync(Customer customer);
-        Task UpdateBookingAsync(Customer booking);
-        Task<Customer?> FindAddedBookingByIdAsync(Customer customer);
-        Task<Customer?> GetBookingByIdAndEmailAsync(ObjectId id, string email);
+        Task<Booking?> AddBookingAsync(Booking booking);
+        Task UpdateBookingAsync(Booking booking);
+        Task<Booking?> FindAddedBookingByIdAsync(Booking booking);
+        Task<Booking?> GetBookingByIdAndEmailAsync(Guid id, string email);
     }
 }

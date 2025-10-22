@@ -2,6 +2,7 @@ using MongoDB.Bson;
 using SnapphaneScoutDistriktBookingApp.Models;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System.Windows.Input;
+using BookingModel = SnapphaneScoutDistriktBookingApp.Models.Booking;
 
 namespace SnapphaneScoutDistriktBookingApp.Views;
 
@@ -18,7 +19,7 @@ public partial class ViewBooking : ContentPage
         _validateBookingService = validateBookingService;
         _dbService = dbService;
 
-        EditBookingCommand = new Command<Customer>(async booking =>
+        EditBookingCommand = new Command<BookingModel>(async booking =>
         {
             if (booking != null)
             {
@@ -49,12 +50,12 @@ public partial class ViewBooking : ContentPage
 
         try
         {
-            var id = new ObjectId(idText);
+            var id = new Guid(idText);
             var booking = await _bookingService.GetBookingByIdAndEmailAsync(id, email);
 
             if (booking != null)
             {
-                ResultsCollectionView.ItemsSource = new List<Customer> { booking };
+                ResultsCollectionView.ItemsSource = new List<BookingModel> { booking };
             }
             else
             {

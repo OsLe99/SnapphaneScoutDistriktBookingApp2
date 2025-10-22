@@ -8,7 +8,7 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Models.Customer costumer);
-        Task SendEmailConfirmationAsync(string apiKey, string fromEmail, string toEmail, Models.Customer costumer);
+        Task SendEmailAsync(string apiKey, string fromEmail, string toEmail, Models.Booking costumer);
+        Task SendEmailConfirmationAsync(string apiKey, string fromEmail, string toEmail, Models.Booking costumer);
     }
 }

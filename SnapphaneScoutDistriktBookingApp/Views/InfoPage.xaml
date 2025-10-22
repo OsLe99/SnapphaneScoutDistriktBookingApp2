@@ -4,10 +4,7 @@
              x:Class="SnapphaneScoutDistriktBookingApp.Views.InfoPage"
              Title="InfoPage">
     <VerticalStackLayout>
-        <Label 
-            Text="InfoSidan"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        
         <Label Text="Kontakter" FontSize="20"></Label>
         <ListView ItemsSource="{Binding Contacts}">
             <ListView.ItemTemplate>
@@ -22,6 +19,19 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Label Text="{Binding Info}"></Label>
+        
+        <Label Text="Info" FontSize="20" Margin="0,20,0,0"></Label>
+        <ListView ItemsSource="{Binding InfoList}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10" RowDefinitions="Auto, Auto, *" ColumnDefinitions="0, 200, 260, 200" ColumnSpacing="20">
+                            <Label Grid.Column="1" Text="{Binding InfoString}"></Label>
+                            <Label Grid.Column="2" Text="{Binding CreatedAt, StringFormat='Skapad: {0:yyyy-MM-dd HH-mm}'}"></Label>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </VerticalStackLayout>
 </ContentPage>

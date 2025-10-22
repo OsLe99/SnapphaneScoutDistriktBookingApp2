@@ -8,6 +8,6 @@ namespace SnapphaneScoutDistriktBookingApp.Services.Interface
 {
     public interface IAdminService
     {
-        Task<bool> TryLoginAdminAsync(string username, string userEmail, string password);
+        //Task<bool> TryLoginAdminAsync(string username, string userEmail, string password);
     }
 }

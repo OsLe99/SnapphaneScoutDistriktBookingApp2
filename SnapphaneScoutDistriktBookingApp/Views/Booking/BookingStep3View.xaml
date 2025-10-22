@@ -16,7 +16,8 @@
             x:Name="BookingCalendar"
             SelectionMode="Range"
             EnablePastDates="False"
-            SelectionChanged="OnCalendarSelectionChanged">
+            SelectionChanged="OnCalendarSelectionChanged"
+            BackgroundColor="LightGray">
             
             <cal:SfCalendar.MonthView>
                 <cal:CalendarMonthView FirstDayOfWeek="Monday" DisabledDatesBackground="DarkGrey" />
@@ -25,6 +26,7 @@
 
         <picker:SfTimePicker
             x:Name="StartTimePicker"
+            BackgroundColor="LightGray"
             Format="HH_mm"
             MinuteInterval="15"
             TextDisplayMode="FadeAndShrink"
@@ -38,6 +40,7 @@
 
         <picker:SfTimePicker
             x:Name="EndTimePicker"
+            BackgroundColor="LightGray"
             Format="HH_mm"
             MinuteInterval="15"
             TextDisplayMode="FadeAndShrink"

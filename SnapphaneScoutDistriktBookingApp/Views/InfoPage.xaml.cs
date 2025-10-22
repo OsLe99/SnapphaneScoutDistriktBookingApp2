@@ -3,9 +3,11 @@ namespace SnapphaneScoutDistriktBookingApp.Views;
 
 public partial class InfoPage : ContentPage
 {
-	public InfoPage()
+	private readonly IDbService _db;
+	public InfoPage(IDbService dbService)
 	{
 		InitializeComponent();
-		BindingContext = new ViewModels.InfoPageViewModel();
+		_db = dbService;
+        BindingContext = new ViewModels.InfoPageViewModel(dbService);
 	}
 }
