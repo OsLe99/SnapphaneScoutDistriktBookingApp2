@@ -89,7 +89,7 @@ git clone <repository-url>
     
 2. Skaffa nycklar för Clerk och Supabase.
     
-3. Konfigurera miljövariabler för Supabase, Clerk och Sendgrid genom att skapa en appsettings.json i SnapphaneScoutDistriktBookingApp.
+3. Konfigurera variabler för Supabase, Clerk och Sendgrid genom att skapa en appsettings.json i SnapphaneScoutDistriktBookingApp.
 Viktigt att den skapas i roten för projektet, samma som MauiProgram.cs etc.
 ```
 {
