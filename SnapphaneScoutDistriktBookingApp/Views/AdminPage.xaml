@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SnapphaneScoutDistriktBookingApp.Views.AdminPage"
              Title="AdminPage">
-    <ScrollView>
     <VerticalStackLayout>
         <Label 
             Text="Adminsidan"
@@ -14,26 +13,38 @@
         <Button Text="Lista all nya bokningar" Command="{Binding ListAllNewBookingsCommand}" ></Button>
         <Button Text="Lägg till kontakt" Clicked="OnClickedAddContactAsync" ></Button>
         <Button Text="Lägg till/ändra info" Clicked="OnClickedChangeInfoAsync" ></Button>
-            
-        <ListView ItemsSource="{Binding Bookings}" ItemSelected="OnBookingSelectedAsync">
-            <ListView.ItemTemplate>
+
+        <CollectionView ItemsSource="{Binding Bookings}"
+                SelectionMode="Single"
+                SelectionChanged="OnBookingSelectedAsync">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <Grid Padding="10" RowDefinitions="Auto,*" ColumnDefinitions="200,*" ColumnSpacing="20">
-                            <CheckBox Grid.Column="0" IsChecked="{Binding IsConfirmed}" CheckedChanged="OnCheckBoxConformationSendEmailAsync"></CheckBox>
-                            <Label Grid.Column="1" Text="{Binding Name}" TextColor="Yellow">
-                                <Label.Triggers >
-                                    <DataTrigger TargetType="Label" Binding="{Binding IsConfirmed}" Value="True">
-                                        <Setter Property="TextColor" Value="Green"></Setter>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                        </Grid>
-                    </ViewCell>
+                    <Grid Padding="10"
+                  RowDefinitions="Auto,*"
+                  ColumnDefinitions="50,*,Auto"
+                  ColumnSpacing="20">
+
+                        <CheckBox Grid.Column="0"
+                                  IsChecked="{Binding IsConfirmed}"
+                                  CheckedChanged="OnCheckBoxConformationSendEmailAsync" />
+
+                        <Label Grid.Column="1"
+                               Text="{Binding Name}"
+                               TextColor="Yellow"
+                               VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding IsConfirmed}"
+                                             Value="True">
+                                    <Setter Property="TextColor" Value="Green" />
+
+                                 </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
-    </ScrollView>
 
 </ContentPage>

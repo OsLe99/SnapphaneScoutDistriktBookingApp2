@@ -59,18 +59,18 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             }
         }
         #endregion
-        public List<string> ValidateBookingDetails(Customer customer)
+        public List<string> ValidateBookingDetails(Booking booking)
         {
             var errors = new List<string>();
-            if(!ValidateName(customer.Name))
+            if(!ValidateName(booking.Name))
             {
                 errors.Add("Ogiltigt namn.");
             }
-            if(!ValidatePhoneNumber(customer.Phone))
+            if(!ValidatePhoneNumber(booking.Phone))
             {
                 errors.Add("Ogiltigt telefonnummer.");
             }
-            if(!ValidateEmail(customer.Email))
+            if(!ValidateEmail(booking.Email))
             {
                 errors.Add("Ogiltig email.");
             }

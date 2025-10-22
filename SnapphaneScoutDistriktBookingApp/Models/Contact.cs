@@ -1,19 +1,24 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
 
 namespace SnapphaneScoutDistriktBookingApp.Models
 {
-    public class Contact
+    [Table("contacts")]
+    public class Contact : BaseModel
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
+        [PrimaryKey("id", false)]
+        [Column("id")]
+        public int Id { get; set; }
+        [Column("name")]
         public string Name { get; set; }
+        [Column("email")]
         public string Email { get; set; }
+        [Column("phone")]
         public string PhoneNumber { get; set; }
     }
 }

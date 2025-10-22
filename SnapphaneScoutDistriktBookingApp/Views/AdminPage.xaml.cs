@@ -16,7 +16,7 @@ public partial class AdminPage : ContentPage
         _userSessionService = userSessionService;
         _db = db;
         _emailService = emailService;
-        BindingContext = new ViewModels.AdminPageViewModel();
+        BindingContext = new AdminPageViewModel(db);
 	}
 
     protected override void OnAppearing()
@@ -29,10 +29,10 @@ public partial class AdminPage : ContentPage
         }
     }
 
-    private async void OnBookingSelectedAsync(object sender, SelectedItemChangedEventArgs e)
+    private async void OnBookingSelectedAsync(object sender, SelectionChangedEventArgs e)
     {
-		var booking = ((ListView)sender).SelectedItem as Models.Customer;
-		if(booking != null)
+		var booking = e.CurrentSelection.FirstOrDefault() as Models.Booking;
+        if (booking != null)
 		{
 			var page = new BookingPopUpPage();
 			page.BindingContext = booking;
@@ -47,18 +47,18 @@ public partial class AdminPage : ContentPage
 
     private async void OnClickedChangeInfoAsync(object sender, EventArgs e)
     {
-		await Navigation.PushAsync(new Views.UpdateInfoPopUpPage());
+		await Navigation.PushAsync(new Views.UpdateInfoPopUpPage(_db));
     }
 
     private async void OnCheckBoxConformationSendEmailAsync(object sender, CheckedChangedEventArgs e)
     {
-        if(sender is CheckBox checkBox && checkBox.BindingContext is Models.Customer customer && customer.EmailConformation == false)
-        {
-            if (e.Value)
-            {
-                await _emailService.SendEmailConfirmationAsync("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", "emil.berg@campusnykoping.se", customer.Email, customer);
-                await _db.UpdateCheckBoxDatabaseAsync(customer);
-            }
-        }
+        //if (sender is CheckBox checkBox && checkBox.BindingContext is Models.Booking booking && booking.EmailConformation == false)
+        //{
+        //    if (e.Value)
+        //    {
+        //        await _emailService.SendEmailConfirmationAsync("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", "emil.berg@campusnykoping.se", customer.Email, customer);
+        //        await _db.UpdateCheckBoxDatabaseAsync(customer);
+        //    }
+        //}
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using SnapphaneScoutDistriktBookingApp.Services;
+using SnapphaneScoutDistriktBookingApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,12 +14,14 @@ using System.Windows.Input;
 
 namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
-    class AdminPageViewModel : INotifyPropertyChanged
+    public class AdminPageViewModel
     {
-        private readonly IDbService _db = new DbService();
+        private readonly IDbService _db;
         public event PropertyChangedEventHandler? PropertyChanged;
-        private ObservableCollection<Models.Customer> _bookings;
-        public ObservableCollection<Models.Customer> Bookings { get { return _bookings; }
+        private ObservableCollection<Booking> _bookings;
+        public ObservableCollection<Booking> Bookings
+        {
+            get { return _bookings; }
             set
             {
                 _bookings = value;
@@ -27,13 +30,19 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         }
         public ICommand ListAllBookingsCommand { get; }
         public ICommand ListAllNewBookingsCommand { get; }
-        public AdminPageViewModel()
+        public AdminPageViewModel(IDbService db)
         {
-            Bookings = new ObservableCollection<Models.Customer>();
-            ListAllBookingsCommand = new Command(async () => await _db.LoadAllBookingsAsync(Bookings));
-            ListAllNewBookingsCommand = new Command(async () => await _db.LoadAllNewBookingsAsync(Bookings));
+            _db = db ?? throw new ArgumentNullException(nameof(db));
 
+            Bookings = new ObservableCollection<Booking>();
+
+            ListAllBookingsCommand = new Command(async () =>
+                await _db.LoadAllBookingsAsync(Bookings));
+
+            ListAllNewBookingsCommand = new Command(async () =>
+                await _db.LoadAllNewBookingsAsync(Bookings));
         }
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

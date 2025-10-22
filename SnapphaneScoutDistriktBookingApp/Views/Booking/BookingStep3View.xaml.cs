@@ -74,7 +74,7 @@ public partial class BookingStep3View : ContentView
 
             if (TryGetSelectedRange(out var start, out var end))
             {
-                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime && vm.Customer.StartDate == vm.Customer.EndDate)
+                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime && vm.NewBooking.StartDate == vm.NewBooking.EndDate)
                 {
                     var proposedEndTime = StartTimePicker.SelectedTime.Value.Add(TimeSpan.FromHours(1));
                     if (proposedEndTime >= TimeSpan.FromDays(1))
@@ -99,7 +99,7 @@ public partial class BookingStep3View : ContentView
 
             if (TryGetSelectedRange(out var start, out var end))
             {
-                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime && vm.Customer.StartDate == vm.Customer.EndDate)
+                if (EndTimePicker.SelectedTime < StartTimePicker.SelectedTime && vm.NewBooking.StartDate == vm.NewBooking.EndDate)
                 {
                     var proposedEndTime = StartTimePicker.SelectedTime.Value.Add(TimeSpan.FromHours(1));
                     if (proposedEndTime >= TimeSpan.FromDays(1))

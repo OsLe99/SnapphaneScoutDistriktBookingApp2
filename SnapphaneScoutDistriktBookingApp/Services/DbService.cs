@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.ApplicationModel.Communication;
-using MongoDB.Driver;
 using SnapphaneScoutDistriktBookingApp.Models;
+using ScoutContact = SnapphaneScoutDistriktBookingApp.Models.Contact;
 using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,64 +10,61 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
-using MongoDB.Bson;
 using SnapphaneScoutDistriktBookingApp.Helpers;
+using Supabase.Postgrest;
+using System.Diagnostics;
 
 namespace SnapphaneScoutDistriktBookingApp.Services
 {
     public class DbService : IDbService
     {
         #region variables
-        private readonly MongoClient _client;
+        private readonly Supabase.Client _client;
         private readonly IEmailService _emailService;
+        private readonly AppSettings appSettings;
 
         #endregion
 
         #region ctor
-        public DbService()
+        public DbService(Supabase.Client supabaseClient, IEmailService emailService)
         {
-            const string connectionUri = "mongodb+srv://dbAdmin:DBadmin00@hultetbooking.h5urq.mongodb.net/?retryWrites=true&w=majority&appName=HultetBooking";
-            var settings = MongoClientSettings.FromConnectionString(connectionUri);
-            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-            var client = new MongoClient(settings);
-            _client = new MongoClient(settings);
-            _emailService = new EmailService();
+            _client = supabaseClient;
+            _emailService = emailService;
         }
         #endregion
 
         #region private methods
-        private IMongoCollection<Customer> BookingCollection()
+
+        // Hämta alla bookings i en lista
+        private async Task<List<Booking>> BookingCollection()
         {
-            var database = _client.GetDatabase("bookingsDB");
-            return database.GetCollection<Customer>("bookings");
+            await _client.InitializeAsync();
+            var database = await _client.From<Booking>().Get();
+            return database.Models;
         }
-        private IMongoCollection<Models.Contact> ContactCollection()
+        private async Task<List<ScoutContact>> ContactCollection()
         {
-            var database = _client.GetDatabase("contactsDB");
-            return database.GetCollection<Models.Contact>("contacts");
+            await _client.InitializeAsync();
+            var database = _client.From<ScoutContact>().Get();
+            return database.Result.Models;
         }
-        private IMongoCollection<Models.Info> InfoCollection()
+        private async Task<List<Info>> InfoCollection()
         {
-            var database = _client.GetDatabase("infoDB");
-            var infoCollection = database.GetCollection<Models.Info>("infostring");
-            return infoCollection;
-        }
-        private IMongoCollection<Models.Admin> AdminUserCollection()
-        {
-            var database = _client.GetDatabase("adminUsers");
-            return database.GetCollection<Models.Admin>("adminUsers");
+            await _client.InitializeAsync();
+            var database = _client.From<Info>().Get();
+            return database.Result.Models;
         }
 
-        private Customer ConvertCustomerToSwedishTime(Customer customer)
+        private Booking ConvertCustomerToSwedishTime(Booking booking)
         {
-            if (customer == null) 
+            if (booking == null) 
                 return null!;
 
-            customer.StartDate = TimeZoneHelper.ToSwedishTime(customer.StartDate);
-            customer.EndDate = TimeZoneHelper.ToSwedishTime(customer.EndDate);
-            return customer;
+            booking.StartDate = TimeZoneHelper.ToSwedishTime(booking.StartDate);
+            booking.EndDate = TimeZoneHelper.ToSwedishTime(booking.EndDate);
+            return booking;
         }
-        private List<Customer> ConvertCustomersToSwedishTime(List<Customer> customers)
+        private List<Booking> ConvertCustomersToSwedishTime(List<Booking> customers)
         {
             foreach (var c in customers)
             {
@@ -77,141 +74,143 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         }
         #endregion
 
-        #region CRUD customer
-        public async Task<Customer> AddCustomerAsync(Customer customer)
+        #region CRUD booking
+        public async Task<Booking> AddCustomerAsync(Booking booking)
         {
-            customer.StartDate = TimeZoneHelper.FromSwedishTime(customer.StartDate);
-            customer.EndDate = TimeZoneHelper.FromSwedishTime(customer.EndDate);
-            await BookingCollection().InsertOneAsync(customer);
-            return customer;
-        }
-        public async Task UpdateCheckBoxDatabaseAsync(Customer customer) // UpdateConfirmedCustomer
-        {
-            try
-            {
-                var collection = BookingCollection();
-                var filter = Builders<Customer>.Filter.Eq(x => x.Id, customer.Id);
-                var update = Builders<Customer>.Update.Set(x => x.IsConfirmed, customer.IsConfirmed);
-                await collection.UpdateOneAsync(filter, update);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fel vid uppdatering: {ex.Message}");
-            }
+            await _client.InitializeAsync();
+
+            booking.StartDate = TimeZoneHelper.FromSwedishTime(booking.StartDate);
+            booking.EndDate = TimeZoneHelper.FromSwedishTime(booking.EndDate);
+            await _client.From<Booking>().Insert(booking);
+            return booking;
         }
 
-        public async Task UpdateBookingAsync(Customer booking)
+        public async Task UpdateBookingAsync(Booking booking)
         {
+            await _client.InitializeAsync();
             booking.StartDate = TimeZoneHelper.FromSwedishTime(booking.StartDate);
             booking.EndDate = TimeZoneHelper.FromSwedishTime (booking.EndDate);
-            var filter = Builders<Customer>.Filter.Eq(b => b.Id, booking.Id);
-            await BookingCollection().ReplaceOneAsync(filter, booking);
+            var update = await _client
+                .From<Booking>()
+                .Where(x => x.Id == booking.Id)
+                .Upsert(booking);
         }
 
         #endregion
 
         #region CRUD contact
-        public async Task<Models.Contact> AddContactAsync(Models.Contact contact)
+        public async Task<ScoutContact> AddContactAsync(ScoutContact contact)
         {
-            await ContactCollection().InsertOneAsync(contact);
+            await _client.InitializeAsync();
+            await _client.From<ScoutContact>().Insert(contact);
             return contact;
         }
 
         #endregion
 
         #region CRUD info
-        public async Task<Models.Info> UpdateInfoAsync(Models.Info info, string Id)
+        public async Task<Info> UpdateInfoAsync(Info info, Guid Id)
         {
-            await InfoCollection().ReplaceOneAsync(filter: Builders<Models.Info>.Filter.Eq(x => x.Id, "unique_id"),
-                replacement: info, options: new ReplaceOptions { IsUpsert = true });
+            await _client.InitializeAsync();
+            var updatedInfo = await _client
+                .From<Info>()
+                .Where(x => x.Id == Id)
+                .Upsert(info);
             return info;
         }
 
         #endregion
 
         #region admin methods
-        public async Task<bool> RegisterAdminAsync(string userName, string userEmail, string password) // Byta till ex. SignInUser
-        {
-            var collection = AdminUserCollection();
+        //public async Task<bool> RegisterAdminAsync(string userName, string userEmail, string password) // Byta till ex. SignInUser
+        //{
+        //    var collection = AdminUserCollection();
 
-            var existingUser = await collection.Find(x => x.Name == userName).FirstOrDefaultAsync();
+        //    var existingUser = await collection.Find(x => x.Name == userName).FirstOrDefaultAsync();
 
-            if (existingUser != null)
-            {
-                return false;
-            }
+        //    if (existingUser != null)
+        //    {
+        //        return false;
+        //    }
 
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+        //    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
-            var newAdmin = new Models.Admin
-            {
-                Name = userName,
-                Email = userEmail,
-                PasswordHashed = hashedPassword
-            };
+        //    var newAdmin = new Models.Admin
+        //    {
+        //        Name = userName,
+        //        Email = userEmail,
+        //        PasswordHashed = hashedPassword
+        //    };
 
-            await collection.InsertOneAsync(newAdmin);
-            return true;
-        }
+        //    await collection.InsertOneAsync(newAdmin);
+        //    return true;
+        //}
 
-        public async Task<bool> CheckIfAdminAsync(string userName, string userEmail)
-        {
-            var collection = AdminUserCollection();
-            var filter = Builders<Admin>.Filter.And(
-                Builders<Admin>.Filter.Eq(x => x.Name, userName),
-                Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
-            );
+        //public async Task<bool> CheckIfAdminAsync(string userName, string userEmail)
+        //{
+        //    var collection = AdminUserCollection();
+        //    var filter = Builders<Admin>.Filter.And(
+        //        Builders<Admin>.Filter.Eq(x => x.Name, userName),
+        //        Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
+        //    );
 
-            var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
+        //    var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
 
-            return adminUser != null;
-        }
-        public async Task<bool> CheckAdminCredentialsAsync(string userEmail, string password)
-        {
-            var collection = AdminUserCollection();
-            var filter = Builders<Admin>.Filter.And(
-                Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
-                );
-            var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
+        //    return adminUser != null;
+        //}
+        //public async Task<bool> CheckAdminCredentialsAsync(string userEmail, string password)
+        //{
+        //    var collection = AdminUserCollection();
+        //    var filter = Builders<Admin>.Filter.And(
+        //        Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
+        //        );
+        //    var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
 
-            if (adminUser == null )
-            {
-                return false;
-            }
-            return BCrypt.Net.BCrypt.Verify(password, adminUser.PasswordHashed);
-        }
+        //    if (adminUser == null )
+        //    {
+        //        return false;
+        //    }
+        //    return BCrypt.Net.BCrypt.Verify(password, adminUser.PasswordHashed);
+        //}
 
         #endregion
 
-        public async Task<List<Models.Info>> GetAllInfoAsync()
+        public async Task<List<Info>> GetAllInfoAsync()
         {
-            List<Models.Info> info = await InfoCollection().Find(Builders<Models.Info>.Filter.Empty).ToListAsync();
-            return info;
+            await _client.InitializeAsync();
+            var result = await _client.From<Info>().Get();
+            return result.Models.OrderBy(i => i.CreatedAt).ToList();
         }
-        public async Task<List<Customer>> GetAllBookingsAsync()
+        public async Task<List<Booking>> GetAllBookingsAsync()
         {
-            List<Customer> bookings = await BookingCollection().Find(_ => true).ToListAsync();
-            return ConvertCustomersToSwedishTime(bookings);
+            await _client.InitializeAsync();
+            var result = await _client.From<Booking>().Get();
+            return ConvertCustomersToSwedishTime(result.Models);
         }
 
-        public async Task<List<Models.Contact>> GetAllContactsAsync()
+        public async Task<List<ScoutContact>> GetAllContactsAsync()
         {
-            List<Models.Contact> contacts = await ContactCollection().Find(Builders<Models.Contact>.Filter.Empty).ToListAsync();
-            return contacts;
+            await _client.InitializeAsync();
+            var result = await _client.From<ScoutContact>().Get();
+            Debug.WriteLine("Number of contacts: " + result.Models.Count);
+            return result.Models.OrderBy(b => b.Id).ToList();
         }
-        public async Task<ObservableCollection<Customer>> LoadAllBookingsAsync(ObservableCollection<Customer> bookings)
+        public async Task<ObservableCollection<Booking>> LoadAllBookingsAsync(ObservableCollection<Booking> bookings)
         {
             var data = await GetAllBookingsAsync();
-            foreach (var booking in data)
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                bookings.Add(booking);
-            }
+                bookings.Clear(); 
+                foreach (var booking in data)
+                    bookings.Add(booking);
+            });
             return bookings;
         }
-        public async Task<ObservableCollection<Customer>> LoadAllNewBookingsAsync(ObservableCollection<Customer> bookings)
+        public async Task<ObservableCollection<Booking>> LoadAllNewBookingsAsync(ObservableCollection<Booking> bookings)
         {
             var data = await GetAllBookingsAsync();
-            var newData = data.Where(x => x.StartDate.Date >= DateTime.Today).ToList();
+            var newData = data.Where(x => x.IsConfirmed == false).ToList();
             bookings.Clear();
             foreach (var newBookings in newData)
             {
@@ -219,15 +218,15 @@ namespace SnapphaneScoutDistriktBookingApp.Services
             }
             return bookings;
         }
-        public async Task<Customer?> FindBookingByIdAsync(Customer customer)
+        public async Task<Booking?> FindBookingByIdAsync(Booking booking)
         {
-            var booking = await BookingCollection().Find(c => c.Id == customer.Id).FirstOrDefaultAsync();
+            var result = await _client.From<Booking>().Get();
             return booking != null ? ConvertCustomerToSwedishTime(booking) : null;
         }
-        public async Task<Customer?> FindBookingByIdAndEmailAsync(ObjectId id, string email)
+        public async Task<Booking?> FindBookingByIdAndEmailAsync(Guid id, string email)
         {
-            var booking = await BookingCollection().Find(c => c.Id == id && c.Email == email).FirstOrDefaultAsync();
-            return booking != null ? ConvertCustomerToSwedishTime(booking) : null;
+            var booking = await _client.From<Booking>().Where(b => b.Id == id && b.Email == email).Get();
+            return booking != null ? ConvertCustomerToSwedishTime(booking.Model) : null;
         }
     }
 }

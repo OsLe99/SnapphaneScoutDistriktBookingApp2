@@ -12,11 +12,11 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
 {
     public class EditBookingViewModel : INotifyPropertyChanged
     {
-        private Customer _booking;
+        private Booking _booking;
         private TimeSpan _startTime;
         private TimeSpan _endTime;
 
-        public EditBookingViewModel(Customer booking)
+        public EditBookingViewModel(Booking booking)
         {
             _booking = booking;
             _startTime = booking.StartDate.TimeOfDay;
@@ -137,7 +137,7 @@ namespace SnapphaneScoutDistriktBookingApp.ViewModels
         public string EndTimeText => $"Sluttid: {EndTime:hh\\:mm}";
         #endregion
 
-        public Customer GetBooking() => _booking;
+        public Booking GetBooking() => _booking;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)

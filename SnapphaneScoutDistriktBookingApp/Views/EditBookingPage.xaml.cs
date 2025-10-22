@@ -12,8 +12,8 @@ public partial class EditBookingPage : ContentPage
 	private readonly IBookingService _bookingService;
 	private readonly IValidateBookingService _validateBookingService;
     private readonly IDbService _dbService;
-    private List<Customer> _relevantBookings = new();
-    public EditBookingPage(Customer booking, IBookingService bookingService, IValidateBookingService validateBookingService, IDbService dbService)
+    private List<Models.Booking> _relevantBookings = new();
+    public EditBookingPage(Models.Booking booking, IBookingService bookingService, IValidateBookingService validateBookingService, IDbService dbService)
 	{
 		InitializeComponent();
 		_bookingService = bookingService;
