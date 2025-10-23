@@ -46,6 +46,7 @@ public partial class AdminPage : ContentPage
 
     private async void OnCheckBoxConformationSendEmailAsync(object sender, CheckedChangedEventArgs e)
     {
+        // Behövs fixas innan ny push
         //if (sender is CheckBox checkBox && checkBox.BindingContext is Models.Booking booking && booking.EmailConfirmation == false)
         //{
         //    if (e.Value)

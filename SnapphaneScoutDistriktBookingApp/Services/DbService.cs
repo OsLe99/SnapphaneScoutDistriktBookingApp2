@@ -122,56 +122,6 @@ namespace SnapphaneScoutDistriktBookingApp.Services
         #endregion
 
         #region admin methods
-        //public async Task<bool> RegisterAdminAsync(string userName, string userEmail, string password) // Byta till ex. SignInUser
-        //{
-        //    var collection = AdminUserCollection();
-
-        //    var existingUser = await collection.Find(x => x.Name == userName).FirstOrDefaultAsync();
-
-        //    if (existingUser != null)
-        //    {
-        //        return false;
-        //    }
-
-        //    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-
-        //    var newAdmin = new Models.Admin
-        //    {
-        //        Name = userName,
-        //        Email = userEmail,
-        //        PasswordHashed = hashedPassword
-        //    };
-
-        //    await collection.InsertOneAsync(newAdmin);
-        //    return true;
-        //}
-
-        //public async Task<bool> CheckIfAdminAsync(string userName, string userEmail)
-        //{
-        //    var collection = AdminUserCollection();
-        //    var filter = Builders<Admin>.Filter.And(
-        //        Builders<Admin>.Filter.Eq(x => x.Name, userName),
-        //        Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
-        //    );
-
-        //    var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
-
-        //    return adminUser != null;
-        //}
-        //public async Task<bool> CheckAdminCredentialsAsync(string userEmail, string password)
-        //{
-        //    var collection = AdminUserCollection();
-        //    var filter = Builders<Admin>.Filter.And(
-        //        Builders<Admin>.Filter.Eq(x => x.Email, userEmail)
-        //        );
-        //    var adminUser = await collection.Find(filter).FirstOrDefaultAsync();
-
-        //    if (adminUser == null )
-        //    {
-        //        return false;
-        //    }
-        //    return BCrypt.Net.BCrypt.Verify(password, adminUser.PasswordHashed);
-        //}
 
         #endregion
 

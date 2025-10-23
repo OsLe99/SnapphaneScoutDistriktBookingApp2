@@ -29,7 +29,7 @@
                 <DataTemplate>
                     <Grid Padding="10"
                           RowDefinitions="Auto,*"
-                          ColumnDefinitions="50,*,Auto"
+                          ColumnDefinitions="50,*,*,*,*"
                           ColumnSpacing="20">
                         <CheckBox Grid.Column="0"
                                   IsChecked="{Binding IsConfirmed}"
@@ -46,6 +46,9 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
+                        <Label Text="{Binding TypeOfBooking_Swedish, StringFormat='Typ: {0}'}" Grid.Column="2" />
+                        <Label Text="{Binding StartDate, StringFormat='Start: {0}'}" Grid.Column="3" />
+                        <Label Text="{Binding EndDate, StringFormat='Slut: {0}'}" Grid.Column="4" />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
