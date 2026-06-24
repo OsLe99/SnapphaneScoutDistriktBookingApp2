@@ -9,7 +9,8 @@ namespace SnapphaneScoutDistriktBookingApp
     {
         private readonly IClerkUserSessionService _userSession;
         private readonly IClerkAuthService _authService;
-        public AppShell(IClerkUserSessionService userSession, IClerkAuthService authService)
+        private readonly IRoleAuthService _roleAuthService;
+        public AppShell(IClerkUserSessionService userSession, IClerkAuthService authService, IRoleAuthService roleAuthService)
         {
             InitializeComponent();
 
@@ -18,6 +19,8 @@ namespace SnapphaneScoutDistriktBookingApp
 
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            _roleAuthService = roleAuthService;
+            Navigating += OnNavigating;
         }
 
         protected override async void OnAppearing()
@@ -26,6 +29,21 @@ namespace SnapphaneScoutDistriktBookingApp
             await _userSession.CheckLoginStateAsync();
             UpdateSignInSignOutUI(_userSession.IsLoggedIn);
         }
+
+        private async void OnNavigating(object sender, ShellNavigatingEventArgs e)
+        {
+            if (e.Target.Location.OriginalString.Contains("AdminPage"))
+            {
+                bool isAdmin = await _roleAuthService.IsAdminAsync();
+
+                if (!isAdmin)
+                {
+                    e.Cancel();
+                    await Shell.Current.DisplayAlert("Åtkomst nekad", "Du har inte behörighet att komma åt denna sida.", "OK");
+                }
+            }
+        }
+
         private void OnClickedChangeTheme(object sender, EventArgs e)
         {
             var app = Application.Current;

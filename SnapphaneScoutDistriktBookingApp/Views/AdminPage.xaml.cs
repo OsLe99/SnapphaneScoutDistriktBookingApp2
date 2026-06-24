@@ -10,28 +10,22 @@ public partial class AdminPage : ContentPage
     private readonly IDbService _db;
     private readonly IEmailService _emailService;
     private readonly IClerkUserSessionService _userSessionService;
-    public AdminPage(IDbService db, IEmailService emailService, IClerkUserSessionService userSessionService)
+    private readonly IRoleAuthService _roleAuthService;
+    private readonly IClerkAuthService _authService;
+    public AdminPage(IDbService db, IEmailService emailService, IClerkUserSessionService userSessionService, IRoleAuthService roleAuthService, IClerkAuthService authService)
     {
         InitializeComponent();
         _userSessionService = userSessionService;
         _db = db;
         _emailService = emailService;
-        BindingContext = new AdminPageViewModel(db);
+        _roleAuthService = roleAuthService;
+        _authService = authService;
+        BindingContext = new AdminPageViewModel(_db, _authService, _roleAuthService, _userSessionService);
 	}
 
-    protected override void OnAppearing()
+    private async void OnBookingSelectedAsync(object sender, SelectedItemChangedEventArgs e)
     {
-        base.OnAppearing();
-
-        if (_userSessionService.IsAdmin == false)
-        {
-            Shell.Current.GoToAsync("//MainPage");
-        }
-    }
-
-    private async void OnBookingSelectedAsync(object sender, SelectionChangedEventArgs e)
-    {
-		var booking = e.CurrentSelection.FirstOrDefault() as Models.Booking;
+		var booking = e.SelectedItem as Models.Booking;
         if (booking != null)
 		{
 			var page = new BookingPopUpPage();
@@ -52,12 +46,13 @@ public partial class AdminPage : ContentPage
 
     private async void OnCheckBoxConformationSendEmailAsync(object sender, CheckedChangedEventArgs e)
     {
-        //if (sender is CheckBox checkBox && checkBox.BindingContext is Models.Booking booking && booking.EmailConformation == false)
+        // Behövs fixas innan ny push
+        //if (sender is CheckBox checkBox && checkBox.BindingContext is Models.Booking booking && booking.EmailConfirmation == false)
         //{
         //    if (e.Value)
         //    {
-        //        await _emailService.SendEmailConfirmationAsync("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", "emil.berg@campusnykoping.se", customer.Email, customer);
-        //        await _db.UpdateCheckBoxDatabaseAsync(customer);
+        //        await _emailService.SendEmailConfirmationAsync("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", "emil.berg@campusnykoping.se", booking.Email, booking);
+        //        await _db.UpdateCheckBoxDatabaseAsync(booking);
         //    }
         //}
     }

@@ -53,6 +53,11 @@ public partial class LoginPage : ContentPage
         }
     }
 
+    private async void OnGoToMainPageClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//MainPage");
+    }
+
     private async void OnRegisterClickedAsync(object sender, EventArgs e)
     {
         await Shell.Current.Navigation.PushModalAsync(new RegisterPage(_userSession));

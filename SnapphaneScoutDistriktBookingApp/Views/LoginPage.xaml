@@ -13,6 +13,9 @@
 
             <Button Text="Logga in" Clicked="OnLoginClickedAsync"/>
             <Button Text="Registrera ny användare" Clicked="OnRegisterClickedAsync" />
+            <Button Text="Gå till startsidan"
+                    Clicked="OnGoToMainPageClicked"
+                    IsVisible="{OnPlatform iOS=true, MacCatalyst=true, Android=false, WinUI=false}" />
         </VerticalStackLayout>
         
         <ActivityIndicator x:Name="LoadingIndicator"

@@ -3,6 +3,7 @@ using SnapphaneScoutDistriktBookingApp.Services.Interface;
 using SnapphaneScoutDistriktBookingApp.Views.Booking;
 using SnapphaneScoutDistriktBookingApp.Views;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace SnapphaneScoutDistriktBookingApp.Views
 {
@@ -15,7 +16,8 @@ namespace SnapphaneScoutDistriktBookingApp.Views
         private readonly IBookingService _bookingService;
         private readonly IValidateBookingService _validateBookingService;
         private readonly IClerkAuthService _clerkAuthService;
-        public MainPage(IClerkUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService, IValidateBookingService validateBookingService, IClerkAuthService clerkAuthService)
+        private readonly IRoleAuthService _roleAuthService;
+        public MainPage(IClerkUserSessionService userSession, IAdminService adminService, IDbService db, IEmailService emailService, IBookingService bookingService, IValidateBookingService validateBookingService, IClerkAuthService clerkAuthService, IRoleAuthService roleAuthService)
         {
             InitializeComponent();
             _userSession = userSession;
@@ -27,6 +29,7 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             _clerkAuthService = clerkAuthService;
             _userSession.LoadUserData();
             BindingContext = userSession;
+            _roleAuthService = roleAuthService;
         }
         protected override async void OnAppearing()
         {
@@ -39,14 +42,9 @@ namespace SnapphaneScoutDistriktBookingApp.Views
             await Shell.Current.GoToAsync("//BookingPage");
         }
 
-        private async void OnClickedGoToAdminPageAsync(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new Views.AdminPage(_db, _emailService, _userSession));
-        }
-
         private async void OnClickedGoToInfoPageAsync(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Views.InfoPage(_db));
+            await Navigation.PushAsync(new InfoPage(_db));
         }
     }
 

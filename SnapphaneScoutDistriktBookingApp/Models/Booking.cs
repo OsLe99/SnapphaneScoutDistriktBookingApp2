@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace SnapphaneScoutDistriktBookingApp.Models
 {
@@ -66,19 +67,19 @@ namespace SnapphaneScoutDistriktBookingApp.Models
         [Column("email_confirmation")]
         public bool EmailConfirmation { get; set; } = false;
 
-        //public string TypeOfBooking_Swedish =>
-        //    BookingTranslations.ContainsKey(BookingType)
-        //        ? BookingTranslations[BookingType]
-        //        : "Okänd";
-
-        //private static readonly Dictionary<TypeOfBooking, string> BookingTranslations = new()
-        //{
-        //    { TypeOfBooking.None, "Ingen" },
-        //    { TypeOfBooking.Canoe, "Kanot" },
-        //    { TypeOfBooking.CampGrounds, "Lägerområde" },
-        //    { TypeOfBooking.LeanTo, "Vindskydd" },
-        //    { TypeOfBooking.Cabin, "Stuga" }
-        //};
+        [JsonIgnore]
+        public string TypeOfBooking_Swedish =>
+            BookingTranslations.ContainsKey(BookingType)
+                ? BookingTranslations[BookingType]
+                : "Okänd";
+        private static readonly Dictionary<TypeOfBooking, string> BookingTranslations = new()
+        {
+            { TypeOfBooking.None, "Ingen" },
+            { TypeOfBooking.Canoe, "Kanot" },
+            { TypeOfBooking.CampGrounds, "Lägerområde" },
+            { TypeOfBooking.LeanTo, "Vindskydd" },
+            { TypeOfBooking.Cabin, "Stuga" }
+        };
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

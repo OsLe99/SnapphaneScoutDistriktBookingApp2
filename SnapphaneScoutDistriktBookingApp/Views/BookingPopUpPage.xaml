@@ -14,7 +14,7 @@
         <Label Text="{Binding EndDate, StringFormat='Slutdatum: {0}'}" ></Label>
         <Label Text="{Binding Phone, StringFormat='Telefonnummer: {0}'}" ></Label>
         <Label Text="{Binding OrgName, StringFormat='Tillhörande orginisation: {0}'}" ></Label>
-        <Label Text="{Binding BookingType, StringFormat='Vill boka: {0}'}"></Label>
+        <Label Text="{Binding TypeOfBooking_Swedish, StringFormat='Vill boka: {0}'}"></Label>
         <Label Text="{Binding NumberOfCanoes, StringFormat='Antal kanoter: {0}'}" ></Label>
         <Label Text="{Binding NumberOfCabin, StringFormat='Stuga: {0}'}"></Label>
         <Label Text="{Binding NumberOfLeanTo, StringFormat='Antal Vindskydd: {0}'}" ></Label>

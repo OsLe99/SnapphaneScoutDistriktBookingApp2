@@ -60,11 +60,12 @@ public class ClerkAuthService : IClerkAuthService
                 );
 
             var jwt = jwtResponse?.Object?.Jwt;
-            if(string.IsNullOrEmpty(jwt))
+            if (string.IsNullOrEmpty(jwt))
             {
                 Debug.Write("JWT creation failed");
                 return null;
             }
+
 
             Debug.WriteLine($"JWT: {jwt}");
             await TokenStorage.SaveTokenAsync(jwt);
@@ -83,7 +84,7 @@ public class ClerkAuthService : IClerkAuthService
     public async Task<bool> SignOutAsync()
     {
         var sessionId = await SecureStorage.Default.GetAsync("sessionId");
-        if(!string.IsNullOrEmpty(sessionId))
+        if (!string.IsNullOrEmpty(sessionId))
         {
             try
             {

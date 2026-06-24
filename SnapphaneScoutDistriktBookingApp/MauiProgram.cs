@@ -62,6 +62,8 @@ namespace SnapphaneScoutDistriktBookingApp
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddTransient<IBookingService, BookingService>();
             builder.Services.AddSingleton<IValidateBookingService, ValidateBookingService>();
+            builder.Services.AddTransient<IRoleAuthService>(sp =>
+                new RoleAuthService(Environment.GetEnvironmentVariable("CLERK_API_KEY")));
 
 #if DEBUG
             builder.Logging.AddDebug();
